@@ -1,6 +1,8 @@
 # Battlefield Chat
-**外置中文聊天输入工具 For Battlefield 1**
-**External Chinese chat input tool for battlefield 1**
+外置中文聊天输入工具 For Battlefield 1
+External Chinese chat input tool for battlefield 1
+
+![[showcase.png]](https://i.loli.net/2021/01/20/siVhlkQc8UdFXxH.png)
 
 * 只有游戏语言为中文的客户端才能看见中文, 这意味着英文客户端看起来你打的字全是框框
 * 尽管这个工具是为了中文输入设计的, 但也能用来输入日语或韩语等多字节语言

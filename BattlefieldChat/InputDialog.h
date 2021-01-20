@@ -5,6 +5,6 @@
 class InputDialog
 {
 public:
-	std::wstring showInputDialog(std::string currentText, HWND relativeTo, int mode);
+	std::wstring showInputDialog(std::wstring currentText, HWND relativeTo, int mode);
 };
 
