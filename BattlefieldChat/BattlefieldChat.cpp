@@ -12,7 +12,7 @@ string readBattlefieldChat();
 bool writeBattlefieldChat(string str);
 void press(BYTE key, int delay);
 
-DWORD pid;
+DWORD pid = -1;
 HANDLE hProcess;
 uintptr_t moduleBaseAddr;
 HWND gameWindow;
@@ -56,8 +56,7 @@ int main() {
         bool state = isBattlefieldChatOpen();
         if (!isFullscreenWindow(gameWindow) && !lastState && state) {
             cout << endl << " [+] 检测到聊天框打开" << endl;
-            //string ori = readBattlefieldChat();
-            wstring str = dialog.showInputDialog(L""/*StrToWStr(ori)*/, gameWindow, isBorderlessWindow(gameWindow) ? 2 : 1);
+            wstring str = dialog.showInputDialog(L"", gameWindow, isBorderlessWindow(gameWindow) ? 2 : 1);
 
             SetForegroundWindow(gameWindow);
             if (str.length() == 0) {
@@ -125,27 +124,6 @@ bool isBattlefieldChatOpen() {
     if (ptr == 0) return false;
     unsigned char value = readByte(hProcess, ptr, 0x30);
     return value == 1;
-}
-
-string readBattlefieldChat() {
-    uintptr_t ptr = readPointer(hProcess, moduleBaseAddr, 0x3A2CA60);
-    if (ptr == 0) return "";
-
-    ptr = readPointer(hProcess, ptr, 0x8);
-    if (ptr == 0) return "";
-    ptr = readPointer(hProcess, ptr, 0x48);
-    if (ptr == 0) return "";
-    ptr = readPointer(hProcess, ptr, 0x0);
-    if (ptr == 0) return "";
-    ptr = readPointer(hProcess, ptr, 0xB8);
-    if (ptr == 0) return "";
-    ptr = readPointer(hProcess, ptr, 0x10);
-    if (ptr == 0) return "";
-    ptr = readPointer(hProcess, ptr, 0x10);
-    if (ptr == 0) return "";
-    ptr = readPointer(hProcess, ptr, 0x180);
-    if (ptr == 0) return "";
-    return readString(hProcess, ptr);
 }
 
 bool writeBattlefieldChat(string str) {

@@ -14,11 +14,9 @@ bool isFullscreenWindow(HWND window);
 bool isBorderlessWindow(HWND window);
 
 uintptr_t getModuleBaseAddress(DWORD processId, const wchar_t* modName);
-DWORD getProcessIdByName(const wchar_t* targetProcessName);
 
 uintptr_t readPointer(HANDLE hProcess, uintptr_t address, int offset);
 unsigned char readByte(HANDLE hProcess, uintptr_t address, int offset);
-std::string readString(HANDLE hProcess, uintptr_t address);
 bool writeString(HANDLE hProcess, uintptr_t address, const char* data, int size);
 
 std::wstring CHS2CHT(std::wstring sCht);

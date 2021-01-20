@@ -44,6 +44,7 @@ void setTextAlignment(HWND hwnd, int intTextAlignment) {
             SWP_NOZORDER | SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE | SWP_NOCOPYBITS | SWP_DRAWFRAME);
     }
 }
+
 void ReportError(const char* CallingFunction) {
     DWORD error = GetLastError();
     LPVOID lpMsgBuf;
@@ -98,27 +99,6 @@ uintptr_t getModuleBaseAddress(DWORD processId, const wchar_t* modName) {
     return modBaseAddr;
 }
 
-DWORD getProcessIdByName(const wchar_t* targetProcessName) {
-    HANDLE hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
-
-    PROCESSENTRY32W entry;
-    entry.dwSize = sizeof(entry);
-
-    DWORD pid = -1;
-
-    if (Process32FirstW(hSnapshot, &entry)) {
-        do {
-            if (_wcsicmp(entry.szExeFile, targetProcessName) == 0) {
-                pid = entry.th32ProcessID;
-                break;
-            }
-        } while (Process32NextW(hSnapshot, &entry));
-    }
-
-    CloseHandle(hSnapshot);
-    return pid;
-}
-
 uintptr_t readPointer(HANDLE hProcess, uintptr_t address, int offset) {
     uintptr_t value;
     if (ReadProcessMemory(hProcess, (LPCVOID)(address + offset), &value, sizeof(value), 0))
@@ -131,14 +111,6 @@ unsigned char readByte(HANDLE hProcess, uintptr_t address, int offset) {
     if (ReadProcessMemory(hProcess, (LPCVOID)(address + offset), &value, sizeof(value), 0))
         return value;
     return 0;
-}
-
-std::string readString(HANDLE hProcess, uintptr_t address) {
-    char value[90] = { '\0' };
-
-    if (ReadProcessMemory(hProcess, (LPCVOID)(address), &value, sizeof(value), 0))
-        return std::string(value);
-    return "";
 }
 
 bool writeString(HANDLE hProcess, uintptr_t address, const char* data, int size) {
