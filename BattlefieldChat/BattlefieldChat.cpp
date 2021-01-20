@@ -79,10 +79,10 @@ int main() {
                 }
                 cout << " [*] 填充 " << toPad << " 字符完毕, 写入数据中..." << endl;
 
-                Sleep(100);
+                Sleep(200);
                 if (writeBattlefieldChat(converted)) {
                     cout << " [+] 写入数据成功" << endl;
-                    Sleep(100);
+                    Sleep(200);
                     press(VK_RETURN, 100);
                     cout << " [+] 模拟发送完成" << endl;
                 }
@@ -148,6 +148,7 @@ bool writeBattlefieldChat(string str) {
 }
 
 void press(BYTE key, int delay) {
+    Sleep(delay);
     keybd_event(key, MapVirtualKey(key, 0U), 0, 0);
     Sleep(delay);
     keybd_event(key, MapVirtualKey(key, 0U), KEYEVENTF_KEYUP, 0);
