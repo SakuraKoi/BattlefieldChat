@@ -31,13 +31,15 @@ int main() {
 
     cout << " [*] 正在等待游戏启动..." << endl;
     while (true) {
-        pid = getProcessIdByName(L"bf1.exe");
-        if (pid != -1) {
+        gameWindow = FindWindow(nullptr, L"Battlefield™ 1");
+        if (gameWindow != 0) {
+            GetWindowThreadProcessId(gameWindow, &pid);
             moduleBaseAddr = getModuleBaseAddress(pid, L"bf1.exe");
-            if (moduleBaseAddr != 0)
-                break;
+            if (pid != -1)
+                if (moduleBaseAddr != 0)
+                    break;
         }
-        Sleep(500);
+        Sleep(1000);
     }
 
     ios::fmtflags f(cout.flags());
@@ -45,16 +47,6 @@ int main() {
     cout.flags(f);
 
     hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pid);
-
-    cout << " [*] 正在搜索游戏窗口..." << endl;
-    while (true) {
-        gameWindow = FindWindow(nullptr, L"Battlefield™ 1");
-        if (gameWindow != 0) {
-            break;
-        }
-        Sleep(1000);
-    }
-    cout << " [+] 搜索游戏窗口成功" << endl;
 
     cout << " [+] Done! 在游戏中打开聊天即可自动呼出输入框" << endl;
 
