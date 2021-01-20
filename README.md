@@ -1,5 +1,5 @@
 # Battlefield Chat
-外置中文聊天输入工具 For Battlefield 1
+外置中文聊天输入工具 For Battlefield 1\
 External Chinese chat input tool for battlefield 1
 
 ![[showcase.png]](https://i.loli.net/2021/01/20/siVhlkQc8UdFXxH.png)
