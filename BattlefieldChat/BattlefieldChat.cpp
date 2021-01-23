@@ -8,8 +8,8 @@
 using namespace std;
 
 bool isBattlefieldChatOpen();
-string readBattlefieldChat();
-bool writeBattlefieldChat(string str);
+bool writeBattlefieldChatLength(int length);
+bool writeBattlefieldChatMessage(string str);
 void press(BYTE key, int delay);
 
 DWORD pid = -1;
@@ -72,22 +72,17 @@ int main() {
                 wstring trad = CHS2CHT(str);
                 string converted = WStrToStr(trad);
 
-                // Still cannot find a stable pointer path to message length, type some space to pad it
-                int toPad = (converted.size() / sizeof(char));
-                for (int i = 0; i < toPad; i++) {
-                    press(VK_SPACE, 20);
+                int length = (converted.size() / sizeof(char));
+                if (!writeBattlefieldChatLength(length)) {
+                    cout << " [-] 写入消息长度失败" << endl;
                 }
-                cout << " [*] 填充 " << toPad << " 字符完毕, 写入数据中..." << endl;
-
-                Sleep(200);
-                if (writeBattlefieldChat(converted)) {
-                    cout << " [+] 写入数据成功" << endl;
-                    Sleep(200);
+                else if (writeBattlefieldChatMessage(converted)) {
+                    cout << " [+] 写入消息数据成功" << endl;
                     press(VK_RETURN, 100);
                     cout << " [+] 模拟发送完成" << endl;
                 }
                 else {
-                    cout << " [-] 写入数据失败" << endl;
+                    cout << " [-] 写入消息数据失败" << endl;
                 }
             }
         }
@@ -101,22 +96,20 @@ int main() {
 }
 
 bool isBattlefieldChatOpen() {
-    uintptr_t ptr = readPointer(hProcess, moduleBaseAddr, 0x3A2CA60);
+    uintptr_t ptr = readPointer(hProcess, moduleBaseAddr, 0x3a2ca50);
     if (ptr == 0) return false;
 
     ptr = readPointer(hProcess, ptr, 0x8);
     if (ptr == 0) return false;
-    ptr = readPointer(hProcess, ptr, 0x48);
+    ptr = readPointer(hProcess, ptr, 0xc0);
+    if (ptr == 0) return false;
+    ptr = readPointer(hProcess, ptr, 0x28);
     if (ptr == 0) return false;
     ptr = readPointer(hProcess, ptr, 0x0);
     if (ptr == 0) return false;
-    ptr = readPointer(hProcess, ptr, 0xC8);
+    ptr = readPointer(hProcess, ptr, 0x40);
     if (ptr == 0) return false;
-    ptr = readPointer(hProcess, ptr, 0x8);
-    if (ptr == 0) return false;
-    ptr = readPointer(hProcess, ptr, 0x0);
-    if (ptr == 0) return false;
-    ptr = readPointer(hProcess, ptr, 0x18);
+    ptr = readPointer(hProcess, ptr, 0x20);
     if (ptr == 0) return false;
     ptr = readPointer(hProcess, ptr, 0x38);
     if (ptr == 0) return false;
@@ -126,17 +119,48 @@ bool isBattlefieldChatOpen() {
     return value == 1;
 }
 
-bool writeBattlefieldChat(string str) {
+
+bool writeBattlefieldChatLength(int length) {
     uintptr_t ptr = readPointer(hProcess, moduleBaseAddr, 0x3A2CA60);
     if (ptr == 0) return false;
 
-    ptr = readPointer(hProcess, ptr, 0x8);
+    ptr = readPointer(hProcess, ptr, 0x20);
     if (ptr == 0) return false;
-    ptr = readPointer(hProcess, ptr, 0x48);
+    ptr = readPointer(hProcess, ptr, 0x38);
     if (ptr == 0) return false;
-    ptr = readPointer(hProcess, ptr, 0x0);
+    ptr = readPointer(hProcess, ptr, 0x18);
+    if (ptr == 0) return false;
+    ptr = readPointer(hProcess, ptr, 0x10);
+    if (ptr == 0) return false;
+    ptr = readPointer(hProcess, ptr, 0x30);
+    if (ptr == 0) return false;
+    ptr = readPointer(hProcess, ptr, 0x20);
     if (ptr == 0) return false;
     ptr = readPointer(hProcess, ptr, 0xB8);
+    if (ptr == 0) return false;
+    ptr = readPointer(hProcess, ptr, 0x10);
+    if (ptr == 0) return false;
+    ptr = readPointer(hProcess, ptr, 0x10);
+    if (ptr == 0) return false;
+    int base = readInt(hProcess, ptr, 0x180);
+    return writeInt(hProcess, ptr, 0x188, base + length);
+}
+
+bool writeBattlefieldChatMessage(string str) {
+    uintptr_t ptr = readPointer(hProcess, moduleBaseAddr, 0x3a327e0);
+    if (ptr == 0) return false;
+
+    ptr = readPointer(hProcess, ptr, 0x20);
+    if (ptr == 0) return false;
+    ptr = readPointer(hProcess, ptr, 0x18);
+    if (ptr == 0) return false;
+    ptr = readPointer(hProcess, ptr, 0x38);
+    if (ptr == 0) return false;
+    ptr = readPointer(hProcess, ptr, 0x8);
+    if (ptr == 0) return false;
+    ptr = readPointer(hProcess, ptr, 0x68);
+    if (ptr == 0) return false;
+    ptr = readPointer(hProcess, ptr, 0xb8);
     if (ptr == 0) return false;
     ptr = readPointer(hProcess, ptr, 0x10);
     if (ptr == 0) return false;

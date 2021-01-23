@@ -18,6 +18,8 @@ uintptr_t getModuleBaseAddress(DWORD processId, const wchar_t* modName);
 uintptr_t readPointer(HANDLE hProcess, uintptr_t address, int offset);
 unsigned char readByte(HANDLE hProcess, uintptr_t address, int offset);
 bool writeString(HANDLE hProcess, uintptr_t address, const char* data, int size);
+int readInt(HANDLE hProcess, uintptr_t address, int offset);
+bool writeInt(HANDLE hProcess, uintptr_t address, int offset, int data);
 
 std::wstring CHS2CHT(std::wstring sCht);
 std::string WStrToStr(std::wstring src);
