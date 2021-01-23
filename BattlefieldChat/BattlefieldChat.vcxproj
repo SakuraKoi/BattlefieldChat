@@ -154,10 +154,12 @@
   <ItemGroup>
     <ClCompile Include="BattlefieldChat.cpp" />
     <ClCompile Include="InputDialog.cpp" />
+    <ClCompile Include="Offsets.cpp" />
     <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="InputDialog.h" />
+    <ClInclude Include="Offsets.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Utils.h" />
   </ItemGroup>

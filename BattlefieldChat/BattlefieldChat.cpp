@@ -3,18 +3,12 @@
 #include <Windows.h>
 #include <tlhelp32.h>
 #include "InputDialog.h"
+#include "Offsets.h"
 #include "Utils.h"
 
 using namespace std;
 
-bool isBattlefieldChatOpen();
-bool writeBattlefieldChatLength(int length);
-bool writeBattlefieldChatMessage(string str);
-void press(BYTE key, int delay);
-
 DWORD pid = -1;
-HANDLE hProcess;
-uintptr_t moduleBaseAddr;
 HWND gameWindow;
 
 int main() {
@@ -47,6 +41,12 @@ int main() {
     cout.flags(f);
 
     hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pid);
+    cout << " [*] 正在预分配内存..." << endl;
+    // This memory should not be freed, otherwise the game will crash (I'm too lazy to restore the pointer LOL)
+    // Possible memory leaks, but the size is small and therefore not a big problem
+    messageCaveAddr = (uintptr_t)VirtualAllocEx(hProcess, NULL, sizeof(char) * 91, MEM_COMMIT, PAGE_READWRITE);
+    cout << " [+] 申请内存成功: 0x" << hex << messageCaveAddr << endl;
+    cout.flags(f);
 
     cout << " [+] Done! 在游戏中打开聊天即可自动呼出输入框" << endl;
 
@@ -64,6 +64,7 @@ int main() {
                 cout << " [-] 取消输入操作" << endl;
                 goto outer;
             }
+            // Convert Simplified Chinese std::wstring to Traditional Chinese std::string
             wstring trad = CHS2CHT(str);
             string converted = WStrToStr(trad);
 
@@ -76,14 +77,17 @@ int main() {
                 goto outer;
             }
 
-            // NESSARY: Type something to let battlefield initialize memory
-            press(VK_SPACE, 20);
-
             if (!writeBattlefieldChatMessage(converted)) {
                 cout << " [-] 写入消息数据失败" << endl;
                 goto outer;
             }
 
+            if (!writeBattlefieldChatPointer()) {
+                cout << " [-] 重定向消息指针失败" << endl;
+                goto outer;
+            }
+
+            // It may be possible to exceed the chat message length limit? But shouldn't do so, at risk of being banned
             if (!writeBattlefieldChatLength(length)) {
                 cout << " [-] 写入消息长度失败" << endl;
                 goto outer;
@@ -97,91 +101,8 @@ int main() {
         lastState = state;
         Sleep(200);
     }
-    cout << endl << " [*] 游戏已退出, Thanks for using!" << endl;
     CloseHandle(hProcess);
+    cout << endl << " [*] 游戏已退出, Thanks for using!" << endl;
     Sleep(3000);
     return 0;
-}
-
-bool isBattlefieldChatOpen() {
-    uintptr_t ptr = readPointer(hProcess, moduleBaseAddr, 0x39f1e50);
-    if (ptr == 0) return false;
-
-    ptr = readPointer(hProcess, ptr, 0x8);
-    if (ptr == 0) return false;
-    ptr = readPointer(hProcess, ptr, 0x28);
-    if (ptr == 0) return false;
-    ptr = readPointer(hProcess, ptr, 0x0);
-    if (ptr == 0) return false;
-    ptr = readPointer(hProcess, ptr, 0x20);
-    if (ptr == 0) return false;
-    ptr = readPointer(hProcess, ptr, 0x18);
-    if (ptr == 0) return false;
-    ptr = readPointer(hProcess, ptr, 0x28);
-    if (ptr == 0) return false;
-    ptr = readPointer(hProcess, ptr, 0x38);
-    if (ptr == 0) return false;
-    ptr = readPointer(hProcess, ptr, 0x40);
-    if (ptr == 0) return false;
-    unsigned char value = readByte(hProcess, ptr, 0x30);
-    return value == 1;
-}
-
-
-bool writeBattlefieldChatLength(int length) {
-    uintptr_t ptr = readPointer(hProcess, moduleBaseAddr, 0x3A2CA60);
-    if (ptr == 0) return false;
-
-    ptr = readPointer(hProcess, ptr, 0x20);
-    if (ptr == 0) return false;
-    ptr = readPointer(hProcess, ptr, 0x38);
-    if (ptr == 0) return false;
-    ptr = readPointer(hProcess, ptr, 0x18);
-    if (ptr == 0) return false;
-    ptr = readPointer(hProcess, ptr, 0x10);
-    if (ptr == 0) return false;
-    ptr = readPointer(hProcess, ptr, 0x30);
-    if (ptr == 0) return false;
-    ptr = readPointer(hProcess, ptr, 0x20);
-    if (ptr == 0) return false;
-    ptr = readPointer(hProcess, ptr, 0xB8);
-    if (ptr == 0) return false;
-    ptr = readPointer(hProcess, ptr, 0x10);
-    if (ptr == 0) return false;
-    ptr = readPointer(hProcess, ptr, 0x10);
-    if (ptr == 0) return false;
-    int base = readInt(hProcess, ptr, 0x180);
-    return writeInt(hProcess, ptr, 0x188, base + length);
-}
-
-bool writeBattlefieldChatMessage(string str) {
-    uintptr_t ptr = readPointer(hProcess, moduleBaseAddr, 0x3a327e0);
-    if (ptr == 0) return false;
-
-    ptr = readPointer(hProcess, ptr, 0x20);
-    if (ptr == 0) return false;
-    ptr = readPointer(hProcess, ptr, 0x18);
-    if (ptr == 0) return false;
-    ptr = readPointer(hProcess, ptr, 0x38);
-    if (ptr == 0) return false;
-    ptr = readPointer(hProcess, ptr, 0x8);
-    if (ptr == 0) return false;
-    ptr = readPointer(hProcess, ptr, 0x68);
-    if (ptr == 0) return false;
-    ptr = readPointer(hProcess, ptr, 0xb8);
-    if (ptr == 0) return false;
-    ptr = readPointer(hProcess, ptr, 0x10);
-    if (ptr == 0) return false;
-    ptr = readPointer(hProcess, ptr, 0x10);
-    if (ptr == 0) return false;
-    ptr = readPointer(hProcess, ptr, 0x180);
-    if (ptr == 0) return false;
-    return writeString(hProcess, ptr, str.c_str(), str.size());
-}
-
-void press(BYTE key, int delay) {
-    Sleep(delay);
-    keybd_event(key, MapVirtualKey(key, 0U), 0, 0);
-    Sleep(delay);
-    keybd_event(key, MapVirtualKey(key, 0U), KEYEVENTF_KEYUP, 0);
 }

@@ -124,14 +124,20 @@ bool writeString(HANDLE hProcess, uintptr_t address, const char* data, int size)
     return true;
 }
 
-int readInt(HANDLE hProcess, uintptr_t address, int offset) {
-    int value;
-    if (ReadProcessMemory(hProcess, (LPCVOID)(address + offset), &value, sizeof(value), 0))
-        return value;
-    return 0;
+bool writeLong(HANDLE hProcess, uintptr_t address, int offset, uintptr_t data) {
+    uintptr_t final_address = address + offset;
+    SIZE_T size = sizeof(data);
+    DWORD oldprotect;
+    if (!VirtualProtectEx(hProcess, (LPVOID)final_address, size, PAGE_EXECUTE_READWRITE, &oldprotect))
+        return false;
+    if (!WriteProcessMemory(hProcess, (LPVOID)final_address, (LPCVOID)&data, size, nullptr))
+        return false;
+    if (!VirtualProtectEx(hProcess, (LPVOID)final_address, size, oldprotect, &oldprotect))
+        return false;
+    return true;
 }
 
-bool writeInt(HANDLE hProcess, uintptr_t address, int offset, int data) {
+bool writePointer(HANDLE hProcess, uintptr_t address, int offset, uintptr_t data) {
     uintptr_t final_address = address + offset;
     SIZE_T size = sizeof(data);
     DWORD oldprotect;
@@ -176,4 +182,11 @@ std::wstring StrToWStr(std::string src) {
         MultiByteToWideChar(CP_UTF8, 0, src.c_str(), src.length(), &wstrTo[0], num_chars);
     }
     return wstrTo;
+}
+
+void press(BYTE key, int delay) {
+    Sleep(delay);
+    keybd_event(key, MapVirtualKey(key, 0U), 0, 0);
+    Sleep(delay);
+    keybd_event(key, MapVirtualKey(key, 0U), KEYEVENTF_KEYUP, 0);
 }
