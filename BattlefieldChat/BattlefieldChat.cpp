@@ -62,27 +62,38 @@ int main() {
             if (str.length() == 0) {
                 press(VK_ESCAPE, 20);
                 cout << " [-] 取消输入操作" << endl;
-            } else {
-                wstring trad = CHS2CHT(str);
-                string converted = WStrToStr(trad);
-
-                int length = (converted.size() / sizeof(char));
-
-                if (length > 90) {
-                    press(VK_ESCAPE, 20);
-                    MessageBox(NULL, L"聊天消息长度不能超过90字节", L"错误", 0);
-                    cout << " [-] 聊天消息长度超过90字节" << endl;
-                } else if (!writeBattlefieldChatLength(length)) {
-                    cout << " [-] 写入消息长度失败" << endl;
-                } else if (writeBattlefieldChatMessage(converted)) {
-                    cout << " [+] 写入消息数据成功" << endl;
-                    press(VK_RETURN, 20);
-                    cout << " [+] 模拟发送完成" << endl;
-                } else {
-                    cout << " [-] 写入消息数据失败" << endl;
-                }
+                goto outer;
             }
+            wstring trad = CHS2CHT(str);
+            string converted = WStrToStr(trad);
+
+            int length = (converted.size() / sizeof(char));
+
+            if (length > 90) {
+                press(VK_ESCAPE, 20);
+                MessageBox(NULL, L"聊天消息长度不能超过90字节", L"错误", 0);
+                cout << " [-] 聊天消息长度超过90字节" << endl;
+                goto outer;
+            }
+
+            // NESSARY: Type something to let battlefield initialize memory
+            press(VK_SPACE, 20);
+
+            if (!writeBattlefieldChatMessage(converted)) {
+                cout << " [-] 写入消息数据失败" << endl;
+                goto outer;
+            }
+
+            if (!writeBattlefieldChatLength(length)) {
+                cout << " [-] 写入消息长度失败" << endl;
+                goto outer;
+            }
+
+            cout << " [+] 写入消息数据成功" << endl;
+            press(VK_RETURN, 20);
+            cout << " [+] 模拟发送完成" << endl;
         }
+    outer:
         lastState = state;
         Sleep(200);
     }
@@ -93,20 +104,20 @@ int main() {
 }
 
 bool isBattlefieldChatOpen() {
-    uintptr_t ptr = readPointer(hProcess, moduleBaseAddr, 0x3a2ca50);
+    uintptr_t ptr = readPointer(hProcess, moduleBaseAddr, 0x39f1e50);
     if (ptr == 0) return false;
 
     ptr = readPointer(hProcess, ptr, 0x8);
-    if (ptr == 0) return false;
-    ptr = readPointer(hProcess, ptr, 0xc0);
     if (ptr == 0) return false;
     ptr = readPointer(hProcess, ptr, 0x28);
     if (ptr == 0) return false;
     ptr = readPointer(hProcess, ptr, 0x0);
     if (ptr == 0) return false;
-    ptr = readPointer(hProcess, ptr, 0x40);
-    if (ptr == 0) return false;
     ptr = readPointer(hProcess, ptr, 0x20);
+    if (ptr == 0) return false;
+    ptr = readPointer(hProcess, ptr, 0x18);
+    if (ptr == 0) return false;
+    ptr = readPointer(hProcess, ptr, 0x28);
     if (ptr == 0) return false;
     ptr = readPointer(hProcess, ptr, 0x38);
     if (ptr == 0) return false;
