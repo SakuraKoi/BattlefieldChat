@@ -157,7 +157,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
         }
 
         SendMessage(m_hWndEdit, WM_SETFONT, (WPARAM)m_hFont, 0);
-        SendMessage(m_hWndEdit, EM_LIMITTEXT, 90, 0);
+        SendMessage(m_hWndEdit, EM_LIMITTEXT, 30, 0); // 1 chinese = 3 char, space = 90
 
         SetFocus(m_hWndEdit);
         break;

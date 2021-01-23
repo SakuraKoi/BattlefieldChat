@@ -148,7 +148,7 @@ std::wstring CHS2CHT(std::wstring sCht) {
     LCID lcidSrc = MAKELCID(MAKELANGID(LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED), SORT_CHINESE_PRC);
     const int iNewLen = LCMapString(lcidSrc, LCMAP_TRADITIONAL_CHINESE, sCht.c_str(), sCht.length(), NULL, 0);
 
-    wchar_t sDst[90];
+    wchar_t sDst[91];
     if (iNewLen > 0) {
         LCMapString(lcidSrc, LCMAP_TRADITIONAL_CHINESE, sCht.c_str(), sCht.length(), sDst, iNewLen);
     }
