@@ -21,7 +21,7 @@ int main() {
     SetConsoleTitle(L"Battlefield 1 中文输入工具");
     cout
         << " Battlefield 1 中文输入工具" << endl
-        << " Powered by.SakuraKooi" << endl
+        << " Powered by.SakuraKooi (https://github.com/SakuraKoi/BattlefieldChat)" << endl
         << endl
         << " 警告: 本工具直接读写游戏内存, 存在一定的风险" << endl
         << "       USE AT YOUR OWN RISK, 作者不对损失承担责任" << endl
