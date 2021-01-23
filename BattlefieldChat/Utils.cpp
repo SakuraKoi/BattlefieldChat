@@ -124,6 +124,26 @@ bool writeString(HANDLE hProcess, uintptr_t address, const char* data, int size)
     return true;
 }
 
+int readInt(HANDLE hProcess, uintptr_t address, int offset) {
+    int value;
+    if (ReadProcessMemory(hProcess, (LPCVOID)(address + offset), &value, sizeof(value), 0))
+        return value;
+    return 0;
+}
+
+bool writeInt(HANDLE hProcess, uintptr_t address, int offset, int data) {
+    uintptr_t final_address = address + offset;
+    SIZE_T size = sizeof(data);
+    DWORD oldprotect;
+    if (!VirtualProtectEx(hProcess, (LPVOID)final_address, size, PAGE_EXECUTE_READWRITE, &oldprotect))
+        return false;
+    if (!WriteProcessMemory(hProcess, (LPVOID)final_address, (LPCVOID)&data, size, nullptr))
+        return false;
+    if (!VirtualProtectEx(hProcess, (LPVOID)final_address, size, oldprotect, &oldprotect))
+        return false;
+    return true;
+}
+
 std::wstring CHS2CHT(std::wstring sCht) {
     LCID lcidSrc = MAKELCID(MAKELANGID(LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED), SORT_CHINESE_PRC);
     const int iNewLen = LCMapString(lcidSrc, LCMAP_TRADITIONAL_CHINESE, sCht.c_str(), sCht.length(), NULL, 0);
