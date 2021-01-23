@@ -60,34 +60,31 @@ int main() {
 
             SetForegroundWindow(gameWindow);
             if (str.length() == 0) {
-                press(VK_ESCAPE, 100);
+                press(VK_ESCAPE, 20);
                 cout << " [-] 取消输入操作" << endl;
-            }
-            else if (str.size() > 90) {
-                press(VK_ESCAPE, 100);
-                MessageBox(NULL, L"聊天消息长度不能超过90字节", L"错误", 0);
-                cout << " [-] 聊天消息长度超过90字节" << endl;
-            }
-            else {
+            } else {
                 wstring trad = CHS2CHT(str);
                 string converted = WStrToStr(trad);
 
                 int length = (converted.size() / sizeof(char));
-                if (!writeBattlefieldChatLength(length)) {
+
+                if (length > 90) {
+                    press(VK_ESCAPE, 20);
+                    MessageBox(NULL, L"聊天消息长度不能超过90字节", L"错误", 0);
+                    cout << " [-] 聊天消息长度超过90字节" << endl;
+                } else if (!writeBattlefieldChatLength(length)) {
                     cout << " [-] 写入消息长度失败" << endl;
-                }
-                else if (writeBattlefieldChatMessage(converted)) {
+                } else if (writeBattlefieldChatMessage(converted)) {
                     cout << " [+] 写入消息数据成功" << endl;
-                    press(VK_RETURN, 100);
+                    press(VK_RETURN, 20);
                     cout << " [+] 模拟发送完成" << endl;
-                }
-                else {
+                } else {
                     cout << " [-] 写入消息数据失败" << endl;
                 }
             }
         }
         lastState = state;
-        Sleep(500);
+        Sleep(200);
     }
     cout << endl << " [*] 游戏已退出, Thanks for using!" << endl;
     CloseHandle(hProcess);
