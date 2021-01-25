@@ -7,18 +7,18 @@ extern uintptr_t messageCaveAddr;
 
 class ChatOpenPointer : public Pointer {
 public:
-    ChatOpenPointer() : Pointer(hProcess, moduleBaseAddr) {}
+    ChatOpenPointer(HANDLE pProcessHandle, uintptr_t pBaseModuleAddress) : Pointer(pProcessHandle, pBaseModuleAddress) {}
     bool refreshPointer();
 };
 
 class ChatLengthPointer : public Pointer {
 public:
-    ChatLengthPointer() : Pointer(hProcess, moduleBaseAddr) {}
+    ChatLengthPointer(HANDLE pProcessHandle, uintptr_t pBaseModuleAddress) : Pointer(pProcessHandle, pBaseModuleAddress) {}
     bool refreshPointer();
 };
 
 class ChatMessagePointer : public Pointer {
 public:
-    ChatMessagePointer() : Pointer(hProcess, moduleBaseAddr) {}
+    ChatMessagePointer(HANDLE pProcessHandle, uintptr_t pBaseModuleAddress) : Pointer(pProcessHandle, pBaseModuleAddress) {}
     bool refreshPointer();
 };

@@ -52,9 +52,9 @@ int main() {
 
     Pointer messageCavePtr(hProcess, moduleBaseAddr);
     messageCavePtr.pointer = messageCaveAddr;
-    ChatOpenPointer chatOpenPtr;
-    ChatLengthPointer chatLengthPtr;
-    ChatMessagePointer chatMessagePtr;
+    ChatOpenPointer chatOpenPtr(hProcess, moduleBaseAddr);
+    ChatLengthPointer chatLengthPtr(hProcess, moduleBaseAddr);
+    ChatMessagePointer chatMessagePtr(hProcess, moduleBaseAddr);
 
     cout << " [+] Done! 在游戏中打开聊天即可自动呼出输入框" << endl;
 
