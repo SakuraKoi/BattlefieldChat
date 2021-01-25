@@ -127,7 +127,7 @@ int main() {
                 cout << " [+] 写入消息数据成功" << endl;
                 press(VK_RETURN, 20);
                 cout << " [+] 模拟发送完成" << endl;
-
+                Sleep(100);
                 // Then suspend the process again and restore the pointer
                 if (NtSuspendProcess != NULL)
                     NtSuspendProcess(hProcess);
