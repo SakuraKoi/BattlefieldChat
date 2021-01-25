@@ -26,3 +26,11 @@ std::string WStrToStr(std::wstring src);
 std::wstring StrToWStr(std::string src);
 
 void press(BYTE key, int delay);
+
+typedef LONG(NTAPI* _NtSuspendProcess) (IN HANDLE ProcessHandle);
+typedef LONG(NTAPI* _NtResumeProcess) (IN HANDLE ProcessHandle);
+extern _NtSuspendProcess NtSuspendProcess;
+extern _NtResumeProcess NtResumeProcess;
+
+bool loadNtDll();
+void freeNtDll();

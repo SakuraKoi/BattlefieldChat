@@ -190,3 +190,19 @@ void press(BYTE key, int delay) {
     Sleep(delay);
     keybd_event(key, MapVirtualKey(key, 0U), KEYEVENTF_KEYUP, 0);
 }
+
+HINSTANCE hNtDll;
+_NtSuspendProcess NtSuspendProcess = NULL;
+_NtResumeProcess NtResumeProcess = NULL;
+
+bool loadNtDll() {
+    hNtDll = LoadLibrary(L"ntdll.dll");
+    if (hNtDll == NULL) return false;
+    NtSuspendProcess = (_NtSuspendProcess)GetProcAddress(hNtDll, "NtSuspendProcess");
+    NtResumeProcess = (_NtResumeProcess)GetProcAddress(hNtDll, "NtResumeProcess");
+    return true;
+}
+
+void freeNtDll() {
+    FreeLibrary(hNtDll);
+}

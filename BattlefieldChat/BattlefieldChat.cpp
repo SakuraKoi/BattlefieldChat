@@ -98,7 +98,8 @@ int main() {
                     goto outer;
                 }
 
-
+                // Suspend the process to avoid desynchronized memory access
+                NtSuspendProcess(hProcess);
                 if (!messageCavePtr.writeString(converted)) {
                     cout << " [-] 错误: 写入数据失败 [ChatMessage]" << endl;
                     goto resume;
@@ -114,12 +115,15 @@ int main() {
                     cout << " [-] 错误: 写入数据失败 [ChatLength]" << endl;
                     goto resume;
                 }
+                // Resume the process to perform the send operation
+                NtResumeProcess(hProcess);
 
                 cout << " [+] 写入消息数据成功" << endl;
                 press(VK_RETURN, 20);
                 cout << " [+] 模拟发送完成" << endl;
 
-
+                // Then suspend the process again and restore the pointer
+                NtSuspendProcess(hProcess);
             resume:
                 if (!chatMessagePtr.writeAddress(oldAddr)) {
                     cout << " [-] 错误: 恢复指针失败 [ChatMessage]" << endl;
@@ -127,6 +131,8 @@ int main() {
                 if (!chatLengthPtr.writeAddress(oldAddr)) {
                     cout << " [-] 错误: 恢复指针失败 [ChatLength]" << endl;
                 }
+                NtResumeProcess(hProcess);
+                // Everything done.
             }
             lastState = state;
         }

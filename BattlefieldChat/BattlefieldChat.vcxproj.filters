@@ -27,6 +27,9 @@
     <ClCompile Include="Offsets.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Pointer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="InputDialog.h">
@@ -39,6 +42,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Offsets.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Pointer.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
