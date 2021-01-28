@@ -15,12 +15,6 @@ bool isBorderlessWindow(HWND window);
 
 uintptr_t getModuleBaseAddress(DWORD processId, const wchar_t* modName);
 
-uintptr_t readPointer(HANDLE hProcess, uintptr_t address, int offset);
-unsigned char readByte(HANDLE hProcess, uintptr_t address, int offset);
-bool writeString(HANDLE hProcess, uintptr_t address, const char* data, int size);
-bool writeLong(HANDLE hProcess, uintptr_t address, int offset, uintptr_t data);
-bool writePointer(HANDLE hProcess, uintptr_t address, int offset, uintptr_t data);
-
 std::wstring CHS2CHT(std::wstring sCht);
 std::string WStrToStr(std::wstring src);
 std::wstring StrToWStr(std::string src);

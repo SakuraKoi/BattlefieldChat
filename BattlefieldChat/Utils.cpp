@@ -99,57 +99,6 @@ uintptr_t getModuleBaseAddress(DWORD processId, const wchar_t* modName) {
     return modBaseAddr;
 }
 
-uintptr_t readPointer(HANDLE hProcess, uintptr_t address, int offset) {
-    uintptr_t value;
-    if (ReadProcessMemory(hProcess, (LPCVOID)(address + offset), &value, sizeof(value), 0))
-        return value;
-    return 0;
-}
-
-unsigned char readByte(HANDLE hProcess, uintptr_t address, int offset) {
-    unsigned char value;
-    if (ReadProcessMemory(hProcess, (LPCVOID)(address + offset), &value, sizeof(value), 0))
-        return value;
-    return 0;
-}
-
-bool writeString(HANDLE hProcess, uintptr_t address, const char* data, int size) {
-    DWORD oldprotect;
-    if (!VirtualProtectEx(hProcess, (LPVOID)address, size, PAGE_EXECUTE_READWRITE, &oldprotect))
-        return false;
-    if (!WriteProcessMemory(hProcess, (LPVOID)address, data, size, nullptr))
-        return false;
-    if (!VirtualProtectEx(hProcess, (LPVOID)address, size, oldprotect, &oldprotect))
-        return false;
-    return true;
-}
-
-bool writeLong(HANDLE hProcess, uintptr_t address, int offset, uintptr_t data) {
-    uintptr_t final_address = address + offset;
-    SIZE_T size = sizeof(data);
-    DWORD oldprotect;
-    if (!VirtualProtectEx(hProcess, (LPVOID)final_address, size, PAGE_EXECUTE_READWRITE, &oldprotect))
-        return false;
-    if (!WriteProcessMemory(hProcess, (LPVOID)final_address, (LPCVOID)&data, size, nullptr))
-        return false;
-    if (!VirtualProtectEx(hProcess, (LPVOID)final_address, size, oldprotect, &oldprotect))
-        return false;
-    return true;
-}
-
-bool writePointer(HANDLE hProcess, uintptr_t address, int offset, uintptr_t data) {
-    uintptr_t final_address = address + offset;
-    SIZE_T size = sizeof(data);
-    DWORD oldprotect;
-    if (!VirtualProtectEx(hProcess, (LPVOID)final_address, size, PAGE_EXECUTE_READWRITE, &oldprotect))
-        return false;
-    if (!WriteProcessMemory(hProcess, (LPVOID)final_address, (LPCVOID)&data, size, nullptr))
-        return false;
-    if (!VirtualProtectEx(hProcess, (LPVOID)final_address, size, oldprotect, &oldprotect))
-        return false;
-    return true;
-}
-
 std::wstring CHS2CHT(std::wstring sCht) {
     LCID lcidSrc = MAKELCID(MAKELANGID(LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED), SORT_CHINESE_PRC);
     const int iNewLen = LCMapString(lcidSrc, LCMAP_TRADITIONAL_CHINESE, sCht.c_str(), sCht.length(), NULL, 0);
