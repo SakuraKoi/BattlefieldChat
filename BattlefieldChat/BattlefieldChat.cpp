@@ -127,7 +127,17 @@ int main() {
                 cout << " [+] 写入消息数据成功" << endl;
                 press(VK_RETURN, 20);
                 cout << " [+] 模拟发送完成" << endl;
-                Sleep(100);
+
+                // Loop to wait for the game to clear the string
+                {
+                    int count = 0;
+                    while (count++ <= 10) { // wait for 200ms max
+                        if (!messageCavePtr.readBoolean())
+                            break;
+                        Sleep(20);
+                    }
+                }
+
                 // Then suspend the process again and restore the pointer
                 if (NtSuspendProcess != NULL)
                     NtSuspendProcess(hProcess);
@@ -140,6 +150,7 @@ int main() {
                 }
                 if (NtResumeProcess != NULL)
                     NtResumeProcess(hProcess);
+                cout << " [+] 恢复指针完成" << endl;
                 // Everything done.
             }
             lastState = state;
