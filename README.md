@@ -2,6 +2,8 @@
 外置中文聊天输入工具 For Battlefield 1\
 External Chinese chat input tool for battlefield 1
 
+[下载最新版本 / Download latest version](https://github.com/SakuraKoi/BattlefieldChat/releases/latest/download/BattlefieldChat.exe)
+
 ![](https://img.shields.io/github/license/SakuraKoi/BattlefieldChat?style=for-the-badge) ![](https://img.shields.io/github/languages/top/SakuraKoi/BattlefieldChat?style=for-the-badge) ![](https://img.shields.io/github/downloads/SakuraKoi/BattlefieldChat/total?style=for-the-badge) ![](https://img.shields.io/github/v/release/SakuraKoi/BattlefieldChat?style=for-the-badge)
 
 ![[showcase.png]](https://i.loli.net/2021/01/20/siVhlkQc8UdFXxH.png)
