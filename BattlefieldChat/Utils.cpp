@@ -133,6 +133,19 @@ std::wstring StrToWStr(std::string src) {
     return wstrTo;
 }
 
+std::wstring ReplaceWCSWithPattern(__in const std::wstring& message, __in const std::wstring& pattern, __in const std::wstring& replace) {
+    std::wstring result = message;
+    std::wstring::size_type pos = 0;
+    std::wstring::size_type offset = 0;
+
+    while ((pos = result.find(pattern, offset)) != std::wstring::npos) {
+        result.replace(result.begin() + pos, result.begin() + pos + pattern.size(), replace);
+        offset = pos + replace.size();
+    }
+
+    return result;
+}
+
 void press(BYTE key, int delay) {
     Sleep(delay);
     keybd_event(key, MapVirtualKey(key, 0U), 0, 0);

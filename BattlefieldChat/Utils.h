@@ -18,6 +18,7 @@ uintptr_t getModuleBaseAddress(DWORD processId, const wchar_t* modName);
 std::wstring CHS2CHT(std::wstring sCht);
 std::string WStrToStr(std::wstring src);
 std::wstring StrToWStr(std::string src);
+std::wstring ReplaceWCSWithPattern(__in const std::wstring& message, __in const std::wstring& pattern, __in const std::wstring& replace);
 
 void press(BYTE key, int delay);
 

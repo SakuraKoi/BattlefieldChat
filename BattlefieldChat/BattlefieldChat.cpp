@@ -1,5 +1,6 @@
 ﻿#include <iostream>
 #include <string>
+#include <algorithm>
 #include <Windows.h>
 #include <tlhelp32.h>
 #include "InputDialog.h"
@@ -10,6 +11,8 @@ using namespace std;
 
 DWORD pid = -1;
 HWND gameWindow;
+
+wstring replaceNonDisplayableCharacters(wstring str);
 
 int main() {
     SetConsoleTitle(L"Battlefield 1 中文输入工具");
@@ -73,8 +76,9 @@ int main() {
                     cout << " [-] 取消输入操作" << endl;
                     goto outer;
                 }
+                wstring replaced = replaceNonDisplayableCharacters(str);
                 // Convert Simplified Chinese std::wstring to Traditional Chinese std::string
-                wstring trad = CHS2CHT(str);
+                wstring trad = CHS2CHT(replaced);
                 string converted = WStrToStr(trad);
 
                 int length = (converted.size() / sizeof(char));
@@ -164,4 +168,10 @@ int main() {
     cout << endl << " [*] 游戏已退出, Thanks for using!" << endl;
     Sleep(3000);
     return 0;
+}
+
+wstring replaceNonDisplayableCharacters(wstring str) {
+    str = ReplaceWCSWithPattern(str, L"啥", L"什麽");
+    str = ReplaceWCSWithPattern(str, L"么", L"麽");
+    return str;
 }
