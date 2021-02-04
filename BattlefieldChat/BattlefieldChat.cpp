@@ -113,7 +113,7 @@ int main() {
                     NtSuspendProcess(hProcess);
                 if (!messageCavePtr.writeString(converted)) {
                     cout << " [-] 错误: 写入数据失败 [ChatMessage]" << endl;
-                    goto resume;
+                    goto outer;
                 }
 
                 if (!chatMessagePtr.writeAddress(messageCaveAddr)) {
