@@ -13,6 +13,7 @@ DWORD pid = -1;
 HWND gameWindow;
 
 wstring replaceNonDisplayableCharacters(wstring str);
+bool validateInputLength(wstring input);
 
 int main() {
     SetConsoleTitle(L"Battlefield 1 中文输入工具");
@@ -20,8 +21,8 @@ int main() {
         << " Battlefield 1 中文输入工具" << endl
         << " Powered by.SakuraKooi (https://github.com/SakuraKoi/BattlefieldChat)" << endl
         << endl
-        << " 警告: 本工具直接读写游戏内存, 存在一定的风险" << endl
-        << "       USE AT YOUR OWN RISK, 作者不对损失承担责任" << endl
+        << " 警告: 尽管Fairfight不检测聊天区域的内存数据, 但仍然可能存在一定的风险" << endl
+        << "       USE AT YOUR OWN RISK, 作者不对工具造成的任何损失承担任何责任" << endl
         << endl
         << " 注意: 游戏需要运行在无边框或窗口模式" << endl
         << endl;
@@ -45,7 +46,7 @@ int main() {
 
     hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pid);
     cout << " [*] 正在初始化..." << endl;
-    messageCaveAddr = (uintptr_t)VirtualAllocEx(hProcess, NULL, sizeof(char) * 91, MEM_COMMIT, PAGE_READWRITE);
+    messageCaveAddr = (uintptr_t)VirtualAllocEx(hProcess, NULL, sizeof(char) * (INPUT_BUFFER_SIZE * 3), MEM_COMMIT, PAGE_READWRITE);
     cout << " [+] 预分配内存成功: 0x" << hex << messageCaveAddr << endl;
     cout.flags(f);
 
@@ -62,6 +63,7 @@ int main() {
     cout << " [+] Done! 在游戏中打开聊天即可自动呼出输入框" << endl;
 
     InputDialog dialog;
+    dialog.callbackValidateInput = validateInputLength;
     bool lastState = false;
     while (IsWindow(gameWindow)) {
         if (chatOpenPtr.refreshPointer()) {
@@ -174,4 +176,12 @@ wstring replaceNonDisplayableCharacters(wstring str) {
     str = ReplaceWCSWithPattern(str, L"啥", L"什麽");
     str = ReplaceWCSWithPattern(str, L"么", L"麽");
     return str;
+}
+
+bool validateInputLength(wstring input) {
+    wstring replaced = replaceNonDisplayableCharacters(input);
+    wstring trad = CHS2CHT(replaced);
+    string converted = WStrToStr(trad);
+    int length = (converted.size() / sizeof(char));
+    return length <= 90;
 }

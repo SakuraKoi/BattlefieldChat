@@ -10,7 +10,9 @@ static HBRUSH hbrBkgnd = NULL;
 HFONT m_hFont = NULL;
 HWND  m_hWndInputBox = NULL;
 HWND  m_hWndEdit = NULL;
-wchar_t m_String[320];
+wchar_t m_String[INPUT_BUFFER_SIZE];
+
+COLORREF textColor = RGB(0, 0, 0);
 
 int width;
 int height = 20;
@@ -105,6 +107,21 @@ std::wstring InputDialog::showInputDialog(std::wstring currentText, HWND relativ
                 SendMessage(m_hWndInputBox, WM_DESTROY, 0, 0);
                 ret = 1;
             }
+        } else if (msg.message == WM_KEYUP && callbackValidateInput) {
+            int nCount = GetWindowTextLength(m_hWndEdit);
+            nCount++;
+            wchar_t* input = new wchar_t[nCount];
+            GetWindowText(m_hWndEdit, input, nCount);
+
+            if (callbackValidateInput(std::wstring(input))) {
+                textColor = RGB(0, 0, 0);
+                InvalidateRect(m_hWndEdit, NULL, true);
+                UpdateWindow(m_hWndEdit);
+            } else {
+                textColor = RGB(255, 0, 0);
+                InvalidateRect(m_hWndEdit, NULL, true);
+                UpdateWindow(m_hWndEdit);
+            }
         }
         TranslateMessage(&msg);
         DispatchMessage(&msg);
@@ -116,18 +133,20 @@ std::wstring InputDialog::showInputDialog(std::wstring currentText, HWND relativ
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
     HINSTANCE m_hInst = NULL;
     switch (message) {
-    case WM_CTLCOLORSTATIC: {
+    case WM_CTLCOLORSTATIC:
+    case WM_CTLCOLOREDIT:
+    {
         HDC hdcStatic = (HDC)wParam;
         if (hbrBkgnd == NULL) {
             hbrBkgnd = CreateSolidBrush(RGB(255, 255, 255));
         }
-        SetTextColor(hdcStatic, RGB(0, 0, 0));
+        SetTextColor(hdcStatic, textColor);
         SetBkColor(hdcStatic, RGB(255, 255, 255));
 
         return (INT_PTR)hbrBkgnd;
     }
-                          break;
     case WM_CREATE:
+    {
         LOGFONT lfont;
         memset(&lfont, 0, sizeof(lfont));
         lstrcpy(lfont.lfFaceName, L"ËÎÌו");
@@ -157,19 +176,24 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
         }
 
         SendMessage(m_hWndEdit, WM_SETFONT, (WPARAM)m_hFont, 0);
-        SendMessage(m_hWndEdit, EM_LIMITTEXT, 30, 0); // 1 chinese = 3 char, space = 90
+        SendMessage(m_hWndEdit, EM_LIMITTEXT, INPUT_BUFFER_SIZE, 0);
 
         SetFocus(m_hWndEdit);
         break;
+    }
     case WM_DESTROY:
+    {
         DestroyWindow(hWnd);
         PostQuitMessage(0);
         break;
+    }
     case WM_ACTIVATE:
+    {
         if (wParam == WA_INACTIVE) {
             SendMessage(m_hWndInputBox, WM_DESTROY, 0, 0);
         }
         break;
+    }
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
     }
@@ -185,8 +209,7 @@ void initializeDialog(HWND relativeTo, int mode) {
         width = 320;
         posX = (r.right - 60) / 2;
         posY = (r.bottom - 320) / 2;
-    }
-    else {
+    } else {
         RECT r;
         if (!GetWindowRect(relativeTo, &r))
             throw "Cannot get window rect";
@@ -195,13 +218,11 @@ void initializeDialog(HWND relativeTo, int mode) {
             width = r.right - r.left - 24;
             posX = r.left + 12;
             posY = r.top + getSystemTitleHeight() + 12;
-        }
-        else if (mode == 2) { // borderless
+        } else if (mode == 2) { // borderless
             width = r.right - r.left - 24;
             posX = r.left + 12;
             posY = r.top + 12;
-        }
-        else {
+        } else {
             throw "Invalid mode";
         }
     }
