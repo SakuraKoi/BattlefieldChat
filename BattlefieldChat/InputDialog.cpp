@@ -10,7 +10,7 @@ static HBRUSH hbrBkgnd = NULL;
 HFONT m_hFont = NULL;
 HWND  m_hWndInputBox = NULL;
 HWND  m_hWndEdit = NULL;
-wchar_t m_String[INPUT_BUFFER_SIZE];
+wchar_t m_String[INPUT_BUFFER_SIZE + 1];
 
 COLORREF textColor = RGB(0, 0, 0);
 

@@ -9,13 +9,20 @@
 
 using namespace std;
 
+bool allowExceedLimit = false;
 DWORD pid = -1;
 HWND gameWindow;
 
 wstring replaceNonDisplayableCharacters(wstring str);
 bool validateInputLength(wstring input);
 
-int main() {
+int main(int argc, char** argv) {
+    if (argc > 1) {
+        if (strcmp(argv[1], "-BypassLimit") == 0) {
+            allowExceedLimit = true;
+        }
+    }
+
     SetConsoleTitle(L"Battlefield 1 中文输入工具");
     cout
         << " Battlefield 1 中文输入工具" << endl
@@ -46,7 +53,7 @@ int main() {
 
     hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pid);
     cout << " [*] 正在初始化..." << endl;
-    messageCaveAddr = (uintptr_t)VirtualAllocEx(hProcess, NULL, sizeof(char) * (INPUT_BUFFER_SIZE * 3), MEM_COMMIT, PAGE_READWRITE);
+    messageCaveAddr = (uintptr_t)VirtualAllocEx(hProcess, NULL, sizeof(char) * ((INPUT_BUFFER_SIZE + 1) * 3), MEM_COMMIT, PAGE_READWRITE);
     cout << " [+] 预分配内存成功: 0x" << hex << messageCaveAddr << endl;
     cout.flags(f);
 
@@ -86,10 +93,14 @@ int main() {
                 int length = (converted.size() / sizeof(char));
 
                 if (length > 90) {
-                    press(VK_ESCAPE, 20);
-                    MessageBox(NULL, L"聊天消息长度不能超过90字节", L"错误", 0);
-                    cout << " [-] 聊天消息长度超过90字节" << endl;
-                    goto outer;
+                    if (allowExceedLimit) {
+                        cout << " [!] 消息长度超过90字节, 工具可以绕过这个限制并将继续发送, 但这可能带来额外的ff风险" << endl;
+                    } else {
+                        press(VK_ESCAPE, 20);
+                        cout << " [x] 消息长度超过90字节" << endl;
+                        MessageBox(NULL, L"聊天消息长度超过游戏限制 (90字节 / 30中文)\n\n您可以通过添加 -BypassLimit 参数来绕过这个限制\n但这可能带来额外的FF风险", L"错误", 0);
+                        goto outer;
+                    }
                 }
 
                 if (!chatLengthPtr.refreshPointer()) {
@@ -121,7 +132,6 @@ int main() {
                     goto resume;
                 }
 
-                // It may be possible to exceed the chat message length limit? But shouldn't do so, at risk of being banned
                 if (!chatLengthPtr.writeAddress(messageCaveAddr + length)) {
                     cout << " [-] 错误: 写入数据失败 [ChatLength]" << endl;
                     goto resume;
