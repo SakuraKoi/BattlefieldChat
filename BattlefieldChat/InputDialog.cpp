@@ -122,6 +122,7 @@ std::wstring InputDialog::showInputDialog(std::wstring currentText, HWND relativ
                 InvalidateRect(m_hWndEdit, NULL, true);
                 UpdateWindow(m_hWndEdit);
             }
+            delete[] input;
         }
         TranslateMessage(&msg);
         DispatchMessage(&msg);
