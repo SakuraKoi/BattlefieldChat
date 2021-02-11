@@ -2,6 +2,7 @@
 
 #include <QtWidgets/QMainWindow>
 #include "ui_BattlefieldChat.h"
+#include "WorkerThread.h"
 
 class BattlefieldChat : public QMainWindow
 {
@@ -13,4 +14,6 @@ private:
     void closeEvent(QCloseEvent* event);
 
     Ui::BattlefieldChatClass ui;
+
+    WorkerThread workerThread;
 };

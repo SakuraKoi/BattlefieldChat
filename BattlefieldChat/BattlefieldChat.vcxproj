@@ -46,6 +46,12 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
   </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <LanguageStandard_C>stdc11</LanguageStandard_C>
+      <LanguageStandard>stdcpp14</LanguageStandard>
+    </ClCompile>
+  </ItemDefinitionGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
     <QtInstall>msvc2019_64</QtInstall>
     <QtModules>core;network;gui;widgets</QtModules>
@@ -65,7 +71,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -84,7 +90,7 @@
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard_C>stdc11</LanguageStandard_C>
-      <LanguageStandard>Default</LanguageStandard>
+      <LanguageStandard>stdcpp14</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -94,6 +100,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Offsets.cpp" />
+    <ClCompile Include="Pointer.cpp" />
+    <ClCompile Include="Utils.cpp" />
+    <ClCompile Include="WorkerThread.cpp" />
     <QtRcc Include="BattlefieldChat.qrc" />
     <QtUic Include="BattlefieldChat.ui" />
     <QtMoc Include="BattlefieldChat.h" />
@@ -108,6 +118,15 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="icon1.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="WorkerThread.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Offsets.h" />
+    <ClInclude Include="Pointer.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="Utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

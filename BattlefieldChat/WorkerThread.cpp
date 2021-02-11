@@ -10,14 +10,7 @@ WorkerThread::~WorkerThread()
 }
 
 void WorkerThread::run() {
-    // FIXME
-    if (argc > 1) {
-        if (strcmp(argv[1], "-BypassLimit") == 0) {
-            allowExceedLimit = true;
-        }
-    }
-
-    SetConsoleTitle(L"Battlefield 1 中文输入工具");
+    // FIXME: Migrating to Qt
     cout
         << " Battlefield 1 中文输入工具" << endl
         << " Powered by.SakuraKooi (https://github.com/SakuraKoi/BattlefieldChat)" << endl
@@ -29,7 +22,7 @@ void WorkerThread::run() {
         << endl;
 
     cout << " [*] 正在等待游戏启动..." << endl;
-    while (true) {
+    while (!isInterruptionRequested()) {
         gameWindow = FindWindow(nullptr, L"Battlefield™ 1");
         if (gameWindow != 0) {
             GetWindowThreadProcessId(gameWindow, &pid);

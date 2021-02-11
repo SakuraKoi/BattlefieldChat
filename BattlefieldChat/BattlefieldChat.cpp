@@ -6,10 +6,12 @@ BattlefieldChat::BattlefieldChat(QWidget *parent)
 {
     ui.setupUi(this);
     setWindowFlags(Qt::Window | Qt::MSWindowsFixedSizeDialogHint);
-    
+
+    workerThread.start();
 }
 
 void BattlefieldChat::closeEvent(QCloseEvent* event) {
+    workerThread.requestInterruption();
     // TODO: cleanup
     event->accept();
 }
