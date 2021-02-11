@@ -14,6 +14,14 @@ External Chinese chat input tool for battlefield 1
 * Only the client whose game language is Chinese can see the Chinese text, which means that the English client looks like all the words you typed are all boxes
 * Although the tool is designed for Chinese input, it also works for Japanese. Korean, etc.
 
+## TODO / 开发计划
+- [ ] 迁移至Qt做图形界面
+- [ ] 支持转拼音以规避部分私服禁止中文输入工具 (词语联想真的很香.jpg)
+- [ ] **[放个卫星]** 支持全屏输入
+- [ ] 抓一下DeepL的网页协议看看能不能白嫖, 翻译API要花钱
+- [ ] 支持自动翻译为英文 (方便玩欧服/美服)
+- [ ] **[放个卫星]** 读取聊天框中其他玩家的消息并进行自动翻译 (拼音/英语etc)
+
 ## 警告
 - 本工具直接读写游戏内存
 - 尽管理论上来说fairfight反作弊并不监控聊天区域的内存数据, 但仍然存在一定的风险
