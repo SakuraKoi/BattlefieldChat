@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>BattlefieldChatClass</class>
+ <widget class="QMainWindow" name="BattlefieldChatClass">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>689</width>
+    <height>401</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>Battlefield 1 中文输入工具</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(250, 250, 250);</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
+   <widget class="QListView" name="listLogs">
+    <property name="geometry">
+     <rect>
+      <x>16</x>
+      <y>184</y>
+      <width>657</width>
+      <height>192</height>
+     </rect>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(31, 31, 31);
+color: rgb(255, 255, 255);
+font: 12pt &quot;Consolas&quot;;</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>16</x>
+      <y>168</y>
+      <width>657</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>日志</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="mainContent" native="true">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>8</x>
+      <y>16</y>
+      <width>673</width>
+      <height>153</height>
+     </rect>
+    </property>
+    <widget class="QGroupBox" name="groupPreprocessMode">
+     <property name="geometry">
+      <rect>
+       <x>8</x>
+       <y>24</y>
+       <width>657</width>
+       <height>129</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>预处理模式</string>
+     </property>
+     <widget class="QRadioButton" name="btnDoNothing">
+      <property name="geometry">
+       <rect>
+        <x>16</x>
+        <y>24</y>
+        <width>81</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>不处理</string>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="btnTraditionalChinese">
+      <property name="geometry">
+       <rect>
+        <x>16</x>
+        <y>48</y>
+        <width>81</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>转换为繁体</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="btnPinyin">
+      <property name="geometry">
+       <rect>
+        <x>16</x>
+        <y>72</y>
+        <width>81</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>转换为拼音</string>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="btnEnglish">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>16</x>
+        <y>96</y>
+        <width>81</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>翻译为英文</string>
+      </property>
+      <property name="checkable">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_3">
+      <property name="geometry">
+       <rect>
+        <x>104</x>
+        <y>24</y>
+        <width>545</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(162, 162, 162);</string>
+      </property>
+      <property name="text">
+       <string>不执行任何预处理 (不推荐: 简体中文无法在游戏中显示)</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_4">
+      <property name="geometry">
+       <rect>
+        <x>104</x>
+        <y>48</y>
+        <width>545</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(162, 162, 162);</string>
+      </property>
+      <property name="text">
+       <string>将简体中文转换为繁体中文 (默认)</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_5">
+      <property name="geometry">
+       <rect>
+        <x>104</x>
+        <y>72</y>
+        <width>545</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(162, 162, 162);</string>
+      </property>
+      <property name="text">
+       <string>将简体中文转换为拼音 (在一些不允许使用中文输入工具的私服里享受输入法词语联想等功能的便利)</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_6">
+      <property name="geometry">
+       <rect>
+        <x>104</x>
+        <y>96</y>
+        <width>545</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(162, 162, 162);</string>
+      </property>
+      <property name="text">
+       <string>使用DeepL服务翻译为英文 (发送前需要额外等待翻译完成) [目前未开发完成]</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QCheckBox" name="chkAllowBypassLimit">
+     <property name="geometry">
+      <rect>
+       <x>16</x>
+       <y>0</y>
+       <width>273</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>绕过游戏聊天长度限制 (可能会带来额外风险)</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QLabel" name="label_8">
+    <property name="geometry">
+     <rect>
+      <x>8</x>
+      <y>376</y>
+      <width>289</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 10pt &quot;微软雅黑&quot;;</string>
+    </property>
+    <property name="text">
+     <string>https://github.com/SakuraKoi/BattlefieldChat</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_9">
+    <property name="geometry">
+     <rect>
+      <x>528</x>
+      <y>376</y>
+      <width>153</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 75 10pt &quot;微软雅黑&quot;;
+color: rgb(244, 67, 54);</string>
+    </property>
+    <property name="text">
+     <string>Powered by.SakuraKooi</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lblCurrentStatus">
+    <property name="geometry">
+     <rect>
+      <x>504</x>
+      <y>8</y>
+      <width>177</width>
+      <height>33</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 0, 0);
+font: 75 12pt &quot;微软雅黑&quot;;</string>
+    </property>
+    <property name="text">
+     <string>正在等待游戏启动</string>
+    </property>
+    <property name="textFormat">
+     <enum>Qt::PlainText</enum>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources>
+  <include location="BattlefieldChat.qrc"/>
+ </resources>
+ <connections/>
+</ui>
