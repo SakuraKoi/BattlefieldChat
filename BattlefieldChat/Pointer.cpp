@@ -11,20 +11,22 @@ bool Pointer::readBoolean() {
     return false;
 }
 
-uintptr_t Pointer::readAddress() {
+uintptr_t Pointer::readAddress(uintptr_t offset) {
     uintptr_t value;
-    if (ReadProcessMemory(hProcess, (LPCVOID)pointer, &value, sizeof(value), 0))
+    if (ReadProcessMemory(hProcess, (LPCVOID)pointer + offset, &value, sizeof(value), 0))
         return value;
     return 0;
 }
-bool Pointer::writeAddress(uintptr_t address) {
+
+bool Pointer::writeAddress(uintptr_t offset, uintptr_t address) {
+    uintptr_t final_address = pointer + offset;
     SIZE_T size = sizeof(address);
     DWORD oldprotect;
-    if (!VirtualProtectEx(hProcess, (LPVOID)pointer, size, PAGE_EXECUTE_READWRITE, &oldprotect))
+    if (!VirtualProtectEx(hProcess, (LPVOID)final_address, size, PAGE_EXECUTE_READWRITE, &oldprotect))
         return false;
-    if (!WriteProcessMemory(hProcess, (LPVOID)pointer, (LPCVOID)&address, size, nullptr))
+    if (!WriteProcessMemory(hProcess, (LPVOID)final_address, (LPCVOID)&address, size, nullptr))
         return false;
-    if (!VirtualProtectEx(hProcess, (LPVOID)pointer, size, oldprotect, &oldprotect))
+    if (!VirtualProtectEx(hProcess, (LPVOID)final_address, size, oldprotect, &oldprotect))
         return false;
     return true;
 }
