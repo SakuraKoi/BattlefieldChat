@@ -9,17 +9,19 @@ BattlefieldChat::BattlefieldChat(QWidget *parent)
     setWindowFlags(Qt::Window | Qt::MSWindowsFixedSizeDialogHint);
     mainWindow = this;
     inputWindow = new InputDialog();
+    workerThread = new WorkerThread();
 }
 
 void BattlefieldChat::showEvent(QShowEvent* ev) {
     QMainWindow::showEvent(ev);
-    workerThread.start();
+    workerThread -> start();
 }
 
 bool shutdownPending = false;
 void BattlefieldChat::closeEvent(QCloseEvent* event) {
     shutdownPending = true;
-    workerThread.requestInterruption();
+    workerThread -> requestInterruption();
+    inputWindow->close();
     event->accept();
 }
 

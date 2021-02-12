@@ -4,7 +4,6 @@
 #include <sstream>
 
 #include "Offsets.h"
-#include "GlobalVariables.h"
 
 class WorkerThread : public QThread
 {
@@ -28,7 +27,5 @@ public:
     Log() {
     };
 
-    ~Log() {
-        mainWindow->pushLog(str());
-    }
+    ~Log();
 };

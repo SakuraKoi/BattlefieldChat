@@ -102,10 +102,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <QtUic Include="InputDialog.ui">
+    <QtUic Include="BattlefieldChat.ui">
       <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="BattlefieldChat.ui">
+    <QtUic Include="InputDialog.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>

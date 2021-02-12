@@ -1,11 +1,17 @@
 ﻿#include "WorkerThread.h"
 #include "Utils.h"
+#include "GlobalVariables.h"
 
 WorkerThread::WorkerThread(QObject* parent)
     : QThread(parent) {
 }
 
 WorkerThread::~WorkerThread() {
+}
+
+
+Log::~Log() {
+    mainWindow->pushLog(str());
 }
 
 void WorkerThread::run() {
@@ -83,10 +89,12 @@ void WorkerThread::chatLoop() {
 
 void WorkerThread::doInput(Pointer messageCavePtr, ChatMessagePointer chatMessagePtr, bool isFullscreen) {
     Log() << " [+] 呼出聊天框, 等待输入...";
-    QString str = inputWindow->showAndWaitForResult(gameWindow, isFullscreen ? DIALOG_FOR_FULLSCREEN : isBorderlessWindow(gameWindow) ? OVERLAY_FOR_BORDERLESS : OVERLAY_FOR_WINDOWED);
+    QString str = inputWindow->showAndWaitForResult(gameWindow, 
+        isFullscreen ? InputDisplayMode::DIALOG_FOR_FULLSCREEN : 
+        isBorderlessWindow(gameWindow) ? InputDisplayMode::OVERLAY_FOR_BORDERLESS : InputDisplayMode::OVERLAY_FOR_WINDOWED);
 
     SetForegroundWindow(gameWindow);
-    if (str.length() == 0) {
+    if (str == Q_NULLPTR || str.length() == 0) {
         press(VK_ESCAPE, 20);
         Log() << " [-] 取消输入操作";
         return;
@@ -163,6 +171,7 @@ bool WorkerThread::suspendAndWrite(Pointer messageCavePtr, ChatMessagePointer ch
     // Then suspend the process again and restore the pointer
     if (NtSuspendProcess != NULL)
         NtSuspendProcess(hProcess);
+    return true;
 }
 
 void WorkerThread::resumePointer(ChatMessagePointer chatMessagePtr, uintptr_t oldAddress) {

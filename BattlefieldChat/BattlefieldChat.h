@@ -2,7 +2,6 @@
 
 #include <QtWidgets/QMainWindow>
 #include "ui_BattlefieldChat.h"
-#include "WorkerThread.h"
 
 class BattlefieldChat : public QMainWindow
 {
@@ -18,5 +17,4 @@ private:
 
     Ui::BattlefieldChatClass ui;
 
-    WorkerThread workerThread;
 };

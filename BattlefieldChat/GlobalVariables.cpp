@@ -10,3 +10,4 @@ Preprocessor preprocessor = TraditionalChinesePreprocessor();
 
 BattlefieldChat* mainWindow;
 InputDialog* inputWindow;
+WorkerThread* workerThread;

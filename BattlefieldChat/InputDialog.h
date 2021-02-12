@@ -1,25 +1,37 @@
 #pragma once
 
-#include <QWindow>
+#include <Windows.h>
+#include <QWidget>
+#include <QMutex>
+#include <QWaitCondition>
 #include "ui_InputDialog.h"
 
-class InputDialog : public QWindow
+enum class InputDisplayMode {
+    DIALOG_FOR_FULLSCREEN,
+    OVERLAY_FOR_BORDERLESS,
+    OVERLAY_FOR_WINDOWED
+};
+
+class InputDialog : public QWidget
 {
     Q_OBJECT
 
 public:
-    InputDialog(QWindow*parent = Q_NULLPTR);
+    InputDialog(QWidget *parent = Q_NULLPTR);
     ~InputDialog();
 
-    QString showAndWaitForResult(HWND window, INPUT_DIALOG_DISPLAY_MODE mode);
+    QString showAndWaitForResult(HWND window, InputDisplayMode mode);
+public slots:
+    void escPressed();
+    void lostFocus();
+    void enterPressed();
 
 private:
     Ui::InputDialog ui;
-};
 
+    void keyPressEvent(QKeyEvent* e);
 
-enum INPUT_DIALOG_DISPLAY_MODE {
-    DIALOG_FOR_FULLSCREEN,
-    OVERLAY_FOR_BORDERLESS,
-    OVERLAY_FOR_WINDOWED
+    QMutex mutex;
+    QWaitCondition waitCondition;
+    bool cancelled = false;
 };

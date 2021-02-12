@@ -13,7 +13,7 @@ bool Pointer::readBoolean() {
 
 uintptr_t Pointer::readAddress(uintptr_t offset) {
     uintptr_t value;
-    if (ReadProcessMemory(hProcess, (LPCVOID)pointer + offset, &value, sizeof(value), 0))
+    if (ReadProcessMemory(hProcess, (LPCVOID)(pointer + offset), &value, sizeof(value), 0))
         return value;
     return 0;
 }
@@ -50,5 +50,5 @@ Pointer::Pointer(HANDLE pProcessHandle, uintptr_t pBaseModuleAddress) {
 
 bool Pointer::offset(uintptr_t offset) {
     pointer += offset;
-    return (pointer = readAddress()) != 0;
+    return (pointer = readAddress(0)) != 0;
 }
