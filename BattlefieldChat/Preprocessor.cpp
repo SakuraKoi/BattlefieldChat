@@ -1,7 +1,7 @@
 #include "Preprocessor.h"
 
 std::string Preprocessor::process(QString input) {
-    return input.toStdString();
+    return std::string(input.toLocal8Bit());
 }
 
 QString Preprocessor::enterPressed(QString input) {
@@ -14,7 +14,7 @@ QString Preprocessor::escPressed(QString input) {
 
 std::string TraditionalChinesePreprocessor::process(QString input) {
     // FIXME: Not implemented
-    return input.toStdString();
+    return std::string(input.toLocal8Bit());
 }
 
 QString TraditionalChinesePreprocessor::enterPressed(QString input) {
@@ -27,7 +27,7 @@ QString TraditionalChinesePreprocessor::escPressed(QString input) {
 
 std::string PinyinPreprocessor::process(QString input) {
     // FIXME: Not implemented
-    return input.toStdString();
+    return std::string(input.toLocal8Bit());
 }
 
 QString PinyinPreprocessor::enterPressed(QString input) {
@@ -40,7 +40,7 @@ QString PinyinPreprocessor::escPressed(QString input) {
 
 std::string TranslateToEnglishPreprocessor::process(QString input) {
     // FIXME: Not implemented
-    return input.toStdString();
+    return std::string(input.toLocal8Bit());
 }
 
 QString TranslateToEnglishPreprocessor::enterPressed(QString input) {

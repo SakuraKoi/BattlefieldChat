@@ -299,7 +299,7 @@ font: 75 12pt &quot;微软雅黑&quot;;</string>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(31, 31, 31);
 color: rgb(255, 255, 255);
-font: 12pt &quot;Consolas&quot;;</string>
+font: 9pt &quot;Consolas&quot;;</string>
     </property>
     <property name="frameShape">
      <enum>QFrame::Panel</enum>

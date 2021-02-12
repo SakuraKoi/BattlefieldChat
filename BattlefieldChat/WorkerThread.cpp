@@ -15,7 +15,6 @@ Log::~Log() {
 }
 
 void WorkerThread::run() {
-    // FIXME: Migrating to Qt
     Log() << "Battlefield 1 中文输入工具";
     Log() << "Powered by.SakuraKooi (https://github.com/SakuraKoi/BattlefieldChat)";
     Log() << " ";

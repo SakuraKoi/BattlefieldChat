@@ -27,6 +27,6 @@ void BattlefieldChat::closeEvent(QCloseEvent* event) {
 
 void BattlefieldChat::pushLog(std::string message) {
     if (!shutdownPending)
-        ui.listLogs->addItem(QString::fromStdString(message));
+        ui.listLogs->addItem(QString::fromLocal8Bit(message.data()));
 }
 
