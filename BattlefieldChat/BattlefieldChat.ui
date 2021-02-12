@@ -32,24 +32,6 @@
    <property name="autoFillBackground">
     <bool>false</bool>
    </property>
-   <widget class="QListView" name="listLogs">
-    <property name="geometry">
-     <rect>
-      <x>16</x>
-      <y>184</y>
-      <width>657</width>
-      <height>192</height>
-     </rect>
-    </property>
-    <property name="autoFillBackground">
-     <bool>false</bool>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(31, 31, 31);
-color: rgb(255, 255, 255);
-font: 12pt &quot;Consolas&quot;;</string>
-    </property>
-   </widget>
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
@@ -226,6 +208,19 @@ font: 12pt &quot;Consolas&quot;;</string>
       <string>绕过游戏聊天长度限制 (可能会带来额外风险)</string>
      </property>
     </widget>
+    <widget class="QCheckBox" name="chkSupportFullscreen">
+     <property name="geometry">
+      <rect>
+       <x>296</x>
+       <y>0</y>
+       <width>185</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>实验性全屏支持 (按Home呼出)</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QLabel" name="label_8">
     <property name="geometry">
@@ -281,6 +276,45 @@ font: 75 12pt &quot;微软雅黑&quot;;</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QListWidget" name="listLogs">
+    <property name="geometry">
+     <rect>
+      <x>16</x>
+      <y>184</y>
+      <width>657</width>
+      <height>192</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::ClickFocus</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(31, 31, 31);
+color: rgb(255, 255, 255);
+font: 12pt &quot;Consolas&quot;;</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Panel</enum>
+    </property>
+    <property name="lineWidth">
+     <number>4</number>
+    </property>
+    <property name="editTriggers">
+     <set>QAbstractItemView::NoEditTriggers</set>
+    </property>
+    <property name="showDropIndicator" stdset="0">
+     <bool>false</bool>
+    </property>
+    <property name="selectionMode">
+     <enum>QAbstractItemView::NoSelection</enum>
     </property>
    </widget>
   </widget>

@@ -100,6 +100,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GlobalVariables.cpp" />
+    <ClCompile Include="InputDialog.cpp" />
+    <ClCompile Include="Preprocessor.cpp" />
     <ClCompile Include="Offsets.cpp" />
     <ClCompile Include="Pointer.cpp" />
     <ClCompile Include="Utils.cpp" />
@@ -109,6 +112,7 @@
     <QtMoc Include="BattlefieldChat.h" />
     <ClCompile Include="BattlefieldChat.cpp" />
     <ClCompile Include="main.cpp" />
+    <QtUic Include="InputDialog.ui" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
@@ -123,6 +127,9 @@
     <QtMoc Include="WorkerThread.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GlobalVariables.h" />
+    <QtMoc Include="InputDialog.h" />
+    <ClInclude Include="Preprocessor.h" />
     <ClInclude Include="Offsets.h" />
     <ClInclude Include="Pointer.h" />
     <ClInclude Include="resource.h" />

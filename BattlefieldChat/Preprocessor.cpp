@@ -1,20 +1,20 @@
 #include "Preprocessor.h"
 
-std::string Preprocessor::preprocess(QString input) {
+std::string Preprocessor::process(QString input) {
     return input.toStdString();
 }
 
-std::string TraditionalChinesePreprocessor::preprocess(QString input) {
+std::string TraditionalChinesePreprocessor::process(QString input) {
     // FIXME: Not implemented
     return input.toStdString();
 }
 
-std::string PinyinPreprocessor::preprocess(QString input) {
+std::string PinyinPreprocessor::process(QString input) {
     // FIXME: Not implemented
     return input.toStdString();
 }
 
-std::string TranslateToEnglishPreprocessor::preprocess(QString input) {
+std::string TranslateToEnglishPreprocessor::process(QString input) {
     // FIXME: Not implemented
     return input.toStdString();
 }

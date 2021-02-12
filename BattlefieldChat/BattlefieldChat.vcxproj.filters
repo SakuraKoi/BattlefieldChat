@@ -27,9 +27,6 @@
     <QtRcc Include="BattlefieldChat.qrc">
       <Filter>Resource Files</Filter>
     </QtRcc>
-    <QtUic Include="BattlefieldChat.ui">
-      <Filter>Resource Files</Filter>
-    </QtUic>
     <QtMoc Include="BattlefieldChat.h">
       <Filter>Header Files</Filter>
     </QtMoc>
@@ -53,6 +50,15 @@
     <ClCompile Include="WorkerThread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GlobalVariables.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Preprocessor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InputDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
@@ -71,6 +77,9 @@
     <QtMoc Include="WorkerThread.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="InputDialog.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Offsets.h">
@@ -85,5 +94,19 @@
     <ClInclude Include="Utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GlobalVariables.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Preprocessor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="InputDialog.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="BattlefieldChat.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
   </ItemGroup>
 </Project>

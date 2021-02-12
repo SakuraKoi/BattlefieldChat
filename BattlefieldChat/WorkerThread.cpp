@@ -1,169 +1,178 @@
 ﻿#include "WorkerThread.h"
+#include "Utils.h"
 
-WorkerThread::WorkerThread(QObject *parent)
-    : QThread(parent)
-{
+WorkerThread::WorkerThread(QObject* parent)
+    : QThread(parent) {
 }
 
-WorkerThread::~WorkerThread()
-{
+WorkerThread::~WorkerThread() {
 }
 
 void WorkerThread::run() {
     // FIXME: Migrating to Qt
-    cout
-        << " Battlefield 1 中文输入工具" << endl
-        << " Powered by.SakuraKooi (https://github.com/SakuraKoi/BattlefieldChat)" << endl
-        << endl
-        << " 警告: 尽管Fairfight不检测聊天区域的内存数据, 但仍然可能存在一定的风险" << endl
-        << "       USE AT YOUR OWN RISK, 作者不对工具造成的任何损失承担任何责任" << endl
-        << endl
-        << " 注意: 游戏需要运行在无边框或窗口模式" << endl
-        << endl;
-
-    cout << " [*] 正在等待游戏启动..." << endl;
-    while (!isInterruptionRequested()) {
-        gameWindow = FindWindow(nullptr, L"Battlefield™ 1");
-        if (gameWindow != 0) {
-            GetWindowThreadProcessId(gameWindow, &pid);
-            moduleBaseAddr = getModuleBaseAddress(pid, L"bf1.exe");
-            if (pid != -1)
-                if (moduleBaseAddr != 0)
-                    break;
-        }
-        Sleep(1000);
-    }
-
-    ios::fmtflags f(cout.flags());
-    cout << " [+] bf1.exe -> pid = " << pid << " 0x" << hex << moduleBaseAddr << endl;
-    cout.flags(f);
-
-    hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pid);
-    cout << " [*] 正在初始化..." << endl;
-    messageCaveAddr = (uintptr_t)VirtualAllocEx(hProcess, NULL, sizeof(char) * ((INPUT_BUFFER_SIZE + 1) * 3), MEM_COMMIT, PAGE_READWRITE);
-    cout << " [+] 预分配内存成功: 0x" << hex << messageCaveAddr << endl;
-    cout.flags(f);
+    Log() << "Battlefield 1 中文输入工具";
+    Log() << "Powered by.SakuraKooi (https://github.com/SakuraKoi/BattlefieldChat)";
+    Log() << " ";
+    Log() << "警告: 尽管Fairfight不检测聊天区域的内存数据, 但仍然可能存在一定的风险";
+    Log() << "      USE AT YOUR OWN RISK, 作者不对工具造成的任何损失承担任何责任";
+    Log() << " ";
+    Log() << "注意: 游戏需要运行在无边框或窗口模式";
+    Log() << " ";
 
     if (!loadNtDll()) {
-        cout << " [-] 警告: NtDll 加载失败, 可能会导致意料之外的游戏崩溃" << endl;
+        Log() << " [-] 警告: NtDll 加载失败, 可能会导致意料之外的游戏崩溃";
     }
 
+    while (!isInterruptionRequested()) {
+        // TODO move this block to another function
+        Log() << " [*] 正在等待游戏启动...";
+        while (!isInterruptionRequested()) {
+            gameWindow = FindWindow(nullptr, L"Battlefield™ 1");
+            if (gameWindow != 0) {
+                GetWindowThreadProcessId(gameWindow, &pid);
+                moduleBaseAddr = getModuleBaseAddress(pid, L"bf1.exe");
+                if (pid != -1)
+                    if (moduleBaseAddr != 0)
+                        break;
+            }
+            Sleep(1000);
+        }
+
+        Log() << " [+] bf1.exe -> pid = " << pid << " 0x" << std::hex << moduleBaseAddr;
+
+        hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pid);
+        Log() << " [*] 正在初始化...";
+        messageCaveAddr = (uintptr_t)VirtualAllocEx(hProcess, NULL, 256 * 3, MEM_COMMIT, PAGE_READWRITE);
+        Log() << " [+] 预分配内存成功: 0x" << std::hex << messageCaveAddr;
+
+        chatLoop();
+
+        VirtualFreeEx(hProcess, (LPVOID)messageCaveAddr, 0, MEM_RELEASE);
+        CloseHandle(hProcess);
+        Log() << " [*] 游戏已退出, Thanks for using!";
+    }
+
+    freeNtDll();
+}
+
+void WorkerThread::chatLoop() {
     Pointer messageCavePtr(hProcess, moduleBaseAddr);
     messageCavePtr.pointer = messageCaveAddr;
     ChatOpenPointer chatOpenPtr(hProcess, moduleBaseAddr);
-    ChatLengthPointer chatLengthPtr(hProcess, moduleBaseAddr);
     ChatMessagePointer chatMessagePtr(hProcess, moduleBaseAddr);
 
-    cout << " [+] Done! 在游戏中打开聊天即可自动呼出输入框" << endl;
+    Log() << " [+] Done! 在游戏中打开聊天即可自动呼出输入框";
 
-    InputDialog dialog;
-    dialog.callbackValidateInput = validateInputLength;
     bool lastState = false;
-    while (IsWindow(gameWindow)) {
+    while (!isInterruptionRequested() && IsWindow(gameWindow)) {
         if (chatOpenPtr.refreshPointer()) {
             bool state = chatOpenPtr.readBoolean();
-            if (!isFullscreenWindow(gameWindow) && !lastState && state) {
-                cout << endl << " [+] 检测到聊天框打开" << endl;
-                wstring str = dialog.showInputDialog(L"", gameWindow, isBorderlessWindow(gameWindow) ? 2 : 1);
+            bool isFullscreen = isFullscreenWindow(gameWindow);
+            if (state && ( // chat is open
+                (fullscreenSupport && isFullscreen && (GetAsyncKeyState(VK_HOME) & 0x8000) != 0) // fullscreen mode -> trigger by home key
+                || (!lastState) // normal mode -> trigger by open chat
+                )) {
 
-                SetForegroundWindow(gameWindow);
-                if (str.length() == 0) {
-                    press(VK_ESCAPE, 20);
-                    cout << " [-] 取消输入操作" << endl;
-                    goto outer;
-                }
-                wstring replaced = replaceNonDisplayableCharacters(str);
-                // Convert Simplified Chinese std::wstring to Traditional Chinese std::string
-                wstring trad = CHS2CHT(replaced);
-                string converted = WStrToStr(trad);
-
-                int length = (converted.size() / sizeof(char));
-
-                if (length > 90) {
-                    if (allowExceedLimit) {
-                        cout << " [!] 消息长度超过90字节, 工具可以绕过这个限制并将继续发送, 但这可能带来额外的ff风险" << endl;
-                    } else {
-                        press(VK_ESCAPE, 20);
-                        cout << " [x] 消息长度超过90字节" << endl;
-                        MessageBox(NULL, L"聊天消息长度超过游戏限制 (90字节 / 30中文)\n\n您可以通过添加 -BypassLimit 参数来绕过这个限制\n但这可能带来额外的FF风险", L"错误", 0);
-                        goto outer;
-                    }
-                }
-
-                if (!chatLengthPtr.refreshPointer()) {
-                    cout << " [-] 错误: 刷新指针失败 [ChatLength]" << endl;
-                    goto outer;
-                }
-
-                if (!chatMessagePtr.refreshPointer()) {
-                    cout << " [-] 错误: 刷新指针失败 [ChatMessage]" << endl;
-                    goto outer;
-                }
-
-                uintptr_t oldAddr = chatMessagePtr.readAddress();
-                if (oldAddr == 0) {
-                    cout << " [-] 错误: 读取指针失败 [ChatMessage]" << endl;
-                    goto outer;
-                }
-
-                // Suspend the process to avoid desynchronized memory access
-                if (NtSuspendProcess != NULL)
-                    NtSuspendProcess(hProcess);
-                if (!messageCavePtr.writeString(converted)) {
-                    cout << " [-] 错误: 写入数据失败 [ChatMessage]" << endl;
-                    goto outer;
-                }
-
-                if (!chatMessagePtr.writeAddress(messageCaveAddr)) {
-                    cout << " [-] 错误: 写入指针失败 [ChatMessage]" << endl;
-                    goto resume;
-                }
-
-                if (!chatLengthPtr.writeAddress(messageCaveAddr + length)) {
-                    cout << " [-] 错误: 写入数据失败 [ChatLength]" << endl;
-                    goto resume;
-                }
-                // Resume the process to perform the send operation
-                if (NtResumeProcess != NULL)
-                    NtResumeProcess(hProcess);
-
-                cout << " [+] 写入消息数据成功" << endl;
-                press(VK_RETURN, 20);
-                cout << " [+] 模拟发送完成" << endl;
-
-                // Loop to wait for the game to clear the string
-                {
-                    int count = 0;
-                    while (count++ <= 10) { // wait for 200ms max
-                        if (!messageCavePtr.readBoolean())
-                            break;
-                        Sleep(20);
-                    }
-                }
-
-                // Then suspend the process again and restore the pointer
-                if (NtSuspendProcess != NULL)
-                    NtSuspendProcess(hProcess);
-            resume:
-                if (!chatMessagePtr.writeAddress(oldAddr)) {
-                    cout << " [-] 错误: 恢复指针失败 [ChatMessage]" << endl;
-                }
-                if (!chatLengthPtr.writeAddress(oldAddr)) {
-                    cout << " [-] 错误: 恢复指针失败 [ChatLength]" << endl;
-                }
-                if (NtResumeProcess != NULL)
-                    NtResumeProcess(hProcess);
-                cout << " [+] 恢复指针完成" << endl;
-                // Everything done.
+                doInput(messageCavePtr, chatMessagePtr, isFullscreen);
             }
             lastState = state;
         }
-    outer:
         Sleep(200);
     }
-    VirtualFreeEx(hProcess, (LPVOID)messageCaveAddr, 0, MEM_RELEASE);
-    CloseHandle(hProcess);
-    freeNtDll();
-    cout << endl << " [*] 游戏已退出, Thanks for using!" << endl;
-    Sleep(3000);
+}
+
+void WorkerThread::doInput(Pointer messageCavePtr, ChatMessagePointer chatMessagePtr, bool isFullscreen) {
+    Log() << " [+] 呼出聊天框, 等待输入...";
+    QString str = inputWindow->showAndWaitForResult(gameWindow, isFullscreen ? DIALOG_FOR_FULLSCREEN : isBorderlessWindow(gameWindow) ? OVERLAY_FOR_BORDERLESS : OVERLAY_FOR_WINDOWED);
+
+    SetForegroundWindow(gameWindow);
+    if (str.length() == 0) {
+        press(VK_ESCAPE, 20);
+        Log() << " [-] 取消输入操作";
+        return;
+    }
+    std::string converted = preprocessor.process(str);
+
+    int length = converted.size();
+
+    if (length > 90) {
+        if (allowExceedLimit) {
+            Log() << " [!] 消息长度超过90字节, 绕过这个限制并继续发送...";
+        } else {
+            press(VK_ESCAPE, 20);
+            Log() << " [x] 消息长度超过90字节";
+            MessageBox(NULL, L"聊天消息长度超过游戏限制 (90字节)\n\n您可以通过打开 [绕过游戏聊天长度限制] 的开关来禁用这个限制\n但这可能带来额外的FF风险", L"错误", 0);
+            return;
+        }
+    }
+
+    writeChatMessage(messageCavePtr, chatMessagePtr, converted, length);
+}
+
+
+void WorkerThread::writeChatMessage(Pointer messageCavePtr, ChatMessagePointer chatMessagePtr, std::string content, int length) {
+    if (!chatMessagePtr.refreshPointer()) {
+        Log() << " [-] 错误: 刷新指针失败 [ChatMessage]";
+        return;
+    }
+
+    uintptr_t oldAddr = chatMessagePtr.readAddress(OFFSET_CHAT_MESSAGE_ADDRESS_START);
+    if (oldAddr == 0) {
+        Log() << " [-] 错误: 读取指针失败 [ChatMessage]";
+        return;
+    }
+
+    if (suspendAndWrite(messageCavePtr, chatMessagePtr, content, length)) // true if pointer written
+        resumePointer(chatMessagePtr, oldAddr);
+}
+
+bool WorkerThread::suspendAndWrite(Pointer messageCavePtr, ChatMessagePointer chatMessagePtr, std::string content, int length) {
+    // Suspend the process to avoid desynchronized memory access
+    if (NtSuspendProcess != NULL)
+        NtSuspendProcess(hProcess);
+    if (!messageCavePtr.writeString(content)) {
+        Log() << " [-] 错误: 写入数据失败 [ChatMessage]";
+        return false;
+    }
+
+    if (!chatMessagePtr.writeAddress(OFFSET_CHAT_MESSAGE_ADDRESS_START, messageCaveAddr)) {
+        Log() << " [-] 错误: 写入指针失败 [ChatMessage]";
+        return true;
+    }
+
+    if (!chatMessagePtr.writeAddress(OFFSET_CHAT_MESSAGE_ADDRESS_END, messageCaveAddr + length)) {
+        Log() << " [-] 错误: 写入数据失败 [ChatLength]";
+        return true;
+    }
+    // Resume the process to perform the send operation
+    if (NtResumeProcess != NULL)
+        NtResumeProcess(hProcess);
+
+    Log() << " [+] 写入消息数据成功";
+    press(VK_RETURN, 20);
+    Log() << " [+] 模拟发送完成";
+
+    // Loop to wait for the game to clear the string
+    int count = 0;
+    while (count++ <= 10) { // wait for 200ms max
+        if (!messageCavePtr.readBoolean())
+            break;
+        Sleep(20);
+    }
+
+    // Then suspend the process again and restore the pointer
+    if (NtSuspendProcess != NULL)
+        NtSuspendProcess(hProcess);
+}
+
+void WorkerThread::resumePointer(ChatMessagePointer chatMessagePtr, uintptr_t oldAddress) {
+    if (!chatMessagePtr.writeAddress(OFFSET_CHAT_MESSAGE_ADDRESS_START, oldAddress)) {
+        Log() << " [-] 错误: 恢复指针失败 [ChatMessage]";
+    }
+    if (!chatMessagePtr.writeAddress(OFFSET_CHAT_MESSAGE_ADDRESS_END, oldAddress)) {
+        Log() << " [-] 错误: 恢复指针失败 [ChatLength]";
+    }
+    if (NtResumeProcess != NULL)
+        NtResumeProcess(hProcess);
+    Log() << " [+] 恢复指针完成";
 }

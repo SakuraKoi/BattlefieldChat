@@ -10,8 +10,11 @@ class BattlefieldChat : public QMainWindow
 
 public:
     BattlefieldChat(QWidget *parent = Q_NULLPTR);
+    void pushLog(std::string message);
+
 private:
     void closeEvent(QCloseEvent* event);
+    void showEvent(QShowEvent* event);
 
     Ui::BattlefieldChatClass ui;
 
