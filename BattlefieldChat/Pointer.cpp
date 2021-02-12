@@ -31,20 +31,6 @@ bool Pointer::writeAddress(uintptr_t offset, uintptr_t address) {
     return true;
 }
 
-bool Pointer::writeStringPtr(std::string data) {
-    uintptr_t address = readAddress();
-    if (address == 0) throw 1;
-    SIZE_T size = data.size();
-    DWORD oldprotect;
-    if (!VirtualProtectEx(hProcess, (LPVOID)address, size, PAGE_EXECUTE_READWRITE, &oldprotect))
-        return false;
-    if (!WriteProcessMemory(hProcess, (LPVOID)address, data.c_str(), size, nullptr))
-        return false;
-    if (!VirtualProtectEx(hProcess, (LPVOID)address, size, oldprotect, &oldprotect))
-        return false;
-    return true;
-}
-
 bool Pointer::writeString(std::string data) {
     SIZE_T size = data.size();
     DWORD oldprotect;
