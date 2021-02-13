@@ -14,10 +14,10 @@ External Chinese chat input tool for battlefield 1
 * Only the client whose game language is Chinese can see the Chinese text, which means that the English client looks like all the words you typed are all boxes
 * Although the tool is designed for Chinese input, it also works for Japanese. Korean, etc.
 
-## TODO / 开发计划
-- [ ] 迁移至Qt做图形界面
+## TODO / 下一个版本的开发计划
+- [x] 迁移至Qt做图形界面
 - [ ] 支持转拼音以规避部分私服禁止中文输入工具 (词语联想真的很香.jpg)
-- [ ] **[放个卫星]** 支持全屏输入
+- [x] 支持全屏输入
 - [ ] 抓一下DeepL的网页协议看看能不能白嫖, 翻译API要花钱
 - [ ] 支持自动翻译为英文 (方便玩欧服/美服)
 - [ ] **[放个卫星]** 读取聊天框中其他玩家的消息并进行自动翻译 (拼音/英语etc)
