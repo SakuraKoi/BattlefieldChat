@@ -1,4 +1,5 @@
 <RCC>
-    <qresource prefix="BattlefieldChat">
-    </qresource>
+  <qresource prefix="BattlefieldChat">
+    <file>icon1.ico</file>
+  </qresource>
 </RCC>

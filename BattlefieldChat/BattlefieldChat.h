@@ -9,7 +9,11 @@ class BattlefieldChat : public QMainWindow
 
 public:
     BattlefieldChat(QWidget *parent = Q_NULLPTR);
-    void pushLog(std::string message);
+    void pushLog(QString message);
+    void logColor(Qt::GlobalColor color);
+
+public slots:
+    void updageGameFoundState(bool found);
 
 private:
     void closeEvent(QCloseEvent* event);

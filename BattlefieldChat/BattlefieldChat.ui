@@ -19,6 +19,10 @@
   <property name="windowTitle">
    <string>Battlefield 1 中文输入工具</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="BattlefieldChat.qrc">
+    <normaloff>:/BattlefieldChat/icon1.ico</normaloff>:/BattlefieldChat/icon1.ico</iconset>
+  </property>
   <property name="styleSheet">
    <string notr="true">background-color: rgb(250, 250, 250);</string>
   </property>
@@ -191,7 +195,7 @@
        <string notr="true">color: rgb(162, 162, 162);</string>
       </property>
       <property name="text">
-       <string>使用DeepL服务翻译为英文 (发送前需要额外等待翻译完成) [目前未开发完成]</string>
+       <string>使用DeepL服务翻译为英文 (发送前需要额外等待翻译完成)</string>
       </property>
      </widget>
     </widget>

@@ -14,6 +14,12 @@ public:
     ~WorkerThread();
 
     void run() override;
+    void pushLog(QString message);
+    void logColor(Qt::GlobalColor color);
+
+signals:
+    void updageGameFoundState(bool found);
+
 private:
     void chatLoop();
     void doInput(Pointer messageCavePtr, ChatMessagePointer chatMessagePtr, bool isFullscreen);
