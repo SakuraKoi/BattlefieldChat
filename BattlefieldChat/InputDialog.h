@@ -21,10 +21,17 @@ public:
     ~InputDialog();
 
     QString showAndWaitForResult(HWND window, InputDisplayMode mode);
+
+signals:
+    void callInitializeWindow(Qt::WindowFlags windowType, QSize size, QSize editSize, QPoint pos);
+
 public slots:
     void escPressed();
     void lostFocus();
     void enterPressed();
+    void textTyped(const QString& text);
+
+    void handleInitializeWindow(Qt::WindowFlags windowType, QSize size, QSize editSize, QPoint pos);
 
 private:
     Ui::InputDialog ui;

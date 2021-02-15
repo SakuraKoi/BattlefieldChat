@@ -6,7 +6,12 @@ bool fullscreenSupport = false;
 DWORD pid = -1;
 HWND gameWindow;
 
-Preprocessor preprocessor = TraditionalChinesePreprocessor();
+Preprocessor SINGLETON_PREPROCESSOR_NOP;
+TraditionalChinesePreprocessor SINGLETON_PREPROCESSOR_TRAD;
+PinyinPreprocessor SINGLETON_PREPROCESSOR_PINYIN;
+TranslateToEnglishPreprocessor SINGLETON_PREPROCESSOR_ENGLISH;
+
+Preprocessor* preprocessor = &SINGLETON_PREPROCESSOR_TRAD;
 
 BattlefieldChat* mainWindow;
 InputDialog* inputWindow;

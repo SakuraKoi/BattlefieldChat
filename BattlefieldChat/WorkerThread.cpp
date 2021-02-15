@@ -11,26 +11,26 @@ WorkerThread::~WorkerThread() {
 
 
 Log::~Log() {
-    mainWindow->pushLog(QString::fromLocal8Bit(str().data()));
+    mainWindow->pushLog(QString::fromUtf8(str().data()));
 }
 
 void WorkerThread::run() {
-    Log() << "Battlefield 1 中文输入工具";
-    Log() << "Powered by.SakuraKooi (https://github.com/SakuraKoi/BattlefieldChat)";
-    Log() << " ";
-    Log() << "警告: 尽管Fairfight不检测聊天区域的内存数据, 但仍然可能存在一定的风险"; mainWindow->logColor(Qt::red);
-    Log() << "      USE AT YOUR OWN RISK, 作者不对工具造成的任何损失承担任何责任"; mainWindow->logColor(Qt::red);
-    Log() << " ";
-    Log() << "注意: 游戏需要运行在无边框或窗口模式";
-    Log() << " ";
+    Log() << u8"Battlefield 1 中文输入工具";
+    Log() << u8"Powered by.SakuraKooi (https://github.com/SakuraKoi/BattlefieldChat)";
+    Log() << u8" ";
+    Log() << u8"警告: 尽管Fairfight不检测聊天区域的内存数据, 但仍然可能存在一定的风险"; mainWindow->logColor(Qt::red);
+    Log() << u8"      USE AT YOUR OWN RISK, 作者不对工具造成的任何损失承担任何责任"; mainWindow->logColor(Qt::red);
+    Log() << u8" ";
+    Log() << u8"注意: 游戏需要运行在无边框或窗口模式";
+    Log() << u8" ";
 
     if (!loadNtDll()) {
-        Log() << " [-] 警告: NtDll 加载失败, 可能会导致意料之外的游戏崩溃"; mainWindow->logColor(Qt::yellow);
+        Log() << u8" [-] 警告: NtDll 加载失败, 可能会导致意料之外的游戏崩溃"; mainWindow->logColor(Qt::yellow);
     }
 
     while (!isInterruptionRequested()) {
         emit updageGameFoundState(false);
-        Log() << " [*] 正在等待游戏启动...";
+        Log() << u8" [*] 正在等待游戏启动...";
         while (!isInterruptionRequested()) {
             gameWindow = FindWindow(nullptr, L"Battlefield™ 1");
             if (gameWindow != 0) {
@@ -43,18 +43,18 @@ void WorkerThread::run() {
             Sleep(1000);
         }
 
-        Log() << " [+] bf1.exe -> pid = " << pid << " 0x" << std::hex << moduleBaseAddr; mainWindow->logColor(Qt::green);
+        Log() << u8" [+] bf1.exe -> pid = " << pid << u8" 0x" << std::hex << moduleBaseAddr; mainWindow->logColor(Qt::green);
 
         hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pid);
-        Log() << " [*] 正在初始化...";
+        Log() << u8" [*] 正在初始化...";
         messageCaveAddr = (uintptr_t)VirtualAllocEx(hProcess, NULL, 256 * 3, MEM_COMMIT, PAGE_READWRITE);
-        Log() << " [+] 预分配内存成功: 0x" << std::hex << messageCaveAddr;
+        Log() << u8" [+] 预分配内存成功: 0x" << std::hex << messageCaveAddr;
 
         emit updageGameFoundState(true);
         chatLoop();
         VirtualFreeEx(hProcess, (LPVOID)messageCaveAddr, 0, MEM_RELEASE);
         CloseHandle(hProcess);
-        Log() << " [*] 游戏已退出, Thanks for using!";
+        Log() << u8" [*] 游戏已退出, Thanks for using!";
     }
 
     freeNtDll();
@@ -66,7 +66,7 @@ void WorkerThread::chatLoop() {
     ChatOpenPointer chatOpenPtr(hProcess, moduleBaseAddr);
     ChatMessagePointer chatMessagePtr(hProcess, moduleBaseAddr);
 
-    Log() << " [+] Done! 在游戏中打开聊天即可自动呼出输入框"; mainWindow->logColor(Qt::green);
+    Log() << u8" [+] Done! 在游戏中打开聊天即可自动呼出输入框"; mainWindow->logColor(Qt::green);
 
     bool lastState = false;
     while (!isInterruptionRequested() && IsWindow(gameWindow)) {
@@ -87,7 +87,7 @@ void WorkerThread::chatLoop() {
 }
 
 void WorkerThread::doInput(Pointer messageCavePtr, ChatMessagePointer chatMessagePtr, bool isFullscreen) {
-    Log() << " [+] 呼出聊天框, 等待输入...";
+    Log() << u8" [+] 呼出聊天框, 等待输入...";
     QString str = inputWindow->showAndWaitForResult(gameWindow,
         isFullscreen ? InputDisplayMode::DIALOG_FOR_FULLSCREEN :
         isBorderlessWindow(gameWindow) ? InputDisplayMode::OVERLAY_FOR_BORDERLESS : InputDisplayMode::OVERLAY_FOR_WINDOWED);
@@ -95,19 +95,19 @@ void WorkerThread::doInput(Pointer messageCavePtr, ChatMessagePointer chatMessag
     SetForegroundWindow(gameWindow);
     if (str == Q_NULLPTR || str.length() == 0) {
         press(VK_ESCAPE, 20);
-        Log() << " [-] 取消输入操作";
+        Log() << u8" [-] 取消输入操作";
         return;
     }
-    std::string converted = preprocessor.process(str);
+    std::string converted = preprocessor->process(str);
 
     int length = converted.size();
 
     if (length > 90) {
         if (allowExceedLimit) {
-            Log() << " [!] 消息长度超过90字节, 绕过这个限制并继续发送...";
+            Log() << u8" [!] 消息长度超过90字节, 绕过这个限制并继续发送...";
         } else {
             press(VK_ESCAPE, 20);
-            Log() << " [x] 消息长度超过90字节"; mainWindow->logColor(Qt::red);
+            Log() << u8" [x] 消息长度超过90字节"; mainWindow->logColor(Qt::red);
             MessageBox(NULL, L"聊天消息长度超过游戏限制 (90字节)\n\n您可以通过打开 [绕过游戏聊天长度限制] 的开关来禁用这个限制\n但这可能带来额外的FF风险", L"错误", 0);
             return;
         }
@@ -119,13 +119,13 @@ void WorkerThread::doInput(Pointer messageCavePtr, ChatMessagePointer chatMessag
 
 void WorkerThread::writeChatMessage(Pointer messageCavePtr, ChatMessagePointer chatMessagePtr, std::string content, int length) {
     if (!chatMessagePtr.refreshPointer()) {
-        Log() << " [-] 错误: 刷新指针失败 [ChatMessage]"; mainWindow->logColor(Qt::red);
+        Log() << u8" [-] 错误: 刷新指针失败 [ChatMessage]"; mainWindow->logColor(Qt::red);
         return;
     }
 
     uintptr_t oldAddr = chatMessagePtr.readAddress(OFFSET_CHAT_MESSAGE_ADDRESS_START);
     if (oldAddr == 0) {
-        Log() << " [-] 错误: 读取指针失败 [ChatMessage]"; mainWindow->logColor(Qt::red);
+        Log() << u8" [-] 错误: 读取指针失败 [ChatMessage]"; mainWindow->logColor(Qt::red);
         return;
     }
 
@@ -138,26 +138,26 @@ bool WorkerThread::suspendAndWrite(Pointer messageCavePtr, ChatMessagePointer ch
     if (NtSuspendProcess != NULL)
         NtSuspendProcess(hProcess);
     if (!messageCavePtr.writeString(content)) {
-        Log() << " [-] 错误: 写入数据失败 [ChatMessage]"; mainWindow->logColor(Qt::red);
+        Log() << u8" [-] 错误: 写入数据失败 [ChatMessage]"; mainWindow->logColor(Qt::red);
         return false;
     }
 
     if (!chatMessagePtr.writeAddress(OFFSET_CHAT_MESSAGE_ADDRESS_START, messageCaveAddr)) {
-        Log() << " [-] 错误: 写入指针失败 [ChatMessage]"; mainWindow->logColor(Qt::red);
+        Log() << u8" [-] 错误: 写入指针失败 [ChatMessage]"; mainWindow->logColor(Qt::red);
         return true;
     }
 
     if (!chatMessagePtr.writeAddress(OFFSET_CHAT_MESSAGE_ADDRESS_END, messageCaveAddr + length)) {
-        Log() << " [-] 错误: 写入数据失败 [ChatLength]"; mainWindow->logColor(Qt::red);
+        Log() << u8" [-] 错误: 写入数据失败 [ChatLength]"; mainWindow->logColor(Qt::red);
         return true;
     }
     // Resume the process to perform the send operation
     if (NtResumeProcess != NULL)
         NtResumeProcess(hProcess);
 
-    Log() << " [+] 写入消息数据成功";
+    Log() << u8" [+] 写入消息数据成功";
     press(VK_RETURN, 20);
-    Log() << " [+] 模拟发送完成";
+    Log() << u8" [+] 模拟发送完成";
 
     // Loop to wait for the game to clear the string
     int count = 0;
@@ -175,12 +175,12 @@ bool WorkerThread::suspendAndWrite(Pointer messageCavePtr, ChatMessagePointer ch
 
 void WorkerThread::resumePointer(ChatMessagePointer chatMessagePtr, uintptr_t oldAddress) {
     if (!chatMessagePtr.writeAddress(OFFSET_CHAT_MESSAGE_ADDRESS_START, oldAddress)) {
-        Log() << " [-] 错误: 恢复指针失败 [ChatMessage]"; mainWindow->logColor(Qt::red);
+        Log() << u8" [-] 错误: 恢复指针失败 [ChatMessage]"; mainWindow->logColor(Qt::red);
     }
     if (!chatMessagePtr.writeAddress(OFFSET_CHAT_MESSAGE_ADDRESS_END, oldAddress)) {
-        Log() << " [-] 错误: 恢复指针失败 [ChatLength]"; mainWindow->logColor(Qt::red);
+        Log() << u8" [-] 错误: 恢复指针失败 [ChatLength]"; mainWindow->logColor(Qt::red);
     }
     if (NtResumeProcess != NULL)
         NtResumeProcess(hProcess);
-    Log() << " [+] 恢复指针完成";
+    Log() << u8" [+] 恢复指针完成";
 }

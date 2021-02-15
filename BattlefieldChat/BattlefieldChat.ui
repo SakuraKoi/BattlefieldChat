@@ -270,7 +270,7 @@ color: rgb(244, 67, 54);</string>
     </property>
     <property name="styleSheet">
      <string notr="true">color: rgb(255, 0, 0);
-font: 75 12pt &quot;微软雅黑&quot;;</string>
+font: 12pt &quot;微软雅黑&quot;;</string>
     </property>
     <property name="text">
      <string>正在等待游戏启动</string>

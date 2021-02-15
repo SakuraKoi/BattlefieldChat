@@ -11,6 +11,9 @@ BattlefieldChat::BattlefieldChat(QWidget *parent)
     inputWindow = new InputDialog();
     workerThread = new WorkerThread();
     connect(workerThread, SIGNAL(updageGameFoundState(bool)), this, SLOT(updageGameFoundState(bool)));
+    connect(ui.listLogs->model(), SIGNAL(rowsInserted(QModelIndex, int, int)), ui.listLogs, SLOT(scrollToBottom()));
+
+    // TODO connect ui change to variable
 }
 
 void BattlefieldChat::showEvent(QShowEvent* ev) {
@@ -29,7 +32,6 @@ void BattlefieldChat::closeEvent(QCloseEvent* event) {
 void BattlefieldChat::pushLog(QString message) {
     if (!shutdownPending) {
         ui.listLogs->addItem(message);
-        ui.listLogs->scrollToBottom();
     }
 }
 
@@ -44,12 +46,12 @@ void BattlefieldChat::updageGameFoundState(bool found) {
         lastGameState = found;
         if (found) {
             ui.mainContent->setEnabled(true);
-            ui.lblCurrentStatus->setText(QString::fromLocal8Bit("中文输入工具就绪"));
-            ui.lblCurrentStatus->setStyleSheet("color: rgb(85, 170, 0);\nfont: 75 12pt \"微软雅黑\";");
+            ui.lblCurrentStatus->setText(QString::fromUtf8(u8"中文输入工具就绪"));
+            ui.lblCurrentStatus->setStyleSheet("color: rgb(85, 170, 0);\nfont: 12pt \"微软雅黑\";");
         } else {
             ui.mainContent->setEnabled(false);
-            ui.lblCurrentStatus->setText(QString::fromLocal8Bit("正在等待游戏启动"));
-            ui.lblCurrentStatus->setStyleSheet("color: rgb(255, 0, 0);\nfont: 75 12pt \"微软雅黑\";");
+            ui.lblCurrentStatus->setText(QString::fromUtf8(u8"正在等待游戏启动"));
+            ui.lblCurrentStatus->setStyleSheet("color: rgb(255, 0, 0);\nfont: 12pt \"微软雅黑\";");
         }
     }
 }

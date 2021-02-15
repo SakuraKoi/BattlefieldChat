@@ -24,7 +24,7 @@ std::wstring replaceNonDisplayableCharacters(std::wstring str) {
 }
 
 std::string TraditionalChinesePreprocessor::process(QString input) {
-    std::wstring inputStr = StrToWStr(std::string(input.toLocal8Bit().data()));
+    std::wstring inputStr = input.toStdWString();
     std::wstring replaced = replaceNonDisplayableCharacters(inputStr);
     std::wstring trad = CHS2CHT(replaced);
     return WStrToStr(trad);
