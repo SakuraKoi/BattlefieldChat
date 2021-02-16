@@ -7,6 +7,7 @@ InputDialog::InputDialog(QWidget *parent)
     : QWidget(parent)
 {
     ui.setupUi(this);
+    this->setFocusPolicy(Qt::StrongFocus);
     QObject::connect(ui.editContent, SIGNAL(returnPressed()), this, SLOT(enterPressed()));
     QObject::connect(ui.editContent, SIGNAL(editingFinished()), this, SLOT(lostFocus()));
     QObject::connect(ui.editContent, SIGNAL(textChanged(QString)), this, SLOT(textTyped(QString)));
@@ -103,8 +104,10 @@ void InputDialog::handleInitializeWindow(Qt::WindowFlags style, QSize size, QSiz
     ui.editContent->setStyleSheet("color: rgb(0, 0, 0);font: 11pt;");
     ui.lblStatus->setText(QString::fromUtf8(u8"¾ÍÐ÷"));
 
-    this->show(); 
-    this->setFocus(); // FIXME not working
+    this->show();
+    this->raise();
+    this->activateWindow();
+    this->setFocus();
     ui.editContent->setFocus();
 }
 
