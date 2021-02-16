@@ -14,6 +14,12 @@ public:
 
 public slots:
     void updageGameFoundState(bool found);
+    void handleSettingBypassLimit(int checked);
+    void handleSettingFullscreenSupport(int checked);
+    void handleSettingModeNop();
+    void handleSettingModeTraditional();
+    void handleSettingModePinyin();
+    void handleSettingModeTranslate();
 
 private:
     void closeEvent(QCloseEvent* event);

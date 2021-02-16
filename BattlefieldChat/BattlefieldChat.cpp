@@ -13,7 +13,13 @@ BattlefieldChat::BattlefieldChat(QWidget *parent)
     connect(workerThread, SIGNAL(updageGameFoundState(bool)), this, SLOT(updageGameFoundState(bool)));
     connect(ui.listLogs->model(), SIGNAL(rowsInserted(QModelIndex, int, int)), ui.listLogs, SLOT(scrollToBottom()));
 
-    // TODO connect ui change to variable
+    connect(ui.chkAllowBypassLimit, SIGNAL(stateChanged(int)), this, SLOT(handleSettingBypassLimit(int)));
+    connect(ui.chkSupportFullscreen, SIGNAL(stateChanged(int)), this, SLOT(handleSettingFullscreenSupport(int)));
+
+    connect(ui.radioModeNop, SIGNAL(clicked()), this, SLOT(handleSettingModeNop()));
+    connect(ui.radioModeTrad, SIGNAL(clicked()), this, SLOT(handleSettingModeTraditional()));
+    connect(ui.radioModePinyin, SIGNAL(clicked()), this, SLOT(handleSettingModePinyin()));
+    connect(ui.radioModeEnglish, SIGNAL(clicked()), this, SLOT(handleSettingModeTranslate()));
 }
 
 void BattlefieldChat::showEvent(QShowEvent* ev) {
@@ -54,4 +60,28 @@ void BattlefieldChat::updageGameFoundState(bool found) {
             ui.lblCurrentStatus->setStyleSheet("color: rgb(255, 0, 0);\nfont: 12pt \"Î¢ÈíÑÅºÚ\";");
         }
     }
+}
+
+void BattlefieldChat::handleSettingBypassLimit(int checked) {
+    allowExceedLimit = checked == Qt::Checked;
+}
+
+void BattlefieldChat::handleSettingFullscreenSupport(int checked) {
+    fullscreenSupport = checked == Qt::Checked;
+}
+
+void BattlefieldChat::handleSettingModeNop() {
+    preprocessor = &SINGLETON_PREPROCESSOR_NOP;
+}
+
+void BattlefieldChat::handleSettingModeTraditional() {
+    preprocessor = &SINGLETON_PREPROCESSOR_TRAD;
+}
+
+void BattlefieldChat::handleSettingModePinyin() {
+    preprocessor = &SINGLETON_PREPROCESSOR_PINYIN;
+}
+
+void BattlefieldChat::handleSettingModeTranslate() {
+    preprocessor = &SINGLETON_PREPROCESSOR_ENGLISH;
 }
