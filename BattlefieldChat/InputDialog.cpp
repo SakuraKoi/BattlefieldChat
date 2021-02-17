@@ -1,5 +1,6 @@
 #include "InputDialog.h"
 #include <QKeyEvent>
+#include <QtConcurrent>
 #include "Utils.h"
 #include "GlobalVariables.h"
 
@@ -85,13 +86,20 @@ void InputDialog::lostFocus() {
 }
 
 void InputDialog::enterPressed() {
-    QString result = preprocessor->enterPressed(ui.editContent->text());
-    if (result == Q_NULLPTR) {
-        cancelled = false;
-        waitCondition.wakeAll(); // send
-        return;
-    }
-    ui.editContent->setText(result);
+    ui.lblStatus->setText(QString::fromUtf8(u8"处理中"));
+    ui.editContent->setEnabled(false);
+    QtConcurrent::run([=]() {
+        QString result = preprocessor->enterPressed(ui.editContent->text());
+        ui.lblStatus->setText(QString::fromUtf8(u8"完成"));
+        ui.editContent->setEnabled(true);
+
+        if (result == Q_NULLPTR) {
+            cancelled = false;
+            waitCondition.wakeAll(); // send
+            return;
+        }
+        ui.editContent->setText(result);
+    });
 }
 
 void InputDialog::handleInitializeWindow(Qt::WindowFlags style, QSize size, QSize editSize, QPoint pos) {
