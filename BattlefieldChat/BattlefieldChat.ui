@@ -103,7 +103,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -257,7 +257,7 @@
         <rect>
          <x>8</x>
          <y>8</y>
-         <width>441</width>
+         <width>257</width>
          <height>121</height>
         </rect>
        </property>
@@ -269,7 +269,7 @@
          <rect>
           <x>16</x>
           <y>24</y>
-          <width>241</width>
+          <width>233</width>
           <height>16</height>
          </rect>
         </property>
@@ -285,12 +285,12 @@
          <rect>
           <x>16</x>
           <y>48</y>
-          <width>241</width>
+          <width>233</width>
           <height>16</height>
          </rect>
         </property>
         <property name="text">
-         <string>百度翻译 (使用公共密钥)</string>
+         <string>百度翻译 (需要自行申请密钥)</string>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -300,7 +300,7 @@
       <widget class="QGroupBox" name="chkUseProxy">
        <property name="geometry">
         <rect>
-         <x>456</x>
+         <x>464</x>
          <y>8</y>
          <width>201</width>
          <height>57</height>
@@ -354,7 +354,7 @@
       <widget class="QGroupBox" name="groupBox_3">
        <property name="geometry">
         <rect>
-         <x>456</x>
+         <x>464</x>
          <y>72</y>
          <width>201</width>
          <height>57</height>
@@ -396,6 +396,65 @@
         </property>
         <property name="text">
          <string>ms</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="groupBox_2">
+       <property name="geometry">
+        <rect>
+         <x>272</x>
+         <y>8</y>
+         <width>185</width>
+         <height>81</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>百度翻译API密钥</string>
+       </property>
+       <widget class="QLineEdit" name="editTranslateBaiduKey">
+        <property name="geometry">
+         <rect>
+          <x>56</x>
+          <y>48</y>
+          <width>113</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_7">
+        <property name="geometry">
+         <rect>
+          <x>16</x>
+          <y>24</y>
+          <width>33</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>APPID</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="editTranslateBaiduAppid">
+        <property name="geometry">
+         <rect>
+          <x>56</x>
+          <y>24</y>
+          <width>113</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_8">
+        <property name="geometry">
+         <rect>
+          <x>16</x>
+          <y>48</y>
+          <width>33</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>密钥</string>
         </property>
        </widget>
       </widget>

@@ -60,24 +60,27 @@ bool PinyinPreprocessor::shouldValidateLength() {
 }
 
 std::string TranslateToEnglishPreprocessor::process(QString input) {
-    // FIXME: Not implemented
     return std::string(input.toLocal8Bit().data());
 }
 
+Translator* translatorProvider;
+QString originalChineseText = Q_NULLPTR;
+
 QString TranslateToEnglishPreprocessor::enterPressed(QString input) {
-    // FIXME: Not implemented
-    // TODO enter to translate, again to send
-    return Q_NULLPTR;
+    if (originalChineseText != Q_NULLPTR)
+        return Q_NULLPTR;
+    return translatorProvider->translate(input);
 }
 
 QString TranslateToEnglishPreprocessor::escPressed(QString input) {
-    // FIXME: Not implemented
-    // TODO esc to restore chinese, again to cancel
+    if (originalChineseText != Q_NULLPTR) {
+        QString temp = originalChineseText;
+        originalChineseText = Q_NULLPTR;
+        return temp;
+    }
     return Q_NULLPTR;
 }
 
 bool TranslateToEnglishPreprocessor::shouldValidateLength() {
-    // FIXME: Not implemented
-    // TODO true if translated
-    return false;
+    return originalChineseText != Q_NULLPTR; // true if translated
 }

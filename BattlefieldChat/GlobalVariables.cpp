@@ -16,3 +16,5 @@ Preprocessor* preprocessor = &SINGLETON_PREPROCESSOR_TRAD;
 BattlefieldChat* mainWindow;
 InputDialog* inputWindow;
 WorkerThread* workerThread;
+
+QNetworkAccessManager* network;

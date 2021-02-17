@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <QString>
+#include "Translator.h"
 
 class Preprocessor { // Nop, just convert to utf8 and return
 public:
@@ -25,6 +26,8 @@ public:
     QString escPressed(QString input);
     bool shouldValidateLength();
 };
+
+extern Translator* translatorProvider;
 
 class TranslateToEnglishPreprocessor : public Preprocessor {
 public:

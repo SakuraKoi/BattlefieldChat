@@ -1,5 +1,6 @@
 #pragma once
 #include <Windows.h>
+#include <QNetworkAccessManager>
 #include "Preprocessor.h"
 #include "BattlefieldChat.h"
 #include "InputDialog.h"
@@ -21,3 +22,5 @@ extern Preprocessor* preprocessor;
 extern BattlefieldChat* mainWindow;
 extern InputDialog* inputWindow;
 extern WorkerThread* workerThread;
+
+extern QNetworkAccessManager* network;

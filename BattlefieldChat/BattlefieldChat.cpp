@@ -10,6 +10,7 @@ BattlefieldChat::BattlefieldChat(QWidget *parent)
     mainWindow = this;
     inputWindow = new InputDialog();
     workerThread = new WorkerThread();
+    network = new QNetworkAccessManager(this);
     connect(workerThread, SIGNAL(updageGameFoundState(bool)), this, SLOT(updageGameFoundState(bool)));
     connect(ui.listLogs->model(), SIGNAL(rowsInserted(QModelIndex, int, int)), ui.listLogs, SLOT(scrollToBottom()));
 

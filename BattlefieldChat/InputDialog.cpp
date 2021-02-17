@@ -89,16 +89,19 @@ void InputDialog::enterPressed() {
     ui.lblStatus->setText(QString::fromUtf8(u8"处理中"));
     ui.editContent->setEnabled(false);
     QtConcurrent::run([=]() {
-        QString result = preprocessor->enterPressed(ui.editContent->text());
-        ui.lblStatus->setText(QString::fromUtf8(u8"完成"));
-        ui.editContent->setEnabled(true);
-
-        if (result == Q_NULLPTR) {
-            cancelled = false;
-            waitCondition.wakeAll(); // send
-            return;
+        try {
+            QString result = preprocessor->enterPressed(ui.editContent->text());
+            ui.lblStatus->setText(QString::fromUtf8(u8"完成"));
+            if (result == Q_NULLPTR) {
+                cancelled = false;
+                waitCondition.wakeAll(); // send
+            } else {
+                ui.editContent->setText(result);
+            }
+        } catch (std::string error) {
+            ui.lblStatus->setText(QString::fromUtf8(error.c_str()));
         }
-        ui.editContent->setText(result);
+        ui.editContent->setEnabled(true);
     });
 }
 

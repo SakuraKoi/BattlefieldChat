@@ -51,8 +51,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 6,0,0,1
- PRODUCTVERSION 6,0,0,1
+ FILEVERSION 7,0,0,0
+ PRODUCTVERSION 7,0,0,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -69,12 +69,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "Powered By.SakuraKooi"
             VALUE "FileDescription", "Battlefield 1 External Chat Tool"
-            VALUE "FileVersion", "v6-fix1"
+            VALUE "FileVersion", "ALPHA-v7"
             VALUE "InternalName", "BattlefieldChat.exe"
             VALUE "LegalCopyright", "Powered By.SakuraKooi"
             VALUE "OriginalFilename", "BattlefieldChat.exe"
             VALUE "ProductName", "Battlefield 1 Chat Tool"
-            VALUE "ProductVersion", "v6-fix1"
+            VALUE "ProductVersion", "ALPHA-v7"
         END
     END
     BLOCK "VarFileInfo"
