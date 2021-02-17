@@ -20,16 +20,20 @@ public:
     InputDialog(QWidget *parent = Q_NULLPTR);
     ~InputDialog();
 
+    bool eventFilter(QObject* obj, QEvent* event) override;
+
     QString showAndWaitForResult(HWND window, InputDisplayMode mode);
 
 signals:
     void callInitializeWindow(Qt::WindowFlags windowType, QSize size, QSize editSize, QPoint pos);
+    void enterProcessed();
 
 public slots:
     void escPressed();
     void lostFocus();
     void enterPressed();
     void textTyped(const QString& text);
+    void onEnterProcessed();
 
     void handleInitializeWindow(Qt::WindowFlags windowType, QSize size, QSize editSize, QPoint pos);
 
@@ -41,4 +45,5 @@ private:
     QMutex mutex;
     QWaitCondition waitCondition;
     bool cancelled = false;
+    bool showing = false;
 };

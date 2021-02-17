@@ -4,22 +4,21 @@
 #include "Utils.h"
 #include "GlobalVariables.h"
 
-InputDialog::InputDialog(QWidget *parent)
-    : QWidget(parent)
-{
+InputDialog::InputDialog(QWidget* parent)
+    : QWidget(parent) {
     ui.setupUi(this);
     this->setFocusPolicy(Qt::StrongFocus);
     QObject::connect(ui.editContent, SIGNAL(returnPressed()), this, SLOT(enterPressed()));
-    QObject::connect(ui.editContent, SIGNAL(editingFinished()), this, SLOT(lostFocus()));
+    QObject::connect(this, SIGNAL(enterProcessed()), this, SLOT(onEnterProcessed()));
     QObject::connect(ui.editContent, SIGNAL(textChanged(QString)), this, SLOT(textTyped(QString)));
 
     qRegisterMetaType<Qt::WindowFlags>("Qt::WindowFlags");
-    QObject::connect(this, SIGNAL(callInitializeWindow(Qt::WindowFlags, QSize, QSize, QPoint)), 
+    QObject::connect(this, SIGNAL(callInitializeWindow(Qt::WindowFlags, QSize, QSize, QPoint)),
         this, SLOT(handleInitializeWindow(Qt::WindowFlags, QSize, QSize, QPoint)));
+    ui.editContent->installEventFilter(this);
 }
 
-InputDialog::~InputDialog()
-{
+InputDialog::~InputDialog() {
 }
 
 void InputDialog::keyPressEvent(QKeyEvent* e) {
@@ -29,6 +28,7 @@ void InputDialog::keyPressEvent(QKeyEvent* e) {
 }
 
 QString InputDialog::showAndWaitForResult(HWND window, InputDisplayMode mode) {
+    showing = true;
     QSize size = this->size();
     QSize editSize = ui.editContent->size();
     QPoint pos;
@@ -56,7 +56,7 @@ QString InputDialog::showAndWaitForResult(HWND window, InputDisplayMode mode) {
         }
     }
 
-    cancelled = true;
+    cancelled = false;
 
     emit callInitializeWindow(style, size, editSize, pos);
 
@@ -70,6 +70,13 @@ QString InputDialog::showAndWaitForResult(HWND window, InputDisplayMode mode) {
     return ui.editContent->text();
 }
 
+bool InputDialog::eventFilter(QObject* obj, QEvent* event) {
+    if (event->type() == QEvent::FocusOut)
+        lostFocus();
+
+    return false;
+}
+
 void InputDialog::escPressed() {
     QString result = preprocessor->escPressed(ui.editContent->text());
     if (result == Q_NULLPTR) {
@@ -80,20 +87,20 @@ void InputDialog::escPressed() {
 }
 
 void InputDialog::lostFocus() {
-    if (cancelled) {
+    if (!cancelled && !showing) {
+        cancelled = true;
         waitCondition.wakeAll();
     }
 }
 
 void InputDialog::enterPressed() {
     ui.lblStatus->setText(QString::fromUtf8(u8"处理中"));
-    ui.editContent->setEnabled(false);
+    ui.editContent->setReadOnly(true);
     QtConcurrent::run([=]() {
         try {
             QString result = preprocessor->enterPressed(ui.editContent->text());
             ui.lblStatus->setText(QString::fromUtf8(u8"完成"));
             if (result == Q_NULLPTR) {
-                cancelled = false;
                 waitCondition.wakeAll(); // send
             } else {
                 ui.editContent->setText(result);
@@ -101,8 +108,12 @@ void InputDialog::enterPressed() {
         } catch (std::string error) {
             ui.lblStatus->setText(QString::fromUtf8(error.c_str()));
         }
-        ui.editContent->setEnabled(true);
-    });
+        emit enterProcessed();
+        });
+}
+
+void InputDialog::onEnterProcessed() {
+    ui.editContent->setReadOnly(false);
 }
 
 void InputDialog::handleInitializeWindow(Qt::WindowFlags style, QSize size, QSize editSize, QPoint pos) {
@@ -120,6 +131,8 @@ void InputDialog::handleInitializeWindow(Qt::WindowFlags style, QSize size, QSiz
     this->activateWindow();
     this->setFocus();
     ui.editContent->setFocus();
+
+    showing = false;
 }
 
 void InputDialog::textTyped(const QString& text) {

@@ -103,7 +103,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="GlobalVariables.cpp" />
-    <ClCompile Include="InputDialog.cpp" />
+    <ClCompile Include="InputDialog.cpp">
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
+      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).moc</QtMocFileName>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">input</DynamicSource>
+      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).moc</QtMocFileName>
+    </ClCompile>
     <ClCompile Include="Preprocessor.cpp" />
     <ClCompile Include="Offsets.cpp" />
     <ClCompile Include="Pointer.cpp" />
