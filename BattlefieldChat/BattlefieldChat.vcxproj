@@ -107,6 +107,7 @@
     <ClCompile Include="Preprocessor.cpp" />
     <ClCompile Include="Offsets.cpp" />
     <ClCompile Include="Pointer.cpp" />
+    <ClCompile Include="Translator.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="WorkerThread.cpp" />
     <QtRcc Include="BattlefieldChat.qrc" />
@@ -135,6 +136,7 @@
     <ClInclude Include="Offsets.h" />
     <ClInclude Include="Pointer.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Translator.h" />
     <ClInclude Include="Utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

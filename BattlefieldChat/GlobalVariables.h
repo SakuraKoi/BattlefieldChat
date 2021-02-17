@@ -1,10 +1,12 @@
 #pragma once
 #include <Windows.h>
 #include <QNetworkAccessManager>
+#include <QSettings>
 #include "Preprocessor.h"
 #include "BattlefieldChat.h"
 #include "InputDialog.h"
 #include "WorkerThread.h"
+
 
 extern bool allowExceedLimit;
 extern bool fullscreenSupport;
@@ -24,3 +26,9 @@ extern InputDialog* inputWindow;
 extern WorkerThread* workerThread;
 
 extern QNetworkAccessManager* network;
+
+extern QSettings* settings;
+
+#define SETTING_KEY_bypassLimit "allowExceedLimit"
+#define SETTING_KEY_fullscreenSupport "fullscreenSupport"
+#define SETTING_KEY_preprocessorMode "preprocessorMode"

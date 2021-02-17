@@ -21,6 +21,28 @@ BattlefieldChat::BattlefieldChat(QWidget *parent)
     connect(ui.radioModeTrad, SIGNAL(clicked()), this, SLOT(handleSettingModeTraditional()));
     connect(ui.radioModePinyin, SIGNAL(clicked()), this, SLOT(handleSettingModePinyin()));
     connect(ui.radioModeEnglish, SIGNAL(clicked()), this, SLOT(handleSettingModeTranslate()));
+
+    loadConfiguration();
+}
+
+void BattlefieldChat::loadConfiguration() {
+    ui.chkAllowBypassLimit->setChecked(settings->value(SETTING_KEY_bypassLimit, false).toBool());
+    ui.chkSupportFullscreen->setChecked(settings->value(SETTING_KEY_fullscreenSupport, false).toBool());
+    switch(settings->value(SETTING_KEY_preprocessorMode, 1).toInt()) {
+    case 0:
+        preprocessor = &SINGLETON_PREPROCESSOR_NOP;
+        break;
+    default:
+    case 1:
+        preprocessor = &SINGLETON_PREPROCESSOR_TRAD;
+        break;
+    case 2:
+        preprocessor = &SINGLETON_PREPROCESSOR_PINYIN;
+        break;
+    case 3:
+        preprocessor = &SINGLETON_PREPROCESSOR_ENGLISH;
+        break;
+    }
 }
 
 void BattlefieldChat::showEvent(QShowEvent* ev) {
@@ -33,6 +55,7 @@ void BattlefieldChat::closeEvent(QCloseEvent* event) {
     shutdownPending = true;
     workerThread -> requestInterruption();
     inputWindow->close();
+    settings->sync();
     event->accept();
 }
 
@@ -65,24 +88,30 @@ void BattlefieldChat::updageGameFoundState(bool found) {
 
 void BattlefieldChat::handleSettingBypassLimit(int checked) {
     allowExceedLimit = checked == Qt::Checked;
+    settings->setValue(SETTING_KEY_bypassLimit, allowExceedLimit);
 }
 
 void BattlefieldChat::handleSettingFullscreenSupport(int checked) {
     fullscreenSupport = checked == Qt::Checked;
+    settings->setValue(SETTING_KEY_fullscreenSupport, fullscreenSupport);
 }
 
 void BattlefieldChat::handleSettingModeNop() {
     preprocessor = &SINGLETON_PREPROCESSOR_NOP;
+    settings->setValue(SETTING_KEY_preprocessorMode, 0);
 }
 
 void BattlefieldChat::handleSettingModeTraditional() {
     preprocessor = &SINGLETON_PREPROCESSOR_TRAD;
+    settings->setValue(SETTING_KEY_preprocessorMode, 1);
 }
 
 void BattlefieldChat::handleSettingModePinyin() {
     preprocessor = &SINGLETON_PREPROCESSOR_PINYIN;
+    settings->setValue(SETTING_KEY_preprocessorMode, 2);
 }
 
 void BattlefieldChat::handleSettingModeTranslate() {
     preprocessor = &SINGLETON_PREPROCESSOR_ENGLISH;
+    settings->setValue(SETTING_KEY_preprocessorMode, 3);
 }

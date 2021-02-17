@@ -24,7 +24,7 @@ public slots:
 private:
     void closeEvent(QCloseEvent* event);
     void showEvent(QShowEvent* event);
-
+    void loadConfiguration();
     Ui::BattlefieldChatClass ui;
 
 };

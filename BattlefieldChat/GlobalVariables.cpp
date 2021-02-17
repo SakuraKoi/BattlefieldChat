@@ -18,3 +18,5 @@ InputDialog* inputWindow;
 WorkerThread* workerThread;
 
 QNetworkAccessManager* network;
+
+QSettings* settings = new QSettings(QSettings::NativeFormat, QSettings::UserScope, "ArukasNetwork", "BattlefieldChat");
