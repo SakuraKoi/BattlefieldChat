@@ -16,7 +16,7 @@ Log::~Log() {
 
 void WorkerThread::run() {
     Log() << u8"Battlefield 1 中文输入工具";
-    Log() << u8"Powered by.SakuraKooi (https://github.com/SakuraKoi/BattlefieldChat)";
+    Log() << u8"Powered by.SakuraKooi (https://github.com/SakuraKoi/BattlefieldChat)"; mainWindow->logColor(Qt::cyan);
     Log() << u8" ";
     Log() << u8"警告: 尽管Fairfight不检测聊天区域的内存数据, 但仍然可能存在一定的风险"; mainWindow->logColor(Qt::red);
     Log() << u8"      USE AT YOUR OWN RISK, 作者不对工具造成的任何损失承担任何责任"; mainWindow->logColor(Qt::red);
