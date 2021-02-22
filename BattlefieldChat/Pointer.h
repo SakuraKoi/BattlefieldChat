@@ -11,10 +11,9 @@ public:
 
     bool readBoolean();
 
-    uintptr_t readAddress();
-    bool writeAddress(uintptr_t address);
+    uintptr_t readAddress(uintptr_t offset);
+    bool writeAddress(uintptr_t offset, uintptr_t address);
 
-    bool writeStringPtr(std::string data);
     bool writeString(std::string data);
 
     Pointer(HANDLE pProcessHandle, uintptr_t pBaseModuleAddress);

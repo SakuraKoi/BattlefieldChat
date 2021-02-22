@@ -3,29 +3,23 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BattlefieldChat", "BattlefieldChat\BattlefieldChat.vcxproj", "{8FA1B17C-4C0C-465F-9CCE-BC06D3EDEE18}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BattlefieldChat", "BattlefieldChat\BattlefieldChat.vcxproj", "{9C682E98-A931-420B-BAF1-6040E1BE624A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
-		Debug|x86 = Debug|x86
 		Release|x64 = Release|x64
-		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{8FA1B17C-4C0C-465F-9CCE-BC06D3EDEE18}.Debug|x64.ActiveCfg = Debug|x64
-		{8FA1B17C-4C0C-465F-9CCE-BC06D3EDEE18}.Debug|x64.Build.0 = Debug|x64
-		{8FA1B17C-4C0C-465F-9CCE-BC06D3EDEE18}.Debug|x86.ActiveCfg = Debug|Win32
-		{8FA1B17C-4C0C-465F-9CCE-BC06D3EDEE18}.Debug|x86.Build.0 = Debug|Win32
-		{8FA1B17C-4C0C-465F-9CCE-BC06D3EDEE18}.Release|x64.ActiveCfg = Release|x64
-		{8FA1B17C-4C0C-465F-9CCE-BC06D3EDEE18}.Release|x64.Build.0 = Release|x64
-		{8FA1B17C-4C0C-465F-9CCE-BC06D3EDEE18}.Release|x86.ActiveCfg = Release|Win32
-		{8FA1B17C-4C0C-465F-9CCE-BC06D3EDEE18}.Release|x86.Build.0 = Release|Win32
+		{9C682E98-A931-420B-BAF1-6040E1BE624A}.Debug|x64.ActiveCfg = Debug|x64
+		{9C682E98-A931-420B-BAF1-6040E1BE624A}.Debug|x64.Build.0 = Debug|x64
+		{9C682E98-A931-420B-BAF1-6040E1BE624A}.Release|x64.ActiveCfg = Release|x64
+		{9C682E98-A931-420B-BAF1-6040E1BE624A}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {259454F4-A566-4DF2-A8B2-DEA481251E7B}
+		SolutionGuid = {A521027F-C121-416F-9439-525226AA35D1}
 	EndGlobalSection
 EndGlobal

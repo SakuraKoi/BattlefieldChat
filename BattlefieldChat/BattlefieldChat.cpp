@@ -1,197 +1,117 @@
-﻿#include <iostream>
-#include <string>
-#include <algorithm>
-#include <Windows.h>
-#include <tlhelp32.h>
-#include "InputDialog.h"
-#include "Offsets.h"
-#include "Utils.h"
+#include "BattlefieldChat.h"
+#include "GlobalVariables.h"
+#include <QCloseEvent>
 
-using namespace std;
+BattlefieldChat::BattlefieldChat(QWidget *parent)
+    : QMainWindow(parent)
+{
+    ui.setupUi(this);
+    setWindowFlags(Qt::Window | Qt::MSWindowsFixedSizeDialogHint);
+    mainWindow = this;
+    inputWindow = new InputDialog();
+    workerThread = new WorkerThread();
+    network = new QNetworkAccessManager(this);
+    connect(workerThread, SIGNAL(updageGameFoundState(bool)), this, SLOT(updageGameFoundState(bool)));
+    connect(ui.listLogs->model(), SIGNAL(rowsInserted(QModelIndex, int, int)), ui.listLogs, SLOT(scrollToBottom()));
 
-bool allowExceedLimit = false;
-DWORD pid = -1;
-HWND gameWindow;
+    connect(ui.chkAllowBypassLimit, SIGNAL(stateChanged(int)), this, SLOT(handleSettingBypassLimit(int)));
+    connect(ui.chkSupportFullscreen, SIGNAL(stateChanged(int)), this, SLOT(handleSettingFullscreenSupport(int)));
 
-wstring replaceNonDisplayableCharacters(wstring str);
-bool validateInputLength(wstring input);
+    connect(ui.radioModeNop, SIGNAL(clicked()), this, SLOT(handleSettingModeNop()));
+    connect(ui.radioModeTrad, SIGNAL(clicked()), this, SLOT(handleSettingModeTraditional()));
+    connect(ui.radioModePinyin, SIGNAL(clicked()), this, SLOT(handleSettingModePinyin()));
+    connect(ui.radioModeEnglish, SIGNAL(clicked()), this, SLOT(handleSettingModeTranslate()));
 
-int main(int argc, char** argv) {
-    if (argc > 1) {
-        if (strcmp(argv[1], "-BypassLimit") == 0) {
-            allowExceedLimit = true;
-        }
-    }
-
-    SetConsoleTitle(L"Battlefield 1 中文输入工具");
-    cout
-        << " Battlefield 1 中文输入工具" << endl
-        << " Powered by.SakuraKooi (https://github.com/SakuraKoi/BattlefieldChat)" << endl
-        << endl
-        << " 警告: 尽管Fairfight不检测聊天区域的内存数据, 但仍然可能存在一定的风险" << endl
-        << "       USE AT YOUR OWN RISK, 作者不对工具造成的任何损失承担任何责任" << endl
-        << endl
-        << " 注意: 游戏需要运行在无边框或窗口模式" << endl
-        << endl;
-
-    cout << " [*] 正在等待游戏启动..." << endl;
-    while (true) {
-        gameWindow = FindWindow(nullptr, L"Battlefield™ 1");
-        if (gameWindow != 0) {
-            GetWindowThreadProcessId(gameWindow, &pid);
-            moduleBaseAddr = getModuleBaseAddress(pid, L"bf1.exe");
-            if (pid != -1)
-                if (moduleBaseAddr != 0)
-                    break;
-        }
-        Sleep(1000);
-    }
-
-    ios::fmtflags f(cout.flags());
-    cout << " [+] bf1.exe -> pid = " << pid << " 0x" << hex << moduleBaseAddr << endl;
-    cout.flags(f);
-
-    hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pid);
-    cout << " [*] 正在初始化..." << endl;
-    messageCaveAddr = (uintptr_t)VirtualAllocEx(hProcess, NULL, sizeof(char) * ((INPUT_BUFFER_SIZE + 1) * 3), MEM_COMMIT, PAGE_READWRITE);
-    cout << " [+] 预分配内存成功: 0x" << hex << messageCaveAddr << endl;
-    cout.flags(f);
-
-    if (!loadNtDll()) {
-        cout << " [-] 警告: NtDll 加载失败, 可能会导致意料之外的游戏崩溃" << endl;
-    }
-
-    Pointer messageCavePtr(hProcess, moduleBaseAddr);
-    messageCavePtr.pointer = messageCaveAddr;
-    ChatOpenPointer chatOpenPtr(hProcess, moduleBaseAddr);
-    ChatLengthPointer chatLengthPtr(hProcess, moduleBaseAddr);
-    ChatMessagePointer chatMessagePtr(hProcess, moduleBaseAddr);
-
-    cout << " [+] Done! 在游戏中打开聊天即可自动呼出输入框" << endl;
-
-    InputDialog dialog;
-    dialog.callbackValidateInput = validateInputLength;
-    bool lastState = false;
-    while (IsWindow(gameWindow)) {
-        if (chatOpenPtr.refreshPointer()) {
-            bool state = chatOpenPtr.readBoolean();
-            if (!isFullscreenWindow(gameWindow) && !lastState && state) {
-                cout << endl << " [+] 检测到聊天框打开" << endl;
-                wstring str = dialog.showInputDialog(L"", gameWindow, isBorderlessWindow(gameWindow) ? 2 : 1);
-
-                SetForegroundWindow(gameWindow);
-                if (str.length() == 0) {
-                    press(VK_ESCAPE, 20);
-                    cout << " [-] 取消输入操作" << endl;
-                    goto outer;
-                }
-                wstring replaced = replaceNonDisplayableCharacters(str);
-                // Convert Simplified Chinese std::wstring to Traditional Chinese std::string
-                wstring trad = CHS2CHT(replaced);
-                string converted = WStrToStr(trad);
-
-                int length = (converted.size() / sizeof(char));
-
-                if (length > 90) {
-                    if (allowExceedLimit) {
-                        cout << " [!] 消息长度超过90字节, 工具可以绕过这个限制并将继续发送, 但这可能带来额外的ff风险" << endl;
-                    } else {
-                        press(VK_ESCAPE, 20);
-                        cout << " [x] 消息长度超过90字节" << endl;
-                        MessageBox(NULL, L"聊天消息长度超过游戏限制 (90字节 / 30中文)\n\n您可以通过添加 -BypassLimit 参数来绕过这个限制\n但这可能带来额外的FF风险", L"错误", 0);
-                        goto outer;
-                    }
-                }
-
-                if (!chatLengthPtr.refreshPointer()) {
-                    cout << " [-] 错误: 刷新指针失败 [ChatLength]" << endl;
-                    goto outer;
-                }
-
-                if (!chatMessagePtr.refreshPointer()) {
-                    cout << " [-] 错误: 刷新指针失败 [ChatMessage]" << endl;
-                    goto outer;
-                }
-
-                uintptr_t oldAddr = chatMessagePtr.readAddress();
-                if (oldAddr == 0) {
-                    cout << " [-] 错误: 读取指针失败 [ChatMessage]" << endl;
-                    goto outer;
-                }
-
-                // Suspend the process to avoid desynchronized memory access
-                if (NtSuspendProcess != NULL)
-                    NtSuspendProcess(hProcess);
-                if (!messageCavePtr.writeString(converted)) {
-                    cout << " [-] 错误: 写入数据失败 [ChatMessage]" << endl;
-                    goto outer;
-                }
-
-                if (!chatMessagePtr.writeAddress(messageCaveAddr)) {
-                    cout << " [-] 错误: 写入指针失败 [ChatMessage]" << endl;
-                    goto resume;
-                }
-
-                if (!chatLengthPtr.writeAddress(messageCaveAddr + length)) {
-                    cout << " [-] 错误: 写入数据失败 [ChatLength]" << endl;
-                    goto resume;
-                }
-                // Resume the process to perform the send operation
-                if (NtResumeProcess != NULL)
-                    NtResumeProcess(hProcess);
-
-                cout << " [+] 写入消息数据成功" << endl;
-                press(VK_RETURN, 20);
-                cout << " [+] 模拟发送完成" << endl;
-
-                // Loop to wait for the game to clear the string
-                {
-                    int count = 0;
-                    while (count++ <= 10) { // wait for 200ms max
-                        if (!messageCavePtr.readBoolean())
-                            break;
-                        Sleep(20);
-                    }
-                }
-
-                // Then suspend the process again and restore the pointer
-                if (NtSuspendProcess != NULL)
-                    NtSuspendProcess(hProcess);
-            resume:
-                if (!chatMessagePtr.writeAddress(oldAddr)) {
-                    cout << " [-] 错误: 恢复指针失败 [ChatMessage]" << endl;
-                }
-                if (!chatLengthPtr.writeAddress(oldAddr)) {
-                    cout << " [-] 错误: 恢复指针失败 [ChatLength]" << endl;
-                }
-                if (NtResumeProcess != NULL)
-                    NtResumeProcess(hProcess);
-                cout << " [+] 恢复指针完成" << endl;
-                // Everything done.
-            }
-            lastState = state;
-        }
-    outer:
-        Sleep(200);
-    }
-    VirtualFreeEx(hProcess, (LPVOID)messageCaveAddr, 0, MEM_RELEASE);
-    CloseHandle(hProcess);
-    freeNtDll();
-    cout << endl << " [*] 游戏已退出, Thanks for using!" << endl;
-    Sleep(3000);
-    return 0;
+    loadConfiguration();
 }
 
-wstring replaceNonDisplayableCharacters(wstring str) {
-    str = ReplaceWCSWithPattern(str, L"啥", L"什麽");
-    str = ReplaceWCSWithPattern(str, L"么", L"麽");
-    return str;
+void BattlefieldChat::loadConfiguration() {
+    ui.chkAllowBypassLimit->setChecked(settings->value(SETTING_KEY_bypassLimit, false).toBool());
+    ui.chkSupportFullscreen->setChecked(settings->value(SETTING_KEY_fullscreenSupport, false).toBool());
+    switch(settings->value(SETTING_KEY_preprocessorMode, 1).toInt()) {
+    case 0:
+        preprocessor = &SINGLETON_PREPROCESSOR_NOP;
+        break;
+    default:
+    case 1:
+        preprocessor = &SINGLETON_PREPROCESSOR_TRAD;
+        break;
+    case 2:
+        preprocessor = &SINGLETON_PREPROCESSOR_PINYIN;
+        break;
+    case 3:
+        preprocessor = &SINGLETON_PREPROCESSOR_ENGLISH;
+        break;
+    }
 }
 
-bool validateInputLength(wstring input) {
-    wstring replaced = replaceNonDisplayableCharacters(input);
-    wstring trad = CHS2CHT(replaced);
-    string converted = WStrToStr(trad);
-    int length = (converted.size() / sizeof(char));
-    return length <= 90;
+void BattlefieldChat::showEvent(QShowEvent* ev) {
+    QMainWindow::showEvent(ev);
+    workerThread -> start();
+}
+
+bool shutdownPending = false;
+void BattlefieldChat::closeEvent(QCloseEvent* event) {
+    shutdownPending = true;
+    workerThread -> requestInterruption();
+    inputWindow->close();
+    settings->sync();
+    event->accept();
+}
+
+void BattlefieldChat::pushLog(QString message) {
+    if (!shutdownPending) {
+        ui.listLogs->addItem(message);
+    }
+}
+
+void BattlefieldChat::logColor(Qt::GlobalColor color) {
+    if (!shutdownPending)
+        ui.listLogs->item(ui.listLogs->count() - 1)->setForeground(color);
+}
+
+bool lastGameState = false;
+void BattlefieldChat::updageGameFoundState(bool found) {
+    if (!shutdownPending && (lastGameState != found)) {
+        lastGameState = found;
+        if (found) {
+            ui.mainContent->setEnabled(true);
+            ui.lblCurrentStatus->setText(QString::fromUtf8(u8"�������빤�߾���"));
+            ui.lblCurrentStatus->setStyleSheet("color: rgb(85, 170, 0);\nfont: 12pt \"΢���ź�\";");
+        } else {
+            ui.mainContent->setEnabled(false);
+            ui.lblCurrentStatus->setText(QString::fromUtf8(u8"���ڵȴ���Ϸ����"));
+            ui.lblCurrentStatus->setStyleSheet("color: rgb(255, 0, 0);\nfont: 12pt \"΢���ź�\";");
+        }
+    }
+}
+
+void BattlefieldChat::handleSettingBypassLimit(int checked) {
+    allowExceedLimit = checked == Qt::Checked;
+    settings->setValue(SETTING_KEY_bypassLimit, allowExceedLimit);
+}
+
+void BattlefieldChat::handleSettingFullscreenSupport(int checked) {
+    fullscreenSupport = checked == Qt::Checked;
+    settings->setValue(SETTING_KEY_fullscreenSupport, fullscreenSupport);
+}
+
+void BattlefieldChat::handleSettingModeNop() {
+    preprocessor = &SINGLETON_PREPROCESSOR_NOP;
+    settings->setValue(SETTING_KEY_preprocessorMode, 0);
+}
+
+void BattlefieldChat::handleSettingModeTraditional() {
+    preprocessor = &SINGLETON_PREPROCESSOR_TRAD;
+    settings->setValue(SETTING_KEY_preprocessorMode, 1);
+}
+
+void BattlefieldChat::handleSettingModePinyin() {
+    preprocessor = &SINGLETON_PREPROCESSOR_PINYIN;
+    settings->setValue(SETTING_KEY_preprocessorMode, 2);
+}
+
+void BattlefieldChat::handleSettingModeTranslate() {
+    preprocessor = &SINGLETON_PREPROCESSOR_ENGLISH;
+    settings->setValue(SETTING_KEY_preprocessorMode, 3);
 }

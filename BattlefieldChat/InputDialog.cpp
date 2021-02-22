@@ -1,230 +1,155 @@
-#include <atlconv.h>
-#include "Utils.h"
-
 #include "InputDialog.h"
+#include <QKeyEvent>
+#include <QtConcurrent>
+#include "Utils.h"
+#include "GlobalVariables.h"
 
-#define CLASSNAME L"InputDialog"
+InputDialog::InputDialog(QWidget* parent)
+    : QWidget(parent) {
+    ui.setupUi(this);
+    this->setFocusPolicy(Qt::StrongFocus);
+    QObject::connect(ui.editContent, SIGNAL(returnPressed()), this, SLOT(enterPressed()));
+    QObject::connect(this, SIGNAL(enterProcessed()), this, SLOT(onEnterProcessed()));
+    QObject::connect(ui.editContent, SIGNAL(textChanged(QString)), this, SLOT(textTyped(QString)));
 
-static HBRUSH hbrBkgnd = NULL;
-
-HFONT m_hFont = NULL;
-HWND  m_hWndInputBox = NULL;
-HWND  m_hWndEdit = NULL;
-wchar_t m_String[INPUT_BUFFER_SIZE + 1];
-
-COLORREF textColor = RGB(0, 0, 0);
-
-int width;
-int height = 20;
-int posX;
-int posY;
-
-LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
-void initializeDialog(HWND relativeTo, int mode);
-
-// mode = 0 -> popup dialog (for battlefield in fullscreen mode)
-// mode = 1 -> overlay (for battlefield in windowed mode)
-// mode = 2 -> overlay content (for battlefield in borderless mode)
-std::wstring InputDialog::showInputDialog(std::wstring currentText, HWND relativeTo, int mode) {
-    initializeDialog(relativeTo, mode);
-
-    HINSTANCE hInst = GetModuleHandle(NULL);
-
-    WNDCLASSEX wcex;
-
-    if (!GetClassInfoEx(hInst, CLASSNAME, &wcex)) {
-        wcex.cbSize = sizeof(WNDCLASSEX);
-
-        wcex.style = CS_HREDRAW | CS_VREDRAW;
-        wcex.lpfnWndProc = (WNDPROC)WndProc;
-        wcex.cbClsExtra = 0;
-        wcex.cbWndExtra = 0;
-        wcex.hInstance = hInst;
-        wcex.hIcon = NULL;
-        wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
-        wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW);
-        wcex.lpszMenuName = NULL;
-        wcex.lpszClassName = CLASSNAME;
-        wcex.hIconSm = NULL;
-
-        if (RegisterClassEx(&wcex) == 0)
-            REPORTERROR;
-
-    }
-
-    RECT clientRect;
-    clientRect.left = 0;
-    clientRect.top = 0;
-    clientRect.right = width;
-    clientRect.bottom = height;
-
-    DWORD style = mode == 0 ? WS_POPUPWINDOW | WS_CAPTION : WS_POPUP;
-    DWORD exStyle = WS_EX_TOPMOST | (mode == 0 ? WS_EX_DLGMODALFRAME : WS_EX_APPWINDOW);
-    if (mode == 0)
-        AdjustWindowRectEx(&clientRect, style, false, 0);
-
-    m_hWndInputBox = CreateWindowEx(exStyle, CLASSNAME,
-        L"BattlefieldChat",
-        style,
-        posX, posY,
-        width, clientRect.bottom - clientRect.top,
-        NULL,
-        NULL,
-        NULL,
-        NULL);
-    if (m_hWndInputBox == NULL) {
-        REPORTERROR;
-        return std::wstring();
-    }
-
-    setTextAlignment(m_hWndEdit, SS_LEFTNOWORDWRAP);
-    SetForegroundWindow(m_hWndInputBox);
-
-    wchar_t* currentWText = const_cast<wchar_t*>(currentText.c_str());
-
-    SendMessage(m_hWndEdit, EM_SETSEL, 0, -1);
-    SendMessage(m_hWndEdit, EM_REPLACESEL, 0, (LPARAM)currentWText);
-    SendMessage(m_hWndEdit, EM_SETSEL, 0, -1);
-    SetFocus(m_hWndEdit);
-
-    ShowWindow(m_hWndInputBox, SW_SHOW);
-    UpdateWindow(m_hWndInputBox);
-
-    BOOL ret = 0;
-
-    MSG msg;
-
-    while (GetMessage(&msg, NULL, 0, 0)) {
-        if (msg.message == WM_KEYDOWN) {
-            if (msg.wParam == VK_ESCAPE) {
-                SendMessage(m_hWndInputBox, WM_DESTROY, 0, 0);
-                ret = 0;
-            }
-            if (msg.wParam == VK_RETURN) {
-                int nCount = GetWindowTextLength(m_hWndEdit);
-                nCount++;
-                GetWindowText(m_hWndEdit, m_String, nCount);
-                SendMessage(m_hWndInputBox, WM_DESTROY, 0, 0);
-                ret = 1;
-            }
-        } else if (msg.message == WM_KEYUP && callbackValidateInput) {
-            int nCount = GetWindowTextLength(m_hWndEdit);
-            nCount++;
-            wchar_t* input = new wchar_t[nCount];
-            GetWindowText(m_hWndEdit, input, nCount);
-
-            if (callbackValidateInput(std::wstring(input))) {
-                textColor = RGB(0, 0, 0);
-                InvalidateRect(m_hWndEdit, NULL, true);
-                UpdateWindow(m_hWndEdit);
-            } else {
-                textColor = RGB(255, 0, 0);
-                InvalidateRect(m_hWndEdit, NULL, true);
-                UpdateWindow(m_hWndEdit);
-            }
-            delete[] input;
-        }
-        TranslateMessage(&msg);
-        DispatchMessage(&msg);
-    }
-
-    return ret ? std::wstring(m_String) : std::wstring();
+    qRegisterMetaType<Qt::WindowFlags>("Qt::WindowFlags");
+    QObject::connect(this, SIGNAL(callInitializeWindow(Qt::WindowFlags, QSize, QSize, QPoint)),
+        this, SLOT(handleInitializeWindow(Qt::WindowFlags, QSize, QSize, QPoint)));
+    ui.editContent->installEventFilter(this);
 }
 
-LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
-    HINSTANCE m_hInst = NULL;
-    switch (message) {
-    case WM_CTLCOLORSTATIC:
-    case WM_CTLCOLOREDIT:
-    {
-        HDC hdcStatic = (HDC)wParam;
-        if (hbrBkgnd == NULL) {
-            hbrBkgnd = CreateSolidBrush(RGB(255, 255, 255));
-        }
-        SetTextColor(hdcStatic, textColor);
-        SetBkColor(hdcStatic, RGB(255, 255, 255));
-
-        return (INT_PTR)hbrBkgnd;
-    }
-    case WM_CREATE:
-    {
-        LOGFONT lfont;
-        memset(&lfont, 0, sizeof(lfont));
-        lstrcpy(lfont.lfFaceName, L"宋体");
-        lfont.lfHeight = 16;
-        lfont.lfWeight = FW_NORMAL;
-        lfont.lfItalic = FALSE;
-        lfont.lfCharSet = DEFAULT_CHARSET;
-        lfont.lfOutPrecision = OUT_DEFAULT_PRECIS;
-        lfont.lfClipPrecision = CLIP_DEFAULT_PRECIS;
-        lfont.lfQuality = DEFAULT_QUALITY;
-        lfont.lfPitchAndFamily = DEFAULT_PITCH;
-        m_hFont = CreateFontIndirect(&lfont);
-        m_hInst = GetModuleHandle(NULL);
-
-        m_hWndEdit = CreateWindowEx(WS_EX_STATICEDGE,
-            L"edit", L"",
-            WS_VISIBLE | WS_CHILD | WS_TABSTOP | ES_AUTOHSCROLL,
-            0, 0, width, height,
-            hWnd,
-            NULL,
-            m_hInst,
-            NULL);
-
-        if (m_hWndEdit == NULL) {
-            REPORTERROR;
-            return NULL;
-        }
-
-        SendMessage(m_hWndEdit, WM_SETFONT, (WPARAM)m_hFont, 0);
-        SendMessage(m_hWndEdit, EM_LIMITTEXT, INPUT_BUFFER_SIZE, 0);
-
-        SetFocus(m_hWndEdit);
-        break;
-    }
-    case WM_DESTROY:
-    {
-        DestroyWindow(hWnd);
-        PostQuitMessage(0);
-        break;
-    }
-    case WM_ACTIVATE:
-    {
-        if (wParam == WA_INACTIVE) {
-            SendMessage(m_hWndInputBox, WM_DESTROY, 0, 0);
-        }
-        break;
-    }
-    default:
-        return DefWindowProc(hWnd, message, wParam, lParam);
-    }
-    return 0;
+InputDialog::~InputDialog() {
 }
 
-void initializeDialog(HWND relativeTo, int mode) {
-    if (mode == 0) { // fullscreen
+void InputDialog::keyPressEvent(QKeyEvent* e) {
+    if (e->key() == Qt::Key_Escape) {
+        escPressed();
+    }
+}
+
+QString InputDialog::showAndWaitForResult(HWND window, InputDisplayMode mode) {
+    showing = true;
+    QSize size = this->size();
+    QSize editSize = ui.editContent->size();
+    QPoint pos;
+    Qt::WindowFlags style;
+    if (mode == InputDisplayMode::DIALOG_FOR_FULLSCREEN) {
+        style = (Qt::Window | Qt::MSWindowsFixedSizeDialogHint | Qt::WindowStaysOnTopHint);
+
         RECT r;
-        if (!GetWindowRect(GetDesktopWindow(), &r))
-            throw "Cannot get window rect";
-
-        width = 320;
-        posX = (r.right - 60) / 2;
-        posY = (r.bottom - 320) / 2;
+        GetWindowRect(GetDesktopWindow(), &r);
+        pos.setX((r.right - size.height()) / 2);
+        pos.setY((r.bottom - size.width()) / 2);
     } else {
-        RECT r;
-        if (!GetWindowRect(relativeTo, &r))
-            throw "Cannot get window rect";
+        style = (Qt::Window | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
 
-        if (mode == 1) { // windowed
-            width = r.right - r.left - 24;
-            posX = r.left + 12;
-            posY = r.top + getSystemTitleHeight() + 12;
-        } else if (mode == 2) { // borderless
-            width = r.right - r.left - 24;
-            posX = r.left + 12;
-            posY = r.top + 12;
+        RECT r;
+        GetWindowRect(window, &r);
+        size.setWidth(r.right - r.left - 25);
+        editSize.setWidth(size.width() - (ui.lblStatus->size()).width());
+        pos.setX(r.left + 12);
+
+        if (mode == InputDisplayMode::OVERLAY_FOR_BORDERLESS) {
+            pos.setY(r.top + 12);
         } else {
-            throw "Invalid mode";
+            pos.setY(r.top + getSystemTitleHeight() + 12);
         }
     }
+
+    cancelled = false;
+
+    emit callInitializeWindow(style, size, editSize, pos);
+
+    mutex.lock();
+    waitCondition.wait(&mutex);
+    mutex.unlock();
+
+    QMetaObject::invokeMethod(this, "hide");
+    if (cancelled)
+        return Q_NULLPTR;
+    return ui.editContent->text();
+}
+
+bool InputDialog::eventFilter(QObject* obj, QEvent* event) {
+    if (event->type() == QEvent::FocusOut)
+        lostFocus();
+
+    return false;
+}
+
+void InputDialog::escPressed() {
+    QString result = preprocessor->escPressed(ui.editContent->text());
+    if (result == Q_NULLPTR) {
+        lostFocus(); // cancel
+        return;
+    }
+    ui.editContent->setText(result);
+}
+
+void InputDialog::lostFocus() {
+    if (!cancelled && !showing) {
+        cancelled = true;
+        waitCondition.wakeAll();
+    }
+}
+
+void InputDialog::enterPressed() {
+    ui.lblStatus->setText(QString::fromUtf8(u8"处理中"));
+    ui.editContent->setReadOnly(true);
+    QtConcurrent::run([=]() {
+        try {
+            QString result = preprocessor->enterPressed(ui.editContent->text());
+            ui.lblStatus->setText(QString::fromUtf8(u8"完成"));
+            if (result == Q_NULLPTR) {
+                waitCondition.wakeAll(); // send
+            } else {
+                ui.editContent->setText(result);
+            }
+        } catch (std::string error) {
+            ui.lblStatus->setText(QString::fromUtf8(error.c_str()));
+        }
+        emit enterProcessed();
+        });
+}
+
+void InputDialog::onEnterProcessed() {
+    ui.editContent->setReadOnly(false);
+}
+
+void InputDialog::handleInitializeWindow(Qt::WindowFlags style, QSize size, QSize editSize, QPoint pos) {
+    setWindowFlags(style);
+    move(pos);
+    resize(size);
+    ui.editContent->resize(editSize);
+
+    ui.editContent->setText("");
+    ui.editContent->setStyleSheet("color: rgb(0, 0, 0);font: 11pt;");
+    ui.lblStatus->setText(QString::fromUtf8(u8"就绪"));
+
+    this->show();
+    this->raise();
+    this->activateWindow();
+    this->setFocus();
+    ui.editContent->setFocus();
+
+    showing = false;
+}
+
+void InputDialog::textTyped(const QString& text) {
+    if (preprocessor->shouldValidateLength()) {
+        if (preprocessor->process(text).size() > 90) {
+            if (allowExceedLimit) {
+                ui.lblStatus->setText(QString::fromUtf8(u8"过长"));
+                ui.editContent->setStyleSheet("color: rgb(255, 152, 0);font: 11pt;");
+                ui.lblStatus->setStyleSheet("color: rgb(255, 152, 0);");
+            } else {
+                ui.lblStatus->setText(QString::fromUtf8(u8"超长"));
+                ui.editContent->setStyleSheet("color: rgb(255, 0, 0);font: 11pt;");
+                ui.lblStatus->setStyleSheet("color: rgb(255, 0, 0);");
+            }
+            return;
+        }
+    }
+    ui.editContent->setStyleSheet("color: rgb(0, 0, 0);font: 11pt;");
+    ui.lblStatus->setStyleSheet("");
 }

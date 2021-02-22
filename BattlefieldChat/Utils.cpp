@@ -65,7 +65,7 @@ int getSystemTitleHeight() {
     return (GetSystemMetrics(SM_CYFRAME) + GetSystemMetrics(SM_CYCAPTION) + GetSystemMetrics(SM_CXPADDEDBORDER));
 }
 
-bool isFullscreenWindow(HWND window) {
+bool isFullscreenWindow(HWND window) { // FIXME not working
     return window == GetDesktopWindow() || window == GetShellWindow();
 }
 
