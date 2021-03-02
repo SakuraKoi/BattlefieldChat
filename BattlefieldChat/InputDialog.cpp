@@ -126,7 +126,7 @@ void InputDialog::handleInitializeWindow(Qt::WindowFlags style, QSize size, QSiz
 
     ui.editContent->setText("");
     ui.lblStatus->setText(QString::fromUtf8(u8"就绪"));
-    ui.lblStatus->setStyleSheet("color: rgb(85, 255, 0);\nbackground-color: rgba(255, 255, 255, 0);");
+    ui.lblStatus->setStyleSheet("color: rgb(83, 164, 60);\nbackground-color: rgba(255, 255, 255, 0);");
 
     HWND hForgroundWnd = GetForegroundWindow();
     DWORD dwForeID = GetWindowThreadProcessId(hForgroundWnd, NULL);
@@ -151,7 +151,7 @@ void InputDialog::textTyped(const QString& text) {
         if (preprocessor->process(text).size() > 90) {
             if (allowExceedLimit) {
                 ui.lblStatus->setText(QString::fromUtf8(u8"过长"));
-                ui.lblStatus->setStyleSheet("color: rgb(255, 152, 0);\nbackground-color: rgba(255, 255, 255, 0);");
+                ui.lblStatus->setStyleSheet("color: rgb(244, 67, 54);\nbackground-color: rgba(255, 255, 255, 0);");
             } else {
                 ui.lblStatus->setText(QString::fromUtf8(u8"超长"));
                 ui.lblStatus->setStyleSheet("color: rgb(255, 0, 0);\nbackground-color: rgba(255, 255, 255, 0);");
@@ -160,5 +160,5 @@ void InputDialog::textTyped(const QString& text) {
         }
     }
     ui.lblStatus->setText(QString::fromUtf8(u8"就绪"));
-    ui.lblStatus->setStyleSheet("color: rgb(85, 255, 0);\nbackground-color: rgba(255, 255, 255, 0);");
+    ui.lblStatus->setStyleSheet("color: rgb(83, 164, 60);\nbackground-color: rgba(255, 255, 255, 0);");
 }
