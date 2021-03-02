@@ -126,10 +126,18 @@ void InputDialog::handleInitializeWindow(Qt::WindowFlags style, QSize size, QSiz
     ui.editContent->setStyleSheet("color: rgb(0, 0, 0);font: 11pt;");
     ui.lblStatus->setText(QString::fromUtf8(u8"¾ÍÐ÷"));
 
+    HWND hForgroundWnd = GetForegroundWindow();
+    DWORD dwForeID = GetWindowThreadProcessId(hForgroundWnd, NULL);
+    DWORD dwCurID = GetCurrentThreadId();
+
+    AttachThreadInput(dwCurID, dwForeID, TRUE);
     this->show();
     this->raise();
     this->activateWindow();
     this->setFocus();
+    SetForegroundWindow((HWND)winId());
+    AttachThreadInput(dwCurID, dwForeID, FALSE);
+
     ui.editContent->setFocus();
 
     showing = false;
