@@ -1,6 +1,8 @@
 #include "InputDialog.h"
 #include <QKeyEvent>
 #include <QtConcurrent>
+#include <QPaintEvent>
+#include <QPainter>
 #include "Utils.h"
 #include "GlobalVariables.h"
 
@@ -16,6 +18,8 @@ InputDialog::InputDialog(QWidget* parent)
     QObject::connect(this, SIGNAL(callInitializeWindow(Qt::WindowFlags, QSize, QSize, QPoint)),
         this, SLOT(handleInitializeWindow(Qt::WindowFlags, QSize, QSize, QPoint)));
     ui.editContent->installEventFilter(this);
+
+    blurWindow((HWND)winId());
 }
 
 InputDialog::~InputDialog() {
@@ -45,9 +49,9 @@ QString InputDialog::showAndWaitForResult(HWND window, InputDisplayMode mode) {
 
         RECT r;
         GetWindowRect(window, &r);
-        size.setWidth(r.right - r.left - 25);
-        editSize.setWidth(size.width() - (ui.lblStatus->size()).width());
-        pos.setX(r.left + 12);
+        size.setWidth(r.right - r.left - 64);
+        editSize.setWidth(size.width() - (ui.lblStatus->size()).width() - 8);
+        pos.setX(r.left + 32);
 
         if (mode == InputDisplayMode::OVERLAY_FOR_BORDERLESS) {
             pos.setY(r.top + 12);
@@ -123,8 +127,8 @@ void InputDialog::handleInitializeWindow(Qt::WindowFlags style, QSize size, QSiz
     ui.editContent->resize(editSize);
 
     ui.editContent->setText("");
-    ui.editContent->setStyleSheet("color: rgb(0, 0, 0);");
     ui.lblStatus->setText(QString::fromUtf8(u8"就绪"));
+    ui.lblStatus->setStyleSheet("color: rgb(85, 255, 0);\nbackground-color: rgba(255, 255, 255, 0);");
 
     HWND hForgroundWnd = GetForegroundWindow();
     DWORD dwForeID = GetWindowThreadProcessId(hForgroundWnd, NULL);
@@ -140,6 +144,7 @@ void InputDialog::handleInitializeWindow(Qt::WindowFlags style, QSize size, QSiz
 
     ui.editContent->setFocus();
 
+
     showing = false;
 }
 
@@ -148,16 +153,14 @@ void InputDialog::textTyped(const QString& text) {
         if (preprocessor->process(text).size() > 90) {
             if (allowExceedLimit) {
                 ui.lblStatus->setText(QString::fromUtf8(u8"过长"));
-                ui.editContent->setStyleSheet("color: rgb(255, 152, 0);");
-                ui.lblStatus->setStyleSheet("color: rgb(255, 152, 0);");
+                ui.lblStatus->setStyleSheet("color: rgb(255, 152, 0);\nbackground-color: rgba(255, 255, 255, 0);");
             } else {
                 ui.lblStatus->setText(QString::fromUtf8(u8"超长"));
-                ui.editContent->setStyleSheet("color: rgb(255, 0, 0);");
-                ui.lblStatus->setStyleSheet("color: rgb(255, 0, 0);");
+                ui.lblStatus->setStyleSheet("color: rgb(255, 0, 0);\nbackground-color: rgba(255, 255, 255, 0);");
             }
             return;
         }
     }
-    ui.editContent->setStyleSheet("color: rgb(0, 0, 0);");
-    ui.lblStatus->setStyleSheet("");
+    ui.lblStatus->setText(QString::fromUtf8(u8"就绪"));
+    ui.lblStatus->setStyleSheet("color: rgb(85, 255, 0);\nbackground-color: rgba(255, 255, 255, 0);");
 }

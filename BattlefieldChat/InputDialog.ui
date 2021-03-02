@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>721</width>
-    <height>25</height>
+    <width>733</width>
+    <height>33</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -17,13 +17,13 @@
    <string>InputDialog</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: rgb(255, 255, 255);</string>
+   <string notr="true">background-color: rgba(0, 0, 0, 25);</string>
   </property>
   <widget class="QLabel" name="lblStatus">
    <property name="geometry">
     <rect>
-     <x>0</x>
-     <y>0</y>
+     <x>4</x>
+     <y>4</y>
      <width>41</width>
      <height>25</height>
     </rect>
@@ -37,7 +37,8 @@
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true"/>
+    <string notr="true">color: rgb(85, 255, 0);
+background-color: rgba(255, 255, 255, 0);</string>
    </property>
    <property name="text">
     <string>就绪</string>
@@ -49,8 +50,8 @@
   <widget class="QLineEdit" name="editContent">
    <property name="geometry">
     <rect>
-     <x>40</x>
-     <y>0</y>
+     <x>48</x>
+     <y>4</y>
      <width>681</width>
      <height>25</height>
     </rect>
@@ -62,13 +63,17 @@
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: rgb(0, 0, 0);</string>
+    <string notr="true">color: rgb(255, 255, 255);
+background-color: rgba(255, 255, 255, 0);</string>
    </property>
    <property name="text">
     <string/>
    </property>
    <property name="frame">
     <bool>false</bool>
+   </property>
+   <property name="placeholderText">
+    <string>...</string>
    </property>
   </widget>
  </widget>

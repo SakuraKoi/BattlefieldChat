@@ -22,6 +22,8 @@ std::wstring ReplaceWCSWithPattern(__in const std::wstring& message, __in const 
 
 void press(BYTE key, int delay);
 
+void blurWindow(HWND window);
+
 typedef LONG(NTAPI* _NtSuspendProcess) (IN HANDLE ProcessHandle);
 typedef LONG(NTAPI* _NtResumeProcess) (IN HANDLE ProcessHandle);
 extern _NtSuspendProcess NtSuspendProcess;

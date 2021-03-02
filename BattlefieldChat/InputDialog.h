@@ -45,5 +45,5 @@ private:
     QMutex mutex;
     QWaitCondition waitCondition;
     bool cancelled = false;
-    bool showing = false;
+    bool showing = false; 
 };
