@@ -1,8 +1,6 @@
 #include "InputDialog.h"
 #include <QKeyEvent>
 #include <QtConcurrent>
-#include <QPaintEvent>
-#include <QPainter>
 #include "Utils.h"
 #include "GlobalVariables.h"
 
