@@ -123,7 +123,7 @@ void InputDialog::handleInitializeWindow(Qt::WindowFlags style, QSize size, QSiz
     ui.editContent->resize(editSize);
 
     ui.editContent->setText("");
-    ui.editContent->setStyleSheet("color: rgb(0, 0, 0);font: 11pt;");
+    ui.editContent->setStyleSheet("color: rgb(0, 0, 0);");
     ui.lblStatus->setText(QString::fromUtf8(u8"就绪"));
 
     HWND hForgroundWnd = GetForegroundWindow();
@@ -148,16 +148,16 @@ void InputDialog::textTyped(const QString& text) {
         if (preprocessor->process(text).size() > 90) {
             if (allowExceedLimit) {
                 ui.lblStatus->setText(QString::fromUtf8(u8"过长"));
-                ui.editContent->setStyleSheet("color: rgb(255, 152, 0);font: 11pt;");
+                ui.editContent->setStyleSheet("color: rgb(255, 152, 0);");
                 ui.lblStatus->setStyleSheet("color: rgb(255, 152, 0);");
             } else {
                 ui.lblStatus->setText(QString::fromUtf8(u8"超长"));
-                ui.editContent->setStyleSheet("color: rgb(255, 0, 0);font: 11pt;");
+                ui.editContent->setStyleSheet("color: rgb(255, 0, 0);");
                 ui.lblStatus->setStyleSheet("color: rgb(255, 0, 0);");
             }
             return;
         }
     }
-    ui.editContent->setStyleSheet("color: rgb(0, 0, 0);font: 11pt;");
+    ui.editContent->setStyleSheet("color: rgb(0, 0, 0);");
     ui.lblStatus->setStyleSheet("");
 }
