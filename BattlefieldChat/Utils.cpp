@@ -3,64 +3,6 @@
 #include <codecvt>
 #include "Utils.h"
 
-void setTextAlignment(HWND hwnd, int intTextAlignment) {
-    LONG_PTR s;
-    LONG_PTR textalignment = GetWindowLongPtr(hwnd, GWL_STYLE);
-    if (textalignment != intTextAlignment) {
-        if (intTextAlignment == 0) {
-            s = GetWindowLongPtr(hwnd, GWL_STYLE);
-            s = s & ~(SS_LEFT);
-            SetWindowLongPtr(hwnd, GWL_STYLE, (LONG_PTR)s);
-        }
-        else if (intTextAlignment == 1) {
-            s = GetWindowLongPtr(hwnd, GWL_STYLE);
-            s = s & ~(SS_CENTER);
-            SetWindowLongPtr(hwnd, GWL_STYLE, (LONG_PTR)s);
-        }
-        else if (intTextAlignment == 2) {
-            s = GetWindowLongPtr(hwnd, GWL_STYLE);
-            s = s & ~(SS_RIGHT);
-            SetWindowLongPtr(hwnd, GWL_STYLE, (LONG_PTR)s);
-        }
-
-        textalignment = intTextAlignment;
-
-        if (textalignment == 0) {
-            s = GetWindowLongPtr(hwnd, GWL_STYLE);
-            s = s | (SS_LEFT);
-            SetWindowLongPtr(hwnd, GWL_STYLE, (LONG_PTR)s);
-        }
-        else if (textalignment == 1) {
-            s = GetWindowLongPtr(hwnd, GWL_STYLE);
-            s = s | (SS_CENTER);
-            SetWindowLongPtr(hwnd, GWL_STYLE, (LONG_PTR)s);
-        }
-        else if (textalignment == 2) {
-            s = GetWindowLongPtr(hwnd, GWL_STYLE);
-            s = s | (SS_RIGHT);
-            SetWindowLongPtr(hwnd, GWL_STYLE, (LONG_PTR)s);
-        }
-        SetWindowPos(hwnd, 0, 0, 0, 0, 0,
-            SWP_NOZORDER | SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE | SWP_NOCOPYBITS | SWP_DRAWFRAME);
-    }
-}
-
-void ReportError(const char* CallingFunction) {
-    DWORD error = GetLastError();
-    LPVOID lpMsgBuf;
-    DWORD bufLen = FormatMessage(
-        FORMAT_MESSAGE_ALLOCATE_BUFFER |
-        FORMAT_MESSAGE_FROM_SYSTEM |
-        FORMAT_MESSAGE_IGNORE_INSERTS,
-        NULL,
-        error,
-        MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-        (LPTSTR)&lpMsgBuf,
-        0, NULL);
-
-    std::cout << "Error in " << CallingFunction << " : " << (wchar_t*)lpMsgBuf;
-}
-
 int getSystemTitleHeight() {
     return (GetSystemMetrics(SM_CYFRAME) + GetSystemMetrics(SM_CYCAPTION) + GetSystemMetrics(SM_CXPADDEDBORDER));
 }

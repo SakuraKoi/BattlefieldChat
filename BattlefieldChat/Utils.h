@@ -5,9 +5,6 @@
 
 #define REPORTERROR ReportError(__FUNCTION__)
 
-void setTextAlignment(HWND hwnd, int textalignment);
-void ReportError(const char* CallingFunction);
-
 int getSystemTitleHeight();
 
 bool isFullscreenWindow(HWND window);
