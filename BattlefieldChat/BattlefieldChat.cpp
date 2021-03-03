@@ -22,12 +22,22 @@ BattlefieldChat::BattlefieldChat(QWidget *parent)
     connect(ui.radioModePinyin, SIGNAL(clicked()), this, SLOT(handleSettingModePinyin()));
     connect(ui.radioModeEnglish, SIGNAL(clicked()), this, SLOT(handleSettingModeTranslate()));
 
+    connect(ui.chkUseProxy, SIGNAL(toggled(bool)), this, SLOT(handleSettingProxyEnabled(bool)));
+    connect(ui.editProxyHost, SIGNAL(editingFinished()), this, SLOT(handleSettingProxyHost()));
+    connect(ui.editProxyPort, SIGNAL(editingFinished()), this, SLOT(handleSettingProxyPort()));
+
     loadConfiguration();
 }
 
 void BattlefieldChat::loadConfiguration() {
     ui.chkAllowBypassLimit->setChecked(settings->value(SETTING_KEY_bypassLimit, false).toBool());
     ui.chkSupportFullscreen->setChecked(settings->value(SETTING_KEY_fullscreenSupport, false).toBool());
+
+    ui.chkUseProxy->setChecked(settings->value(SETTING_KEY_proxyEnabled, false).toBool());
+    ui.editProxyHost->setText(settings->value(SETTING_KEY_proxyHost, "127.0.0.1").toString());
+    ui.editProxyPort->setValue(settings->value(SETTING_KEY_proxyPort, 1080).toInt());
+
+
     switch(settings->value(SETTING_KEY_preprocessorMode, 1).toInt()) {
     case 0:
         preprocessor = &SINGLETON_PREPROCESSOR_NOP;
@@ -114,4 +124,39 @@ void BattlefieldChat::handleSettingModePinyin() {
 void BattlefieldChat::handleSettingModeTranslate() {
     preprocessor = &SINGLETON_PREPROCESSOR_ENGLISH;
     settings->setValue(SETTING_KEY_preprocessorMode, 3);
+}
+
+void BattlefieldChat::handleSettingProxyEnabled(bool checked) {
+    settings->setValue(SETTING_KEY_proxyEnabled, checked);
+    if (checked) {
+        QNetworkProxy proxy;
+        proxy.setType(QNetworkProxy::HttpProxy);
+        proxy.setHostName(ui.editProxyHost->text());
+        proxy.setPort(ui.editProxyPort->value());
+        network->setProxy(proxy);
+    } else {
+        network->setProxy(QNetworkProxy::NoProxy);
+    }
+}
+
+void BattlefieldChat::handleSettingProxyHost() {
+    settings->setValue(SETTING_KEY_proxyHost, ui.editProxyHost->text());
+    if (ui.chkUseProxy->isChecked()) {
+        QNetworkProxy proxy;
+        proxy.setType(QNetworkProxy::HttpProxy);
+        proxy.setHostName(ui.editProxyHost->text());
+        proxy.setPort(ui.editProxyPort->value());
+        network->setProxy(proxy);
+    }
+}
+
+void BattlefieldChat::handleSettingProxyPort() {
+    settings->setValue(SETTING_KEY_proxyPort, ui.editProxyPort->value());
+    if (ui.chkUseProxy->isChecked()) {
+        QNetworkProxy proxy;
+        proxy.setType(QNetworkProxy::HttpProxy);
+        proxy.setHostName(ui.editProxyHost->text());
+        proxy.setPort(ui.editProxyPort->value());
+        network->setProxy(proxy);
+    }
 }

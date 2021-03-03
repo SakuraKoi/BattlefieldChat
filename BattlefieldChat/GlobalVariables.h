@@ -1,6 +1,7 @@
 #pragma once
 #include <Windows.h>
 #include <QNetworkAccessManager>
+#include <QNetworkProxy>
 #include <QSettings>
 #include "Preprocessor.h"
 #include "BattlefieldChat.h"
@@ -32,3 +33,7 @@ extern QSettings* settings;
 #define SETTING_KEY_bypassLimit "allowExceedLimit"
 #define SETTING_KEY_fullscreenSupport "fullscreenSupport"
 #define SETTING_KEY_preprocessorMode "preprocessorMode"
+
+#define SETTING_KEY_proxyEnabled "proxyEnabled"
+#define SETTING_KEY_proxyHost "proxyHost"
+#define SETTING_KEY_proxyPort "proxyPort"

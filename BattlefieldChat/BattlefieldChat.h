@@ -20,6 +20,9 @@ public slots:
     void handleSettingModeTraditional();
     void handleSettingModePinyin();
     void handleSettingModeTranslate();
+    void handleSettingProxyEnabled(bool checked);
+    void handleSettingProxyHost();
+    void handleSettingProxyPort();
 
 private:
     void closeEvent(QCloseEvent* event);
