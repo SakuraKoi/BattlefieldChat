@@ -6,7 +6,7 @@ External Chinese chat input tool for battlefield 1
 
 ![](https://img.shields.io/github/license/SakuraKoi/BattlefieldChat?style=for-the-badge) ![](https://img.shields.io/github/languages/top/SakuraKoi/BattlefieldChat?style=for-the-badge) ![](https://img.shields.io/github/downloads/SakuraKoi/BattlefieldChat/total?style=for-the-badge) ![](https://img.shields.io/github/v/release/SakuraKoi/BattlefieldChat?style=for-the-badge)
 
-![[showcase.png]](https://i.loli.net/2021/01/20/siVhlkQc8UdFXxH.png)
+![showcase.png](https://i.loli.net/2021/03/03/Sc7b8jHp1eNyZLh.png)
 
 * 只有游戏语言为中文的客户端才能看见中文, 这意味着英文客户端看起来你打的字全是框框
 * 尽管这个工具是为了中文输入设计的, 但也能用来输入日语或韩语等多字节语言
