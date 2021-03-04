@@ -2,6 +2,7 @@
 
 bool allowExceedLimit = false;
 bool fullscreenSupport = false;
+bool translateKeepOriginal = false;
 
 DWORD pid = -1;
 HWND gameWindow;

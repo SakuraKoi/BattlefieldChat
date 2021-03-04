@@ -59,11 +59,14 @@
     <ClCompile Include="Preprocessor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Translator.cpp">
-      <Filter>Source Files\translator</Filter>
-    </ClCompile>
     <ClCompile Include="InputDialog.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BaiduTranslator.cpp">
+      <Filter>Source Files\translator</Filter>
+    </ClCompile>
+    <ClCompile Include="DeepLTranslator.cpp">
+      <Filter>Source Files\translator</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

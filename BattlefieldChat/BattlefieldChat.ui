@@ -258,7 +258,7 @@
          <x>8</x>
          <y>8</y>
          <width>257</width>
-         <height>121</height>
+         <height>105</height>
         </rect>
        </property>
        <property name="title">
@@ -457,6 +457,19 @@
          <string>密钥</string>
         </property>
        </widget>
+      </widget>
+      <widget class="QCheckBox" name="chkTranslateKeepOriginal">
+       <property name="geometry">
+        <rect>
+         <x>8</x>
+         <y>112</y>
+         <width>185</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>翻译后保留中文原文</string>
+       </property>
       </widget>
      </widget>
     </widget>

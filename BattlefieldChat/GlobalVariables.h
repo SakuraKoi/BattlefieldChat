@@ -11,6 +11,7 @@
 
 extern bool allowExceedLimit;
 extern bool fullscreenSupport;
+extern bool translateKeepOriginal;
 
 extern DWORD pid;
 extern HWND gameWindow;
@@ -32,6 +33,7 @@ extern QSettings* settings;
 
 #define SETTING_KEY_bypassLimit "allowExceedLimit"
 #define SETTING_KEY_fullscreenSupport "fullscreenSupport"
+#define SETTING_KEY_translateKeepOriginal "translateKeepOriginal"
 #define SETTING_KEY_preprocessorMode "preprocessorMode"
 
 #define SETTING_KEY_proxyEnabled "proxyEnabled"
