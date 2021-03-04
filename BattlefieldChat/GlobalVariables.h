@@ -13,6 +13,8 @@ extern bool allowExceedLimit;
 extern bool fullscreenSupport;
 extern bool translateKeepOriginal;
 
+extern int translatorTimeout;
+
 extern DWORD pid;
 extern HWND gameWindow;
 
@@ -39,3 +41,9 @@ extern QSettings* settings;
 #define SETTING_KEY_proxyEnabled "proxyEnabled"
 #define SETTING_KEY_proxyHost "proxyHost"
 #define SETTING_KEY_proxyPort "proxyPort"
+
+#define SETTING_KEY_translatorProvider "translatorProvider"
+#define SETTING_KEY_translatorTimeout "translatorTimeout"
+
+#define SETTING_KEY_translatorBaiduAppid "translatorBaiduAppid"
+#define SETTING_KEY_translatorBaiduKey "translatorBaiduKey"

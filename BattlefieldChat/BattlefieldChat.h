@@ -17,13 +17,22 @@ public slots:
     void handleSettingBypassLimit(int checked);
     void handleSettingFullscreenSupport(int checked);
     void handleSettingTranslateKeepOriginal(int checked);
+
     void handleSettingModeNop();
     void handleSettingModeTraditional();
     void handleSettingModePinyin();
     void handleSettingModeTranslate();
+
     void handleSettingProxyEnabled(bool checked);
     void handleSettingProxyHost();
     void handleSettingProxyPort();
+
+    void handleSettingTranslatorBaidu();
+    void handleSettingTranslatorDeepL();
+
+    void handleSettingBaiduAppid();
+    void handleSettingBaiduKey();
+    void handleSettingTranslateTimeout();
 
 private:
     void closeEvent(QCloseEvent* event);

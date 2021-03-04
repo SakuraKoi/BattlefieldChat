@@ -33,7 +33,6 @@ public slots:
     void lostFocus();
     void enterPressed();
     void textTyped(const QString& text);
-    void onEnterProcessed();
 
     void handleInitializeWindow(Qt::WindowFlags windowType, QSize size, QSize editSize, QPoint pos);
 

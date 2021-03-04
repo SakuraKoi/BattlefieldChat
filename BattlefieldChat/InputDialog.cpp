@@ -9,7 +9,6 @@ InputDialog::InputDialog(QWidget* parent)
     ui.setupUi(this);
     this->setFocusPolicy(Qt::StrongFocus);
     QObject::connect(ui.editContent, SIGNAL(returnPressed()), this, SLOT(enterPressed()));
-    QObject::connect(this, SIGNAL(enterProcessed()), this, SLOT(onEnterProcessed()));
     QObject::connect(ui.editContent, SIGNAL(textChanged(QString)), this, SLOT(textTyped(QString)));
 
     qRegisterMetaType<Qt::WindowFlags>("Qt::WindowFlags");
@@ -107,15 +106,13 @@ void InputDialog::enterPressed() {
             } else {
                 ui.editContent->setText(result);
             }
-        } catch (std::string error) {
-            ui.lblStatus->setText(QString::fromUtf8(error.c_str()));
+        } catch (TranslateException error) {
+            ui.lblStatus->setText("´íÎó");
+            ui.lblStatus->setStyleSheet("color: rgb(255, 0, 0);\nbackground-color: rgba(255, 255, 255, 0);");
+            mainWindow->pushLog(" [x] ·­Òë·þÎñ´íÎó: " + error.reason);
         }
         emit enterProcessed();
         });
-}
-
-void InputDialog::onEnterProcessed() {
-    ui.editContent->setReadOnly(false);
 }
 
 void InputDialog::handleInitializeWindow(Qt::WindowFlags style, QSize size, QSize editSize, QPoint pos) {

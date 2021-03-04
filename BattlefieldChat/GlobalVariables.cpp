@@ -4,6 +4,8 @@ bool allowExceedLimit = false;
 bool fullscreenSupport = false;
 bool translateKeepOriginal = false;
 
+int translatorTimeout = 5000L;
+
 DWORD pid = -1;
 HWND gameWindow;
 

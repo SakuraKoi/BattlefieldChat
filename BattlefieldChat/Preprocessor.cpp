@@ -53,8 +53,8 @@ void TranslateToEnglishPreprocessor::initialize() {
 QString TranslateToEnglishPreprocessor::enterPressed(QString input) {
     if (originalChineseText != Q_NULLPTR)
         return Q_NULLPTR;
-    originalChineseText = input;
     QString result = translatorProvider->translate(input);
+    originalChineseText = input;
     if (translateKeepOriginal)
         return input + " / " + result;
 

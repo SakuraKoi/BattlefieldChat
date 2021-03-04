@@ -26,7 +26,15 @@ BattlefieldChat::BattlefieldChat(QWidget *parent)
     connect(ui.editProxyHost, SIGNAL(editingFinished()), this, SLOT(handleSettingProxyHost()));
     connect(ui.editProxyPort, SIGNAL(editingFinished()), this, SLOT(handleSettingProxyPort()));
 
+    connect(ui.radioProviderBaidu, SIGNAL(clicked()), this, SLOT(handleSettingTranslatorBaidu()));
+    connect(ui.radioProviderDeepL, SIGNAL(clicked()), this, SLOT(handleSettingTranslatorDeepL()));
+
     connect(ui.chkTranslateKeepOriginal, SIGNAL(stateChanged(int)), this, SLOT(handleSettingTranslateKeepOriginal(int)));
+
+    connect(ui.editTranslateBaiduAppid, SIGNAL(editingFinished()), this, SLOT(handleSettingBaiduAppid()));
+    connect(ui.editTranslateBaiduKey, SIGNAL(editingFinished()), this, SLOT(handleSettingBaiduKey()));
+
+    connect(ui.editTranslateTimeout, SIGNAL(editingFinished()), this, SLOT(handleSettingTranslateTimeout()));
 
     loadConfiguration();
 }
@@ -34,11 +42,6 @@ BattlefieldChat::BattlefieldChat(QWidget *parent)
 void BattlefieldChat::loadConfiguration() {
     ui.chkAllowBypassLimit->setChecked(settings->value(SETTING_KEY_bypassLimit, false).toBool());
     ui.chkSupportFullscreen->setChecked(settings->value(SETTING_KEY_fullscreenSupport, false).toBool());
-
-    ui.chkUseProxy->setChecked(settings->value(SETTING_KEY_proxyEnabled, false).toBool());
-    ui.editProxyHost->setText(settings->value(SETTING_KEY_proxyHost, "127.0.0.1").toString());
-    ui.editProxyPort->setValue(settings->value(SETTING_KEY_proxyPort, 1080).toInt());
-
 
     switch(settings->value(SETTING_KEY_preprocessorMode, 1).toInt()) {
     case 0:
@@ -55,6 +58,27 @@ void BattlefieldChat::loadConfiguration() {
         preprocessor = &SINGLETON_PREPROCESSOR_ENGLISH;
         break;
     }
+
+    ui.editProxyHost->setText(settings->value(SETTING_KEY_proxyHost, "127.0.0.1").toString());
+    ui.editProxyPort->setValue(settings->value(SETTING_KEY_proxyPort, 1080).toInt());
+    ui.chkUseProxy->setChecked(settings->value(SETTING_KEY_proxyEnabled, false).toBool());
+
+    ui.chkTranslateKeepOriginal->setChecked(translateKeepOriginal = settings->value(SETTING_KEY_translateKeepOriginal, false).toBool());
+    ui.editTranslateTimeout->setValue(translatorTimeout = settings->value(SETTING_KEY_translatorTimeout, 5000).toInt());
+    
+    switch (settings->value(SETTING_KEY_translatorProvider, 1).toInt()) {
+    case 1:
+    default:
+        translatorProvider = &SINGLETON_TRANSLATOR_DEEPL;
+        break;
+    case 2:
+        translatorProvider = &SINGLETON_TRANSLATOR_BAIDU;
+        break;
+    }
+
+    ui.editTranslateBaiduAppid->setText(baiduAppid = settings->value(SETTING_KEY_translatorBaiduAppid, "").toString());
+    ui.editTranslateBaiduKey->setText(baiduKey = settings->value(SETTING_KEY_translatorBaiduKey, "").toString());
+
 }
 
 void BattlefieldChat::showEvent(QShowEvent* ev) {
@@ -166,4 +190,29 @@ void BattlefieldChat::handleSettingProxyPort() {
 void BattlefieldChat::handleSettingTranslateKeepOriginal(int checked) {
     translateKeepOriginal = checked == Qt::Checked;
     settings->setValue(SETTING_KEY_translateKeepOriginal, translateKeepOriginal);
+}
+
+void BattlefieldChat::handleSettingBaiduAppid() {
+    baiduAppid = ui.editTranslateBaiduAppid->text();
+    settings->setValue(SETTING_KEY_translatorBaiduAppid, baiduAppid);
+}
+
+void BattlefieldChat::handleSettingBaiduKey() {
+    baiduKey = ui.editTranslateBaiduKey->text();
+    settings->setValue(SETTING_KEY_translatorBaiduKey, baiduKey);
+}
+
+void BattlefieldChat::handleSettingTranslateTimeout() {
+    translatorTimeout = ui.editTranslateTimeout->value();
+    settings->setValue(SETTING_KEY_translatorTimeout, translatorTimeout);
+}
+
+void BattlefieldChat::handleSettingTranslatorDeepL() {
+    translatorProvider = &SINGLETON_TRANSLATOR_DEEPL;
+    settings->setValue(SETTING_KEY_translatorProvider, 1);
+}
+
+void BattlefieldChat::handleSettingTranslatorBaidu() {
+    translatorProvider = &SINGLETON_TRANSLATOR_BAIDU;
+    settings->setValue(SETTING_KEY_translatorProvider, 2);
 }
