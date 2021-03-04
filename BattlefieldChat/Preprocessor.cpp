@@ -40,6 +40,8 @@ std::string PinyinPreprocessor::process(QString input) {
 }
 
 std::string TranslateToEnglishPreprocessor::process(QString input) {
+    if (translateKeepOriginal)
+        return SINGLETON_PREPROCESSOR_TRAD.process(input);
     return std::string(input.toLocal8Bit().data());
 }
 

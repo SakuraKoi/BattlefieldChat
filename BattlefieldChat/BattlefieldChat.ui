@@ -51,7 +51,7 @@
    </widget>
    <widget class="QWidget" name="mainContent" native="true">
     <property name="enabled">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
     <property name="geometry">
      <rect>
@@ -151,6 +151,9 @@
         </property>
        </widget>
        <widget class="QRadioButton" name="radioModePinyin">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="geometry">
          <rect>
           <x>16</x>
@@ -165,7 +168,7 @@
        </widget>
        <widget class="QRadioButton" name="radioModeEnglish">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>

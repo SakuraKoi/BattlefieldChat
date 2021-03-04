@@ -6,6 +6,7 @@ BattlefieldChat::BattlefieldChat(QWidget *parent)
     : QMainWindow(parent)
 {
     ui.setupUi(this);
+    ui.mainContent->setEnabled(false);
     setWindowFlags(Qt::Window | Qt::MSWindowsFixedSizeDialogHint);
     mainWindow = this;
     inputWindow = new InputDialog();
@@ -46,16 +47,20 @@ void BattlefieldChat::loadConfiguration() {
     switch(settings->value(SETTING_KEY_preprocessorMode, 1).toInt()) {
     case 0:
         preprocessor = &SINGLETON_PREPROCESSOR_NOP;
+        ui.radioModeNop->setChecked(true);
         break;
     default:
     case 1:
         preprocessor = &SINGLETON_PREPROCESSOR_TRAD;
+        ui.radioModeTrad->setChecked(true);
         break;
     case 2:
         preprocessor = &SINGLETON_PREPROCESSOR_PINYIN;
+        ui.radioModePinyin->setChecked(true);
         break;
     case 3:
         preprocessor = &SINGLETON_PREPROCESSOR_ENGLISH;
+        ui.radioModeEnglish->setChecked(true);
         break;
     }
 
@@ -70,9 +75,11 @@ void BattlefieldChat::loadConfiguration() {
     case 1:
     default:
         translatorProvider = &SINGLETON_TRANSLATOR_DEEPL;
+        ui.radioProviderDeepL->setChecked(true);
         break;
     case 2:
         translatorProvider = &SINGLETON_TRANSLATOR_BAIDU;
+        ui.radioProviderBaidu->setChecked(true);
         break;
     }
 
@@ -156,7 +163,7 @@ void BattlefieldChat::handleSettingProxyEnabled(bool checked) {
     settings->setValue(SETTING_KEY_proxyEnabled, checked);
     if (checked) {
         QNetworkProxy proxy;
-        proxy.setType(QNetworkProxy::HttpProxy);
+        proxy.setType(QNetworkProxy::ProxyType::HttpProxy);
         proxy.setHostName(ui.editProxyHost->text());
         proxy.setPort(ui.editProxyPort->value());
         network->setProxy(proxy);
@@ -169,7 +176,7 @@ void BattlefieldChat::handleSettingProxyHost() {
     settings->setValue(SETTING_KEY_proxyHost, ui.editProxyHost->text());
     if (ui.chkUseProxy->isChecked()) {
         QNetworkProxy proxy;
-        proxy.setType(QNetworkProxy::HttpProxy);
+        proxy.setType(QNetworkProxy::ProxyType::HttpProxy);
         proxy.setHostName(ui.editProxyHost->text());
         proxy.setPort(ui.editProxyPort->value());
         network->setProxy(proxy);
@@ -180,7 +187,7 @@ void BattlefieldChat::handleSettingProxyPort() {
     settings->setValue(SETTING_KEY_proxyPort, ui.editProxyPort->value());
     if (ui.chkUseProxy->isChecked()) {
         QNetworkProxy proxy;
-        proxy.setType(QNetworkProxy::HttpProxy);
+        proxy.setType(QNetworkProxy::ProxyType::HttpProxy);
         proxy.setHostName(ui.editProxyHost->text());
         proxy.setPort(ui.editProxyPort->value());
         network->setProxy(proxy);

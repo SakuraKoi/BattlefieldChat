@@ -107,9 +107,8 @@ void InputDialog::enterPressed() {
                 ui.editContent->setText(result);
             }
         } catch (TranslateException error) {
-            ui.lblStatus->setText("´íÎó");
-            ui.lblStatus->setStyleSheet("color: rgb(255, 0, 0);\nbackground-color: rgba(255, 255, 255, 0);");
-            mainWindow->pushLog(" [x] ·­Òë·þÎñ´íÎó: " + error.reason);
+            ui.lblStatus->setText(u8"´íÎó");
+            mainWindow->pushLog(u8" [x] ·­Òë·þÎñ´íÎó: " + error.reason); mainWindow->logColor(Qt::red);
         }
         emit enterProcessed();
         });
@@ -121,6 +120,7 @@ void InputDialog::handleInitializeWindow(Qt::WindowFlags style, QSize size, QSiz
     resize(size);
     ui.editContent->resize(editSize);
 
+    ui.editContent->setReadOnly(false);
     ui.editContent->setText("");
     ui.lblStatus->setText(QString::fromUtf8(u8"¾ÍÐ÷"));
     ui.lblStatus->setStyleSheet("color: rgb(83, 164, 60);\nbackground-color: rgba(255, 255, 255, 0);");

@@ -17,7 +17,8 @@ QString baiduKey;
 BaiduTranslator SINGLETON_TRANSLATOR_BAIDU;
 
 QString doTranslate(QString text) {
-    QUrl url("https://fanyi-api.baidu.com/api/trans/vip/translate");
+    // FIXME: recompile fucking qt with openssl to support https
+    QUrl url("http://fanyi-api.baidu.com/api/trans/vip/translate");
     QUrlQuery query;
 
     query.addQueryItem("q", text);
@@ -57,21 +58,21 @@ QString doTranslate(QString text) {
 
     if (!timer.isActive()) {
         TranslateException exception;
-        exception.reason = "Timeout";
+        exception.reason = QString::fromUtf8(u8"Timeout");
         throw exception;
     }
     timer.stop();
 
     if (reply->error() != QNetworkReply::NetworkError::NoError) {
         TranslateException exception;
-        exception.reason = "Network error " + reply->error();
+        exception.reason = QString::fromUtf8(u8"Network error: ") + reply->errorString();
         throw exception;
     }
 
     int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    if (status >= 200 && status < 300) {
+    if (!(status >= 200 && status < 300)) {
         TranslateException exception;
-        exception.reason = "Server responsed " + status;
+        exception.reason = QString::fromUtf8(u8"Server responsed ") + std::to_string(status).c_str();
         throw exception;
     }
 
@@ -81,7 +82,7 @@ QString doTranslate(QString text) {
 
     if (document.isNull() || jsonError.error != QJsonParseError::NoError) {
         TranslateException exception;
-        exception.reason = "Cannot parse response";
+        exception.reason = QString::fromUtf8(u8"Cannot parse response");
         throw exception;
     }
 
@@ -91,18 +92,18 @@ QString doTranslate(QString text) {
             QJsonArray result = object.value("trans_result").toArray();
             if (result.isEmpty()) {
                 TranslateException exception;
-                exception.reason = "Empty result";
+                exception.reason = QString::fromUtf8(u8"Empty result");
                 throw exception;
             }
             return result.first().toObject().value("dst").toString();
         } else if (object.contains("error_code")) {
             TranslateException exception;
-            exception.reason = object.value("error_code").toString() + " " + object.value("error_msg").toString();
+            exception.reason = QString::fromUtf8(u8"Server error: ") + object.value("error_code").toString() + " " + object.value("error_msg").toString();
             throw exception;
         }
     }
     TranslateException exception;
-    exception.reason = "Invalid json response received";
+    exception.reason = QString::fromUtf8(u8"Invalid json response received");
     throw exception;
 }
 
