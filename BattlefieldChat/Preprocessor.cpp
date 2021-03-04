@@ -1,8 +1,12 @@
 #include "Preprocessor.h"
 #include "Utils.h"
+#include "GlobalVariables.h"
 
 std::string Preprocessor::process(QString input) {
     return std::string(input.toLocal8Bit().data());
+}
+
+void Preprocessor::initialize() {
 }
 
 QString Preprocessor::enterPressed(QString input) {
@@ -30,33 +34,9 @@ std::string TraditionalChinesePreprocessor::process(QString input) {
     return WStrToStr(trad);
 }
 
-QString TraditionalChinesePreprocessor::enterPressed(QString input) {
-    return Q_NULLPTR;
-}
-
-QString TraditionalChinesePreprocessor::escPressed(QString input) {
-    return Q_NULLPTR;
-}
-
-bool TraditionalChinesePreprocessor::shouldValidateLength() {
-    return true;
-}
-
 std::string PinyinPreprocessor::process(QString input) {
     // FIXME: Not implemented
     return std::string(input.toLocal8Bit().data());
-}
-
-QString PinyinPreprocessor::enterPressed(QString input) {
-    return Q_NULLPTR;
-}
-
-QString PinyinPreprocessor::escPressed(QString input) {
-    return Q_NULLPTR;
-}
-
-bool PinyinPreprocessor::shouldValidateLength() {
-    return true;
 }
 
 std::string TranslateToEnglishPreprocessor::process(QString input) {
@@ -66,10 +46,19 @@ std::string TranslateToEnglishPreprocessor::process(QString input) {
 Translator* translatorProvider;
 QString originalChineseText = Q_NULLPTR;
 
+void TranslateToEnglishPreprocessor::initialize() {
+    originalChineseText = Q_NULLPTR;
+}
+
 QString TranslateToEnglishPreprocessor::enterPressed(QString input) {
     if (originalChineseText != Q_NULLPTR)
         return Q_NULLPTR;
-    return translatorProvider->translate(input);
+    originalChineseText = input;
+    QString result = translatorProvider->translate(input);
+    if (translateKeepOriginal)
+        return input + " / " + result;
+
+    return result;
 }
 
 QString TranslateToEnglishPreprocessor::escPressed(QString input) {

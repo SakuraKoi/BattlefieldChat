@@ -142,7 +142,7 @@ void InputDialog::handleInitializeWindow(Qt::WindowFlags style, QSize size, QSiz
 
     ui.editContent->setFocus();
 
-
+    preprocessor->initialize();
     showing = false;
 }
 

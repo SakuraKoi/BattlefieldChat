@@ -16,6 +16,7 @@ public slots:
     void updageGameFoundState(bool found);
     void handleSettingBypassLimit(int checked);
     void handleSettingFullscreenSupport(int checked);
+    void handleSettingTranslateKeepOriginal(int checked);
     void handleSettingModeNop();
     void handleSettingModeTraditional();
     void handleSettingModePinyin();

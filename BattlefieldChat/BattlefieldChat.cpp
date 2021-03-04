@@ -26,6 +26,8 @@ BattlefieldChat::BattlefieldChat(QWidget *parent)
     connect(ui.editProxyHost, SIGNAL(editingFinished()), this, SLOT(handleSettingProxyHost()));
     connect(ui.editProxyPort, SIGNAL(editingFinished()), this, SLOT(handleSettingProxyPort()));
 
+    connect(ui.chkTranslateKeepOriginal, SIGNAL(stateChanged(int)), this, SLOT(handleSettingTranslateKeepOriginal(int)));
+
     loadConfiguration();
 }
 
@@ -159,4 +161,9 @@ void BattlefieldChat::handleSettingProxyPort() {
         proxy.setPort(ui.editProxyPort->value());
         network->setProxy(proxy);
     }
+}
+
+void BattlefieldChat::handleSettingTranslateKeepOriginal(int checked) {
+    translateKeepOriginal = checked == Qt::Checked;
+    settings->setValue(SETTING_KEY_translateKeepOriginal, translateKeepOriginal);
 }
