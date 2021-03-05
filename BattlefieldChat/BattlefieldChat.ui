@@ -268,6 +268,9 @@
         <string>提供商</string>
        </property>
        <widget class="QRadioButton" name="radioProviderDeepL">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="geometry">
          <rect>
           <x>16</x>
@@ -280,7 +283,7 @@
          <string>DeepL (翻译质量最好 国内连接速度慢)</string>
         </property>
         <property name="checked">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
        </widget>
        <widget class="QRadioButton" name="radioProviderBaidu">
@@ -296,11 +299,14 @@
          <string>百度翻译 (需要自行申请密钥)</string>
         </property>
         <property name="checked">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
        </widget>
       </widget>
       <widget class="QGroupBox" name="chkUseProxy">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="geometry">
         <rect>
          <x>464</x>

@@ -13,7 +13,8 @@ public:
     void logColor(Qt::GlobalColor color);
 
 public slots:
-    void updageGameFoundState(bool found);
+    void updateGameFoundState(bool found);
+    void handleNewVersionFound(QString version, QString link);
     void handleSettingBypassLimit(int checked);
     void handleSettingFullscreenSupport(int checked);
     void handleSettingTranslateKeepOriginal(int checked);
@@ -33,7 +34,6 @@ public slots:
     void handleSettingBaiduAppid();
     void handleSettingBaiduKey();
     void handleSettingTranslateTimeout();
-
 private:
     void closeEvent(QCloseEvent* event);
     void showEvent(QShowEvent* event);

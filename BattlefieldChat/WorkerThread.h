@@ -17,7 +17,7 @@ public:
     void logColor(Qt::GlobalColor color);
 
 signals:
-    void updageGameFoundState(bool found);
+    void updateGameFoundState(bool found);
 
 private:
     void chatLoop();

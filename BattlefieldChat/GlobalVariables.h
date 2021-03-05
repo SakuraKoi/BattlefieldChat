@@ -8,6 +8,7 @@
 #include "InputDialog.h"
 #include "WorkerThread.h"
 
+extern QString currentVersion;
 
 extern bool allowExceedLimit;
 extern bool fullscreenSupport;

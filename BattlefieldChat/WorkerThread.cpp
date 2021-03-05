@@ -25,7 +25,7 @@ void WorkerThread::run() {
     }
 
     while (!isInterruptionRequested()) {
-        emit updageGameFoundState(false);
+        emit updateGameFoundState(false);
         Log() << u8" [*] 正在等待游戏启动...";
         while (!isInterruptionRequested()) {
             gameWindow = FindWindow(nullptr, L"Battlefield™ 1");
@@ -46,7 +46,7 @@ void WorkerThread::run() {
         messageCaveAddr = (uintptr_t)VirtualAllocEx(hProcess, NULL, 256 * 3, MEM_COMMIT, PAGE_READWRITE);
         Log() << u8" [+] 预分配内存成功: 0x" << std::hex << messageCaveAddr;
 
-        emit updageGameFoundState(true);
+        emit updateGameFoundState(true);
         chatLoop();
         VirtualFreeEx(hProcess, (LPVOID)messageCaveAddr, 0, MEM_RELEASE);
         CloseHandle(hProcess);

@@ -55,12 +55,12 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
-    <QtInstall>static-5.15.2</QtInstall>
+    <QtInstall>Qt_static-5.15.2</QtInstall>
     <QtModules>concurrent;core;gui;network;widgets</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
-    <QtInstall>static-5.15.2</QtInstall>
+    <QtInstall>Qt_static-5.15.2</QtInstall>
     <QtModules>concurrent;core;gui;network;widgets</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
   </PropertyGroup>
@@ -110,10 +110,12 @@
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">input</DynamicSource>
       <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).moc</QtMocFileName>
     </ClCompile>
+    <ClCompile Include="Log.cpp" />
     <ClCompile Include="Preprocessor.cpp" />
     <ClCompile Include="Offsets.cpp" />
     <ClCompile Include="Pointer.cpp" />
     <ClCompile Include="BaiduTranslator.cpp" />
+    <ClCompile Include="UpdateCheckerThread.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="WorkerThread.cpp" />
     <QtRcc Include="BattlefieldChat.qrc" />
@@ -138,11 +140,13 @@
   <ItemGroup>
     <ClInclude Include="GlobalVariables.h" />
     <QtMoc Include="InputDialog.h" />
+    <ClInclude Include="Log.h" />
     <ClInclude Include="Preprocessor.h" />
     <ClInclude Include="Offsets.h" />
     <ClInclude Include="Pointer.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Translator.h" />
+    <QtMoc Include="UpdateCheckerThread.h" />
     <ClInclude Include="Utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

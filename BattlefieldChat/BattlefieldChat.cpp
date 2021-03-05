@@ -1,18 +1,27 @@
 #include "BattlefieldChat.h"
 #include "GlobalVariables.h"
+#include "UpdateCheckerThread.h"
 #include <QCloseEvent>
+#include <QMessageBox>
+#include <QDesktopServices>
+#include <QPushButton>
+
+UpdateCheckerThread* updateCheckerThread;
 
 BattlefieldChat::BattlefieldChat(QWidget *parent)
     : QMainWindow(parent)
 {
     ui.setupUi(this);
     ui.mainContent->setEnabled(false);
+    setWindowTitle(QString::fromUtf8(u8"Battlefield 1 中文输入工具 v") + currentVersion);
     setWindowFlags(Qt::Window | Qt::MSWindowsFixedSizeDialogHint);
     mainWindow = this;
     inputWindow = new InputDialog();
     workerThread = new WorkerThread();
+    updateCheckerThread = new UpdateCheckerThread();
     network = new QNetworkAccessManager(this);
-    connect(workerThread, SIGNAL(updageGameFoundState(bool)), this, SLOT(updageGameFoundState(bool)));
+    connect(workerThread, SIGNAL(updateGameFoundState(bool)), this, SLOT(updateGameFoundState(bool)));
+    connect(updateCheckerThread, SIGNAL(newVersionFound(QString, QString)), this, SLOT(handleNewVersionFound(QString, QString)));
     connect(ui.listLogs->model(), SIGNAL(rowsInserted(QModelIndex, int, int)), ui.listLogs, SLOT(scrollToBottom()));
 
     connect(ui.chkAllowBypassLimit, SIGNAL(stateChanged(int)), this, SLOT(handleSettingBypassLimit(int)));
@@ -91,6 +100,7 @@ void BattlefieldChat::loadConfiguration() {
 void BattlefieldChat::showEvent(QShowEvent* ev) {
     QMainWindow::showEvent(ev);
     workerThread -> start();
+    updateCheckerThread->start();
 }
 
 bool shutdownPending = false;
@@ -114,18 +124,35 @@ void BattlefieldChat::logColor(Qt::GlobalColor color) {
 }
 
 bool lastGameState = false;
-void BattlefieldChat::updageGameFoundState(bool found) {
+void BattlefieldChat::updateGameFoundState(bool found) {
     if (!shutdownPending && (lastGameState != found)) {
         lastGameState = found;
         if (found) {
             ui.mainContent->setEnabled(true);
             ui.lblCurrentStatus->setText(QString::fromUtf8(u8"中文输入工具就绪"));
-            ui.lblCurrentStatus->setStyleSheet("color: rgb(85, 170, 0);\nfont: 12pt \"微软雅黑\";");
+            ui.lblCurrentStatus->setStyleSheet(u8"color: rgb(85, 170, 0);\nfont: 12pt \"微软雅黑\";");
         } else {
             ui.mainContent->setEnabled(false);
             ui.lblCurrentStatus->setText(QString::fromUtf8(u8"正在等待游戏启动"));
-            ui.lblCurrentStatus->setStyleSheet("color: rgb(255, 0, 0);\nfont: 12pt \"微软雅黑\";");
+            ui.lblCurrentStatus->setStyleSheet(u8"color: rgb(255, 0, 0);\nfont: 12pt \"微软雅黑\";");
         }
+    }
+}
+
+void BattlefieldChat::handleNewVersionFound(QString version, QString link) {
+    pushLog(QString::fromUtf8(u8" [%] BattlefieldChat 新版本 v") + version + QString::fromUtf8(u8" 已发布!")); logColor(Qt::cyan);
+
+    QMessageBox msgBox;
+    msgBox.setIcon(QMessageBox::Warning);
+    msgBox.setWindowTitle(u8"你从未用过的船新版本");
+    msgBox.setText(u8"新版本 BattlefieldChat v" + version + u8" 已发布!                                                        ");
+    msgBox.setInformativeText(link);
+    QPushButton* accept = msgBox.addButton(u8"立即更新", QMessageBox::AcceptRole);
+    QPushButton* cancel = msgBox.addButton(u8"咕咕咕", QMessageBox::RejectRole);
+    msgBox.exec();
+
+    if (msgBox.clickedButton() == accept) {
+        QDesktopServices::openUrl(QUrl(link));
     }
 }
 
