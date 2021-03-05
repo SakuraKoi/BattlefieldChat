@@ -17,8 +17,7 @@ QString baiduKey;
 BaiduTranslator SINGLETON_TRANSLATOR_BAIDU;
 
 QString doTranslate(QString text) {
-    // FIXME: recompile fucking qt with openssl to support https
-    QUrl url("http://fanyi-api.baidu.com/api/trans/vip/translate");
+    QUrl url("https://fanyi-api.baidu.com/api/trans/vip/translate");
     QUrlQuery query;
 
     query.addQueryItem("q", text);
