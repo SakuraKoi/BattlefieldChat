@@ -7,7 +7,7 @@ public:
     Log() {
     };
 
-    Log::~Log();
+    ~Log();
 };
 
 void LogColor(Qt::GlobalColor color);
