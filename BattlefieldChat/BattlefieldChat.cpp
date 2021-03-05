@@ -13,7 +13,7 @@ BattlefieldChat::BattlefieldChat(QWidget *parent)
 {
     ui.setupUi(this);
     ui.mainContent->setEnabled(false);
-    setWindowTitle(QString::fromUtf8(u8"Battlefield 1 中文输入工具 v") + currentVersion);
+    setWindowTitle(QString::fromUtf8(u8"Battlefield 1 中文输入工具 v") + currentVersion + addtionalVersion);
     setWindowFlags(Qt::Window | Qt::MSWindowsFixedSizeDialogHint);
     mainWindow = this;
     inputWindow = new InputDialog();

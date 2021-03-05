@@ -69,12 +69,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "Powered By.SakuraKooi"
             VALUE "FileDescription", "Battlefield 1 External Chat Tool"
-            VALUE "FileVersion", "ALPHA-v7"
+            VALUE "FileVersion", "v7"
             VALUE "InternalName", "BattlefieldChat.exe"
             VALUE "LegalCopyright", "Powered By.SakuraKooi"
             VALUE "OriginalFilename", "BattlefieldChat.exe"
             VALUE "ProductName", "Battlefield 1 Chat Tool"
-            VALUE "ProductVersion", "ALPHA-v7"
+            VALUE "ProductVersion", "v7"
         END
     END
     BLOCK "VarFileInfo"

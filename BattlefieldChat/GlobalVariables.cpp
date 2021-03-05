@@ -1,6 +1,7 @@
 #include "GlobalVariables.h"
 
 QString currentVersion = "7";
+QString addtionalVersion = "";
 
 bool allowExceedLimit = false;
 bool fullscreenSupport = false;

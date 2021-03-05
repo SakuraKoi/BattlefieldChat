@@ -9,6 +9,7 @@
 #include "WorkerThread.h"
 
 extern QString currentVersion;
+extern QString addtionalVersion;
 
 extern bool allowExceedLimit;
 extern bool fullscreenSupport;
