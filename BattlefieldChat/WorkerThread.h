@@ -1,7 +1,6 @@
 #pragma once
 
 #include <QThread>
-#include <sstream>
 
 #include "Offsets.h"
 
@@ -26,12 +25,4 @@ private:
     void writeChatMessage(Pointer messageCavePtr, ChatMessagePointer chatMessagePtr, std::string content, int length);
     bool suspendAndWrite(Pointer messageCavePtr, ChatMessagePointer chatMessagePtr, std::string content, int length);
     void resumePointer(ChatMessagePointer chatMessagePtr, uintptr_t oldAddress);
-};
-
-class Log : public std::ostringstream {
-public:
-    Log() {
-    };
-
-    ~Log();
 };
