@@ -21,7 +21,6 @@ public slots:
 
     void handleSettingModeNop();
     void handleSettingModeTraditional();
-    void handleSettingModePinyin();
     void handleSettingModeTranslate();
 
     void handleSettingProxyEnabled(bool checked);

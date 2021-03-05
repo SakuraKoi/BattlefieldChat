@@ -29,7 +29,6 @@ BattlefieldChat::BattlefieldChat(QWidget *parent)
 
     connect(ui.radioModeNop, SIGNAL(clicked()), this, SLOT(handleSettingModeNop()));
     connect(ui.radioModeTrad, SIGNAL(clicked()), this, SLOT(handleSettingModeTraditional()));
-    connect(ui.radioModePinyin, SIGNAL(clicked()), this, SLOT(handleSettingModePinyin()));
     connect(ui.radioModeEnglish, SIGNAL(clicked()), this, SLOT(handleSettingModeTranslate()));
 
     connect(ui.chkUseProxy, SIGNAL(toggled(bool)), this, SLOT(handleSettingProxyEnabled(bool)));
@@ -62,10 +61,6 @@ void BattlefieldChat::loadConfiguration() {
     case 1:
         preprocessor = &SINGLETON_PREPROCESSOR_TRAD;
         ui.radioModeTrad->setChecked(true);
-        break;
-    case 2:
-        preprocessor = &SINGLETON_PREPROCESSOR_PINYIN;
-        ui.radioModePinyin->setChecked(true);
         break;
     case 3:
         preprocessor = &SINGLETON_PREPROCESSOR_ENGLISH;
@@ -174,11 +169,6 @@ void BattlefieldChat::handleSettingModeNop() {
 void BattlefieldChat::handleSettingModeTraditional() {
     preprocessor = &SINGLETON_PREPROCESSOR_TRAD;
     settings->setValue(SETTING_KEY_preprocessorMode, 1);
-}
-
-void BattlefieldChat::handleSettingModePinyin() {
-    preprocessor = &SINGLETON_PREPROCESSOR_PINYIN;
-    settings->setValue(SETTING_KEY_preprocessorMode, 2);
 }
 
 void BattlefieldChat::handleSettingModeTranslate() {

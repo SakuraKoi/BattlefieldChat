@@ -115,7 +115,7 @@
          <x>8</x>
          <y>8</y>
          <width>649</width>
-         <height>121</height>
+         <height>105</height>
         </rect>
        </property>
        <property name="title">
@@ -150,22 +150,6 @@
          <bool>true</bool>
         </property>
        </widget>
-       <widget class="QRadioButton" name="radioModePinyin">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>16</x>
-          <y>72</y>
-          <width>81</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>转换为拼音</string>
-        </property>
-       </widget>
        <widget class="QRadioButton" name="radioModeEnglish">
         <property name="enabled">
          <bool>true</bool>
@@ -173,7 +157,7 @@
         <property name="geometry">
          <rect>
           <x>16</x>
-          <y>96</y>
+          <y>72</y>
           <width>81</width>
           <height>16</height>
          </rect>
@@ -217,27 +201,11 @@
          <string>将简体中文转换为繁体中文 (默认)</string>
         </property>
        </widget>
-       <widget class="QLabel" name="label_5">
-        <property name="geometry">
-         <rect>
-          <x>104</x>
-          <y>72</y>
-          <width>537</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">color: rgb(162, 162, 162);</string>
-        </property>
-        <property name="text">
-         <string>将简体中文转换为拼音 (规避私服不允许使用中文输入工具同时享受输入法词语联想等功能的便利)</string>
-        </property>
-       </widget>
        <widget class="QLabel" name="label_6">
         <property name="geometry">
          <rect>
           <x>104</x>
-          <y>96</y>
+          <y>72</y>
           <width>537</width>
           <height>16</height>
          </rect>
@@ -261,7 +229,7 @@
          <x>8</x>
          <y>8</y>
          <width>257</width>
-         <height>105</height>
+         <height>129</height>
         </rect>
        </property>
        <property name="title">
@@ -309,9 +277,9 @@
        </property>
        <property name="geometry">
         <rect>
-         <x>464</x>
-         <y>8</y>
-         <width>201</width>
+         <x>272</x>
+         <y>80</y>
+         <width>185</width>
          <height>57</height>
         </rect>
        </property>
@@ -329,7 +297,7 @@
          <rect>
           <x>16</x>
           <y>24</y>
-          <width>121</width>
+          <width>105</width>
           <height>20</height>
          </rect>
         </property>
@@ -340,7 +308,7 @@
        <widget class="QSpinBox" name="editProxyPort">
         <property name="geometry">
          <rect>
-          <x>144</x>
+          <x>128</x>
           <y>24</y>
           <width>42</width>
           <height>20</height>
@@ -360,61 +328,13 @@
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="groupBox_3">
-       <property name="geometry">
-        <rect>
-         <x>464</x>
-         <y>72</y>
-         <width>201</width>
-         <height>57</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>翻译超时</string>
-       </property>
-       <widget class="QSpinBox" name="editTranslateTimeout">
-        <property name="geometry">
-         <rect>
-          <x>16</x>
-          <y>24</y>
-          <width>153</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="minimum">
-         <number>500</number>
-        </property>
-        <property name="maximum">
-         <number>30000</number>
-        </property>
-        <property name="singleStep">
-         <number>500</number>
-        </property>
-        <property name="value">
-         <number>5000</number>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_2">
-        <property name="geometry">
-         <rect>
-          <x>176</x>
-          <y>24</y>
-          <width>17</width>
-          <height>25</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>ms</string>
-        </property>
-       </widget>
-      </widget>
       <widget class="QGroupBox" name="groupBox_2">
        <property name="geometry">
         <rect>
          <x>272</x>
          <y>8</y>
          <width>185</width>
-         <height>81</height>
+         <height>68</height>
         </rect>
        </property>
        <property name="title">
@@ -424,7 +344,7 @@
         <property name="geometry">
          <rect>
           <x>56</x>
-          <y>48</y>
+          <y>40</y>
           <width>113</width>
           <height>20</height>
          </rect>
@@ -434,7 +354,7 @@
         <property name="geometry">
          <rect>
           <x>16</x>
-          <y>24</y>
+          <y>16</y>
           <width>33</width>
           <height>20</height>
          </rect>
@@ -447,7 +367,7 @@
         <property name="geometry">
          <rect>
           <x>56</x>
-          <y>24</y>
+          <y>16</y>
           <width>113</width>
           <height>20</height>
          </rect>
@@ -457,7 +377,7 @@
         <property name="geometry">
          <rect>
           <x>16</x>
-          <y>48</y>
+          <y>40</y>
           <width>33</width>
           <height>20</height>
          </rect>
@@ -470,14 +390,62 @@
       <widget class="QCheckBox" name="chkTranslateKeepOriginal">
        <property name="geometry">
         <rect>
-         <x>8</x>
-         <y>112</y>
-         <width>185</width>
+         <x>464</x>
+         <y>32</y>
+         <width>201</width>
          <height>25</height>
         </rect>
        </property>
        <property name="text">
         <string>翻译后保留中文原文</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_5">
+       <property name="geometry">
+        <rect>
+         <x>464</x>
+         <y>8</y>
+         <width>54</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>翻译超时</string>
+       </property>
+      </widget>
+      <widget class="QSpinBox" name="editTranslateTimeout">
+       <property name="geometry">
+        <rect>
+         <x>520</x>
+         <y>8</y>
+         <width>121</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="minimum">
+        <number>500</number>
+       </property>
+       <property name="maximum">
+        <number>30000</number>
+       </property>
+       <property name="singleStep">
+        <number>500</number>
+       </property>
+       <property name="value">
+        <number>5000</number>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_2">
+       <property name="geometry">
+        <rect>
+         <x>648</x>
+         <y>8</y>
+         <width>17</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>ms</string>
        </property>
       </widget>
      </widget>
