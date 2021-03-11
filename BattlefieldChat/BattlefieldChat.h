@@ -23,10 +23,6 @@ public slots:
     void handleSettingModeTraditional();
     void handleSettingModeTranslate();
 
-    void handleSettingProxyEnabled(bool checked);
-    void handleSettingProxyHost();
-    void handleSettingProxyPort();
-
     void handleSettingTranslatorBaidu();
     void handleSettingTranslatorDeepL();
 

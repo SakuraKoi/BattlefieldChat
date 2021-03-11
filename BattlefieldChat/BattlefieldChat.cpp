@@ -31,10 +31,6 @@ BattlefieldChat::BattlefieldChat(QWidget *parent)
     connect(ui.radioModeTrad, SIGNAL(clicked()), this, SLOT(handleSettingModeTraditional()));
     connect(ui.radioModeEnglish, SIGNAL(clicked()), this, SLOT(handleSettingModeTranslate()));
 
-    connect(ui.chkUseProxy, SIGNAL(toggled(bool)), this, SLOT(handleSettingProxyEnabled(bool)));
-    connect(ui.editProxyHost, SIGNAL(editingFinished()), this, SLOT(handleSettingProxyHost()));
-    connect(ui.editProxyPort, SIGNAL(editingFinished()), this, SLOT(handleSettingProxyPort()));
-
     connect(ui.radioProviderBaidu, SIGNAL(clicked()), this, SLOT(handleSettingTranslatorBaidu()));
     connect(ui.radioProviderDeepL, SIGNAL(clicked()), this, SLOT(handleSettingTranslatorDeepL()));
 
@@ -67,10 +63,6 @@ void BattlefieldChat::loadConfiguration() {
         ui.radioModeEnglish->setChecked(true);
         break;
     }
-
-    ui.editProxyHost->setText(settings->value(SETTING_KEY_proxyHost, "127.0.0.1").toString());
-    ui.editProxyPort->setValue(settings->value(SETTING_KEY_proxyPort, 1080).toInt());
-    ui.chkUseProxy->setChecked(settings->value(SETTING_KEY_proxyEnabled, false).toBool());
 
     ui.chkTranslateKeepOriginal->setChecked(translateKeepOriginal = settings->value(SETTING_KEY_translateKeepOriginal, false).toBool());
     ui.editTranslateTimeout->setValue(translatorTimeout = settings->value(SETTING_KEY_translatorTimeout, 5000).toInt());
@@ -174,41 +166,6 @@ void BattlefieldChat::handleSettingModeTraditional() {
 void BattlefieldChat::handleSettingModeTranslate() {
     preprocessor = &SINGLETON_PREPROCESSOR_ENGLISH;
     settings->setValue(SETTING_KEY_preprocessorMode, 3);
-}
-
-void BattlefieldChat::handleSettingProxyEnabled(bool checked) {
-    settings->setValue(SETTING_KEY_proxyEnabled, checked);
-    if (checked) {
-        QNetworkProxy proxy;
-        proxy.setType(QNetworkProxy::ProxyType::HttpProxy);
-        proxy.setHostName(ui.editProxyHost->text());
-        proxy.setPort(ui.editProxyPort->value());
-        network->setProxy(proxy);
-    } else {
-        network->setProxy(QNetworkProxy::NoProxy);
-    }
-}
-
-void BattlefieldChat::handleSettingProxyHost() {
-    settings->setValue(SETTING_KEY_proxyHost, ui.editProxyHost->text());
-    if (ui.chkUseProxy->isChecked()) {
-        QNetworkProxy proxy;
-        proxy.setType(QNetworkProxy::ProxyType::HttpProxy);
-        proxy.setHostName(ui.editProxyHost->text());
-        proxy.setPort(ui.editProxyPort->value());
-        network->setProxy(proxy);
-    }
-}
-
-void BattlefieldChat::handleSettingProxyPort() {
-    settings->setValue(SETTING_KEY_proxyPort, ui.editProxyPort->value());
-    if (ui.chkUseProxy->isChecked()) {
-        QNetworkProxy proxy;
-        proxy.setType(QNetworkProxy::ProxyType::HttpProxy);
-        proxy.setHostName(ui.editProxyHost->text());
-        proxy.setPort(ui.editProxyPort->value());
-        network->setProxy(proxy);
-    }
 }
 
 void BattlefieldChat::handleSettingTranslateKeepOriginal(int checked) {

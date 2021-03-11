@@ -39,10 +39,6 @@ extern QSettings* settings;
 #define SETTING_KEY_translateKeepOriginal "translateKeepOriginal"
 #define SETTING_KEY_preprocessorMode "preprocessorMode"
 
-#define SETTING_KEY_proxyEnabled "proxyEnabled"
-#define SETTING_KEY_proxyHost "proxyHost"
-#define SETTING_KEY_proxyPort "proxyPort"
-
 #define SETTING_KEY_translatorProvider "translatorProvider"
 #define SETTING_KEY_translatorTimeout "translatorTimeout"
 
