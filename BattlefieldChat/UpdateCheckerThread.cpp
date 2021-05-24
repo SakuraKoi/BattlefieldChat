@@ -53,7 +53,7 @@ void UpdateCheckerThread::run() {
             if (object.contains("tag_name")) {
                 QString tag = object.value("tag_name").toString();
                 QString url = object.value("html_url").toString();
-                if (currentVersion.compare(tag) < 0) {
+                if (currentVersion.compare(tag) > 0) {
                     emit newVersionFound(tag, url);
                 }
                 return;
