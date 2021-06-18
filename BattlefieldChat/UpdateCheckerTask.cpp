@@ -1,4 +1,4 @@
-﻿#include "UpdateCheckerThread.h"
+﻿#include "UpdateCheckerTask.h"
 #include "GlobalVariables.h"
 #include "Log.h"
 
@@ -9,16 +9,15 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 
-UpdateCheckerThread::UpdateCheckerThread(QObject* parent)
-    : QThread(parent) {
-    connect(this, SIGNAL(finished()), this, SLOT(deleteLater()));
+UpdateCheckerTask::UpdateCheckerTask(QObject* parent)
+    : QObject(parent) {
 }
 
-UpdateCheckerThread::~UpdateCheckerThread() {
+UpdateCheckerTask::~UpdateCheckerTask() {
 }
 
-void UpdateCheckerThread::run() {
-    QUrl url("https://api.github.com/repos/SakuraKoi/BattlefieldChat/releases/latest");
+void UpdateCheckerTask::execute() {
+     QUrl url("https://api.github.com/repos/SakuraKoi/BattlefieldChat/releases/latest");
 
     QNetworkRequest request(url);
 

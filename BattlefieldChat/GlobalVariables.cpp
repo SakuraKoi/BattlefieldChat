@@ -12,6 +12,9 @@ int translatorTimeout = 5000L;
 DWORD pid = -1;
 HWND gameWindow;
 
+UpdateCheckerTask* updateCheckerTask;
+CountLoaderTask* countLoaderTask;
+
 Preprocessor SINGLETON_PREPROCESSOR_NOP;
 TraditionalChinesePreprocessor SINGLETON_PREPROCESSOR_TRAD;
 PinyinPreprocessor SINGLETON_PREPROCESSOR_PINYIN;

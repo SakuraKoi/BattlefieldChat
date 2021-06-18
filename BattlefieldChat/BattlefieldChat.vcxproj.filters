@@ -86,7 +86,7 @@
     <ClCompile Include="DeepLTranslator.cpp">
       <Filter>Source Files\translator</Filter>
     </ClCompile>
-    <ClCompile Include="UpdateCheckerThread.cpp">
+    <ClCompile Include="UpdateCheckerTask.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Log.cpp">
@@ -95,7 +95,10 @@
     <ClCompile Include="3rd\hanz2piny\Hanz2Piny.cpp">
       <Filter>Source Files\3rd\hanz2piny</Filter>
     </ClCompile>
-    <ClCompile Include="CountLoaderThread.cpp">
+    <ClCompile Include="CountLoaderTask.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TaskExecuteThread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -119,10 +122,13 @@
     <QtMoc Include="InputDialog.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="UpdateCheckerThread.h">
+    <QtMoc Include="UpdateCheckerTask.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="CountLoaderThread.h">
+    <QtMoc Include="CountLoaderTask.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="TaskExecuteThread.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

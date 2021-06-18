@@ -7,6 +7,8 @@
 #include "BattlefieldChat.h"
 #include "InputDialog.h"
 #include "WorkerThread.h"
+#include "UpdateCheckerTask.h"
+#include "CountLoaderTask.h"
 
 extern QString currentVersion;
 extern QString addtionalVersion;
@@ -19,6 +21,9 @@ extern int translatorTimeout;
 
 extern DWORD pid;
 extern HWND gameWindow;
+
+extern UpdateCheckerTask* updateCheckerTask;
+extern CountLoaderTask* countLoaderTask;
 
 extern Preprocessor SINGLETON_PREPROCESSOR_NOP;
 extern TraditionalChinesePreprocessor SINGLETON_PREPROCESSOR_TRAD;

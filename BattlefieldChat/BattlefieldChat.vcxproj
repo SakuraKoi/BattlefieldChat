@@ -103,7 +103,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="3rd\hanz2piny\Hanz2Piny.cpp" />
-    <ClCompile Include="CountLoaderThread.cpp" />
+    <ClCompile Include="CountLoaderTask.cpp" />
     <ClCompile Include="DeepLTranslator.cpp" />
     <ClCompile Include="GlobalVariables.cpp" />
     <ClCompile Include="InputDialog.cpp">
@@ -117,7 +117,8 @@
     <ClCompile Include="Offsets.cpp" />
     <ClCompile Include="Pointer.cpp" />
     <ClCompile Include="BaiduTranslator.cpp" />
-    <ClCompile Include="UpdateCheckerThread.cpp" />
+    <ClCompile Include="TaskExecuteThread.cpp" />
+    <ClCompile Include="UpdateCheckerTask.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="WorkerThread.cpp" />
     <QtRcc Include="BattlefieldChat.qrc" />
@@ -145,7 +146,7 @@
     <ClInclude Include="3rd\utfcpp\utf8\checked.h" />
     <ClInclude Include="3rd\utfcpp\utf8\core.h" />
     <ClInclude Include="3rd\utfcpp\utf8\unchecked.h" />
-    <QtMoc Include="CountLoaderThread.h" />
+    <QtMoc Include="CountLoaderTask.h" />
     <ClInclude Include="GlobalVariables.h" />
     <QtMoc Include="InputDialog.h" />
     <ClInclude Include="Log.h" />
@@ -153,8 +154,9 @@
     <ClInclude Include="Offsets.h" />
     <ClInclude Include="Pointer.h" />
     <ClInclude Include="resource.h" />
+    <QtMoc Include="TaskExecuteThread.h" />
     <ClInclude Include="Translator.h" />
-    <QtMoc Include="UpdateCheckerThread.h" />
+    <QtMoc Include="UpdateCheckerTask.h" />
     <ClInclude Include="Utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

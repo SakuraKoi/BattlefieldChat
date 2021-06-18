@@ -2,12 +2,12 @@
 
 #include <QThread>
 
-class CountLoaderThread : public QThread {
+class TaskExecuteThread : public QThread {
     Q_OBJECT
 
 public:
-    CountLoaderThread(QObject* parent = NULL);
-    ~CountLoaderThread();
+    TaskExecuteThread(QObject* parent = NULL);
+    ~TaskExecuteThread();
     void run() override;
 
 signals:

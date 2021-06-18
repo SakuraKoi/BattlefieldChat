@@ -1,4 +1,4 @@
-﻿#include "CountLoaderThread.h"
+﻿#include "CountLoaderTask.h"
 #include "GlobalVariables.h"
 #include "Log.h"
 
@@ -9,15 +9,15 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 
-CountLoaderThread::CountLoaderThread(QObject* parent)
-    : QThread(parent) {
+CountLoaderTask::CountLoaderTask(QObject* parent)
+    : QObject(parent) {
     connect(this, SIGNAL(finished()), this, SLOT(deleteLater()));
 }
 
-CountLoaderThread::~CountLoaderThread() {
+CountLoaderTask::~CountLoaderTask() {
 }
 
-void CountLoaderThread::run() {
+void CountLoaderTask::execute() {
     QUrl url("https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FSakuraKoi%2FBattlefidChat%2Fusage-track&count_bg=%2379C83D&title_bg=%23555555&title=%E4%BD%BF%E7%94%A8%E7%BB%9F%E8%AE%A1&edge_flat=true");
 
     QNetworkRequest request(url);
@@ -36,12 +36,12 @@ void CountLoaderThread::run() {
         Log() << u8" [%] 加载匿名使用数据统计失败, 网络错误: " << reply->errorString().toUtf8().data(); LogColor(Qt::yellow);
         return;
     }
-
+    /*
     int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     if (!(status >= 200 && status < 300)) {
         Log() << u8" [%] 加载匿名使用数据统计失败, 服务器响应: " << std::to_string(status).c_str(); LogColor(Qt::yellow);
         return;
-    }
+    }*/
 
     responseData = reply->readAll();
     emit countLoaded(responseData);

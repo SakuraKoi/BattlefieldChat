@@ -1,7 +1,6 @@
 ﻿#include "BattlefieldChat.h"
 #include "GlobalVariables.h"
-#include "UpdateCheckerThread.h"
-#include "CountLoaderThread.h"
+#include "TaskExecuteThread.h"
 #include <QCloseEvent>
 #include <QMessageBox>
 #include <QDesktopServices>
@@ -10,8 +9,7 @@
 #include <QGraphicsSvgItem>
 #include <QPainter>
 
-UpdateCheckerThread* updateCheckerThread;
-CountLoaderThread* countLoaderThread;
+TaskExecuteThread* taskExecuteThread;
 
 BattlefieldChat::BattlefieldChat(QWidget *parent)
     : QMainWindow(parent)
@@ -23,12 +21,13 @@ BattlefieldChat::BattlefieldChat(QWidget *parent)
     mainWindow = this;
     inputWindow = new InputDialog();
     workerThread = new WorkerThread();
-    updateCheckerThread = new UpdateCheckerThread();
-    countLoaderThread = new CountLoaderThread();
+    updateCheckerTask = new UpdateCheckerTask();
+    countLoaderTask = new CountLoaderTask();
+    taskExecuteThread = new TaskExecuteThread();
     network = new QNetworkAccessManager(this);
     connect(workerThread, &WorkerThread::updateGameFoundState, this, &BattlefieldChat::updateGameFoundState);
-    connect(updateCheckerThread, &UpdateCheckerThread::newVersionFound, this, &BattlefieldChat::handleNewVersionFound);
-    connect(countLoaderThread, &CountLoaderThread::countLoaded, this, &BattlefieldChat::handleCountLoaded);
+    connect(updateCheckerTask, &UpdateCheckerTask::newVersionFound, this, &BattlefieldChat::handleNewVersionFound);
+    connect(countLoaderTask, &CountLoaderTask::countLoaded, this, &BattlefieldChat::handleCountLoaded);
 
     connect(ui.listLogs->model(), SIGNAL(rowsInserted(QModelIndex, int, int)), ui.listLogs, SLOT(scrollToBottom()));
 
@@ -100,8 +99,7 @@ void BattlefieldChat::loadConfiguration() {
 void BattlefieldChat::showEvent(QShowEvent* ev) {
     QMainWindow::showEvent(ev);
     workerThread -> start();
-    updateCheckerThread->start();
-    countLoaderThread->start();
+    taskExecuteThread->start();
 }
 
 bool shutdownPending = false;
