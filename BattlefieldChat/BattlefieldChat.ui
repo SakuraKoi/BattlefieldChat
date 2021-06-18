@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>689</width>
-    <height>417</height>
+    <height>449</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -489,6 +489,22 @@ font: 9pt &quot;Consolas&quot;;</string>
     </property>
     <property name="selectionMode">
      <enum>QAbstractItemView::NoSelection</enum>
+    </property>
+   </widget>
+   <widget class="QGraphicsView" name="counterView">
+    <property name="geometry">
+     <rect>
+      <x>8</x>
+      <y>416</y>
+      <width>673</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::NoFrame</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Plain</enum>
     </property>
    </widget>
   </widget>
