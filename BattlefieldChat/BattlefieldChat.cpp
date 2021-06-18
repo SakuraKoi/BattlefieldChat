@@ -8,6 +8,7 @@
 #include <QPushButton>
 #include <QSvgRenderer>
 #include <QGraphicsSvgItem>
+#include <QPainter>
 
 UpdateCheckerThread* updateCheckerThread;
 CountLoaderThread* countLoaderThread;
@@ -217,12 +218,28 @@ void BattlefieldChat::handleSettingTranslatorBaidu() {
 }
 
 void BattlefieldChat::handleCountLoaded(QByteArray data) {
-    QGraphicsScene* scene = new QGraphicsScene();
-    QSvgRenderer* renderer = new QSvgRenderer(data);
-    QGraphicsSvgItem* item = new QGraphicsSvgItem();
-    item->setSharedRenderer(renderer);
-    item->setElementId(QStringLiteral("example"));
+    QSvgRenderer renderer(data);
+    QSize size = renderer.defaultSize();
+    
+    int height = size.height();
+    int width = size.width();
 
+    double rate = (double)width / height;
+    height = ui.counterView->height();
+    width = height * rate;
+
+    QImage* image = new QImage(width, height, QImage::Format_ARGB32);
+    image->fill(0xffffffff);
+
+    QPainter painter(image);
+    QFont font("Microsoft YaHei");
+    font.setPointSize(painter.font().pointSize());
+    painter.setFont(font);
+    renderer.render(&painter);
+
+    QGraphicsPixmapItem* item = new QGraphicsPixmapItem(QPixmap::fromImage(*image));
+    QGraphicsScene* scene = new QGraphicsScene;
     scene->addItem(item);
+
     ui.counterView->setScene(scene);
 }

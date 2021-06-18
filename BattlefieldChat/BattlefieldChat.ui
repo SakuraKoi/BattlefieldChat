@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>689</width>
-    <height>449</height>
+    <height>417</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -64,14 +64,14 @@
     <widget class="QCheckBox" name="chkAllowBypassLimit">
      <property name="geometry">
       <rect>
-       <x>16</x>
-       <y>0</y>
-       <width>273</width>
+       <x>192</x>
+       <y>24</y>
+       <width>145</width>
        <height>16</height>
       </rect>
      </property>
      <property name="text">
-      <string>绕过游戏聊天长度限制 (可能会带来额外风险)</string>
+      <string>绕过游戏聊天长度限制</string>
      </property>
     </widget>
     <widget class="QCheckBox" name="chkSupportFullscreen">
@@ -80,8 +80,8 @@
      </property>
      <property name="geometry">
       <rect>
-       <x>296</x>
-       <y>0</y>
+       <x>344</x>
+       <y>24</y>
        <width>185</width>
        <height>16</height>
       </rect>
@@ -429,29 +429,6 @@
      </widget>
     </widget>
    </widget>
-   <widget class="QLabel" name="lblCurrentStatus">
-    <property name="geometry">
-     <rect>
-      <x>504</x>
-      <y>8</y>
-      <width>177</width>
-      <height>33</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">color: rgb(255, 0, 0);
-font: 12pt &quot;微软雅黑&quot;;</string>
-    </property>
-    <property name="text">
-     <string>正在等待游戏启动</string>
-    </property>
-    <property name="textFormat">
-     <enum>Qt::PlainText</enum>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
    <widget class="QListWidget" name="listLogs">
     <property name="geometry">
      <rect>
@@ -494,9 +471,9 @@ font: 9pt &quot;Consolas&quot;;</string>
    <widget class="QGraphicsView" name="counterView">
     <property name="geometry">
      <rect>
-      <x>8</x>
-      <y>416</y>
-      <width>673</width>
+      <x>312</x>
+      <y>8</y>
+      <width>369</width>
       <height>25</height>
      </rect>
     </property>
@@ -505,6 +482,38 @@ font: 9pt &quot;Consolas&quot;;</string>
     </property>
     <property name="frameShadow">
      <enum>QFrame::Plain</enum>
+    </property>
+    <property name="verticalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="horizontalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lblCurrentStatus">
+    <property name="geometry">
+     <rect>
+      <x>8</x>
+      <y>8</y>
+      <width>201</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 0, 0);
+font: 12pt &quot;微软雅黑&quot;;</string>
+    </property>
+    <property name="text">
+     <string>正在等待游戏启动</string>
+    </property>
+    <property name="textFormat">
+     <enum>Qt::PlainText</enum>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
   </widget>

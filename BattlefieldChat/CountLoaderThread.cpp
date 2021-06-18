@@ -18,7 +18,7 @@ CountLoaderThread::~CountLoaderThread() {
 }
 
 void CountLoaderThread::run() {
-    QUrl url("https://api.github.com/repos/SakuraKoi/BattlefieldChat/releases/latest");
+    QUrl url("https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FSakuraKoi%2FBattlefidChat%2Fusage-track&count_bg=%2379C83D&title_bg=%23555555&title=%E4%BD%BF%E7%94%A8%E7%BB%9F%E8%AE%A1&edge_flat=true");
 
     QNetworkRequest request(url);
 
