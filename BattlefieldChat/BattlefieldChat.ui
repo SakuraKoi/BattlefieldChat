@@ -115,7 +115,7 @@
          <x>8</x>
          <y>8</y>
          <width>649</width>
-         <height>105</height>
+         <height>121</height>
         </rect>
        </property>
        <property name="title">
@@ -157,7 +157,7 @@
         <property name="geometry">
          <rect>
           <x>16</x>
-          <y>72</y>
+          <y>96</y>
           <width>81</width>
           <height>16</height>
          </rect>
@@ -205,7 +205,7 @@
         <property name="geometry">
          <rect>
           <x>104</x>
-          <y>72</y>
+          <y>96</y>
           <width>537</width>
           <height>16</height>
          </rect>
@@ -215,6 +215,41 @@
         </property>
         <property name="text">
          <string>使用在线服务翻译为英文 (发送前需要额外等待翻译完成)</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_9">
+        <property name="geometry">
+         <rect>
+          <x>104</x>
+          <y>72</y>
+          <width>537</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: rgb(162, 162, 162);</string>
+        </property>
+        <property name="text">
+         <string>将简体中文转换为拼音 (用于严格禁止第三方工具的服务器)</string>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="radioModePinyin">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>16</x>
+          <y>72</y>
+          <width>81</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>转换为拼音</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
         </property>
        </widget>
       </widget>

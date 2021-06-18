@@ -102,6 +102,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="3rd\hanz2piny\Hanz2Piny.cpp" />
     <ClCompile Include="DeepLTranslator.cpp" />
     <ClCompile Include="GlobalVariables.cpp" />
     <ClCompile Include="InputDialog.cpp">
@@ -138,6 +139,11 @@
     <QtMoc Include="WorkerThread.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="3rd\hanz2piny\Hanz2Piny.h" />
+    <ClInclude Include="3rd\utfcpp\utf8.h" />
+    <ClInclude Include="3rd\utfcpp\utf8\checked.h" />
+    <ClInclude Include="3rd\utfcpp\utf8\core.h" />
+    <ClInclude Include="3rd\utfcpp\utf8\unchecked.h" />
     <ClInclude Include="GlobalVariables.h" />
     <QtMoc Include="InputDialog.h" />
     <ClInclude Include="Log.h" />

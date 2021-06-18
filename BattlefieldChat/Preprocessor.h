@@ -17,6 +17,11 @@ public:
     std::string process(QString input);
 };
 
+class PinyinPreprocessor : public Preprocessor {
+public:
+    std::string process(QString input);
+};
+
 extern Translator* translatorProvider;
 
 class TranslateToEnglishPreprocessor : public Preprocessor {

@@ -25,6 +25,24 @@
     <Filter Include="Source Files\translator">
       <UniqueIdentifier>{3cea52cc-d530-4211-80c6-190decbb40d2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\3rd">
+      <UniqueIdentifier>{e25c2168-4adc-4b44-a87c-c4d35feec306}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\3rd">
+      <UniqueIdentifier>{f6646ed3-da00-4d61-bfce-317e16bb5d4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\3rd\hanz2piny">
+      <UniqueIdentifier>{daf7932a-d50a-4589-be89-46a6350bc418}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\3rd\hanz2piny">
+      <UniqueIdentifier>{158424dd-c24e-4959-9ce2-910d5821a717}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\3rd\utfcpp">
+      <UniqueIdentifier>{ab786268-a5af-4f83-88b2-8ebed6b831b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\3rd\utfcpp\utf8">
+      <UniqueIdentifier>{55263d82-1fd4-488c-81f0-df8dca2ae0dd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="BattlefieldChat.qrc">
@@ -73,6 +91,9 @@
     </ClCompile>
     <ClCompile Include="Log.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd\hanz2piny\Hanz2Piny.cpp">
+      <Filter>Source Files\3rd\hanz2piny</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -123,6 +144,21 @@
     </ClInclude>
     <ClInclude Include="Log.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\hanz2piny\Hanz2Piny.h">
+      <Filter>Header Files\3rd\hanz2piny</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\utfcpp\utf8.h">
+      <Filter>Header Files\3rd\utfcpp</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\utfcpp\utf8\checked.h">
+      <Filter>Header Files\3rd\utfcpp\utf8</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\utfcpp\utf8\core.h">
+      <Filter>Header Files\3rd\utfcpp\utf8</Filter>
+    </ClInclude>
+    <ClInclude Include="3rd\utfcpp\utf8\unchecked.h">
+      <Filter>Header Files\3rd\utfcpp\utf8</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

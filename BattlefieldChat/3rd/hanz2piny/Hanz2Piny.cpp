@@ -119,19 +119,6 @@ Hanz2Piny::toPinyinFromUtf8 ( const std::string& s,
     return(pinyin_list_list);
 }
 
-// 检查指定文件是否为 UTF-8 编码
-bool
-Hanz2Piny::isUtf8File(const string& file_path) const
-{
-    ifstream ifs(file_path);
-    if (!ifs.is_open()) {
-        //cerr << "WARNING! fail to open " << file_path << endl;
-        return(false);
-    }
-
-    return(utf8::is_valid(istream_iterator<char>(ifs), istream_iterator<char>()));
-}
-
 // 检查指定字符序列是否以 BOMC 打头
 bool
 Hanz2Piny::isStartWithBom (const string& s) const

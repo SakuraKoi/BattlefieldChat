@@ -34,6 +34,11 @@ std::string TraditionalChinesePreprocessor::process(QString input) {
     return WStrToStr(trad);
 }
 
+std::string PinyinPreprocessor::process(QString input) {
+    // FIXME: Not implemented
+    return std::string(input.toLocal8Bit().data());
+}
+
 std::string TranslateToEnglishPreprocessor::process(QString input) {
     if (translateKeepOriginal)
         return SINGLETON_PREPROCESSOR_TRAD.process(input);
