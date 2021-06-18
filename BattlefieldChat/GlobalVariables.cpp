@@ -1,6 +1,6 @@
 ﻿#include "GlobalVariables.h"
 
-QString currentVersion = "7";
+QString currentVersion = "8";
 QString addtionalVersion = "";
 
 bool allowExceedLimit = false;
