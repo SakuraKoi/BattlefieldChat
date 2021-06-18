@@ -85,6 +85,9 @@ background-color: rgba(255, 255, 255, 0);</string>
      <height>24</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 255, 255);</string>
+   </property>
    <property name="text">
     <string>中</string>
    </property>
