@@ -53,10 +53,8 @@ string PinyinPreprocessor::process(QString input) {
         auto pinyin_list = e.second;
 
         string pinyin;
-        if (pinyin_list.size() == 1) {
+        if (pinyin_list.size() >= 1) {
             pinyin = pinyin_list[0];
-        } else if (pinyin_list.size() > 1) {
-            pinyin = pinyin_list[1];
         } else {
             pinyin = "?";
         }
