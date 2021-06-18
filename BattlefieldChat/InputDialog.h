@@ -32,6 +32,7 @@ public slots:
     void escPressed();
     void lostFocus();
     void enterPressed();
+    void switchClicked();
     void textTyped(const QString& text);
 
     void handleInitializeWindow(Qt::WindowFlags windowType, QSize size, QSize editSize, QPoint pos);

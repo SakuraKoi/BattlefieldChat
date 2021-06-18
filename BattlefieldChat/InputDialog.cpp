@@ -9,6 +9,7 @@ InputDialog::InputDialog(QWidget* parent)
     ui.setupUi(this);
     this->setFocusPolicy(Qt::StrongFocus);
     QObject::connect(ui.editContent, SIGNAL(returnPressed()), this, SLOT(enterPressed()));
+    QObject::connect(ui.btnSwitch, SIGNAL(clicked()), this, SLOT(switchClicked()));
     QObject::connect(ui.editContent, SIGNAL(textChanged(QString)), this, SLOT(textTyped(QString)));
 
     qRegisterMetaType<Qt::WindowFlags>("Qt::WindowFlags");
@@ -47,7 +48,7 @@ QString InputDialog::showAndWaitForResult(HWND window, InputDisplayMode mode) {
         RECT r;
         GetWindowRect(window, &r);
         size.setWidth(r.right - r.left - 64);
-        editSize.setWidth(size.width() - (ui.lblStatus->size()).width() - 8);
+        editSize.setWidth(size.width() - (ui.lblStatus->size()).width() - 12 - ui.btnSwitch->width());
         pos.setX(r.left + 32);
 
         if (mode == InputDisplayMode::OVERLAY_FOR_BORDERLESS) {
@@ -119,6 +120,15 @@ void InputDialog::handleInitializeWindow(Qt::WindowFlags style, QSize size, QSiz
     move(pos);
     resize(size);
     ui.editContent->resize(editSize);
+    ui.btnSwitch->move(QPoint(this->size().width() - 36, 4));
+
+
+    ui.btnSwitch->setEnabled(preprocessor == &SINGLETON_PREPROCESSOR_PINYIN || preprocessor == &SINGLETON_PREPROCESSOR_TRAD);
+    if (preprocessor == &SINGLETON_PREPROCESSOR_PINYIN) {
+        ui.btnSwitch->setText(QString::fromUtf8(u8"拼"));
+    } else if (preprocessor == &SINGLETON_PREPROCESSOR_TRAD) {
+        ui.btnSwitch->setText(QString::fromUtf8(u8"繁"));
+    }
 
     ui.editContent->setReadOnly(false);
     ui.editContent->setText("");
@@ -158,4 +168,16 @@ void InputDialog::textTyped(const QString& text) {
     }
     ui.lblStatus->setText(QString::fromUtf8(u8"就绪"));
     ui.lblStatus->setStyleSheet("color: rgb(83, 164, 60);\nbackground-color: rgba(255, 255, 255, 0);");
+}
+
+void InputDialog::switchClicked() {
+    if (preprocessor == &SINGLETON_PREPROCESSOR_PINYIN) {
+        preprocessor = &SINGLETON_PREPROCESSOR_TRAD;
+        settings->setValue(SETTING_KEY_preprocessorMode, 1);
+        ui.btnSwitch->setText(QString::fromUtf8(u8"拼"));
+    } else if (preprocessor == &SINGLETON_PREPROCESSOR_TRAD) {
+        preprocessor = &SINGLETON_PREPROCESSOR_PINYIN;
+        settings->setValue(SETTING_KEY_preprocessorMode, 2);
+        ui.btnSwitch->setText(QString::fromUtf8(u8"繁"));
+    }
 }

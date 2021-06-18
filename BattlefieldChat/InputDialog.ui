@@ -52,7 +52,7 @@ background-color: rgba(255, 255, 255, 0);</string>
     <rect>
      <x>48</x>
      <y>4</y>
-     <width>681</width>
+     <width>653</width>
      <height>25</height>
     </rect>
    </property>
@@ -74,6 +74,19 @@ background-color: rgba(255, 255, 255, 0);</string>
    </property>
    <property name="placeholderText">
     <string>...</string>
+   </property>
+  </widget>
+  <widget class="QToolButton" name="btnSwitch">
+   <property name="geometry">
+    <rect>
+     <x>704</x>
+     <y>4</y>
+     <width>24</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>中</string>
    </property>
   </widget>
  </widget>

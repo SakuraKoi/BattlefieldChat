@@ -1,9 +1,14 @@
-﻿#include "Preprocessor.h"
+﻿#include <vector>
+#include <string>
+#include "Preprocessor.h"
 #include "Utils.h"
 #include "GlobalVariables.h"
+#include "./3rd/hanz2piny/Hanz2Piny.h"
 
-std::string Preprocessor::process(QString input) {
-    return std::string(input.toLocal8Bit().data());
+using namespace std;
+
+string Preprocessor::process(QString input) {
+    return string(input.toLocal8Bit().data());
 }
 
 void Preprocessor::initialize() {
@@ -21,28 +26,51 @@ bool Preprocessor::shouldValidateLength() {
     return true;
 }
 
-std::wstring replaceNonDisplayableCharacters(std::wstring str) {
+wstring replaceNonDisplayableCharacters(wstring str) {
     str = ReplaceWCSWithPattern(str, L"啥", L"什麽");
     str = ReplaceWCSWithPattern(str, L"么", L"麽");
     return str;
 }
 
-std::string TraditionalChinesePreprocessor::process(QString input) {
-    std::wstring inputStr = input.toStdWString();
-    std::wstring replaced = replaceNonDisplayableCharacters(inputStr);
-    std::wstring trad = CHS2CHT(replaced);
+string TraditionalChinesePreprocessor::process(QString input) {
+    wstring inputStr = input.toStdWString();
+    wstring replaced = replaceNonDisplayableCharacters(inputStr);
+    wstring trad = CHS2CHT(replaced);
     return WStrToStr(trad);
 }
 
-std::string PinyinPreprocessor::process(QString input) {
-    // FIXME: Not implemented
-    return std::string(input.toLocal8Bit().data());
+Hanz2Piny hanz2piny;
+
+string PinyinPreprocessor::process(QString input) {
+    vector<pair<bool, vector<string>>> pinyin_list_list = hanz2piny.toPinyinFromUtf8(string(input.toUtf8().constData()),
+        false,
+        false,
+        "?");
+
+    string out = "";
+    for (const auto& e : pinyin_list_list) {
+        const bool ok = e.first;
+        auto pinyin_list = e.second;
+
+        string pinyin;
+        if (pinyin_list.size() == 1) {
+            pinyin = pinyin_list[0];
+        } else if (pinyin_list.size() > 1) {
+            pinyin = pinyin_list[1];
+        } else {
+            pinyin = "?";
+        }
+
+        out = out + " " + pinyin;
+    }
+
+    return out;
 }
 
-std::string TranslateToEnglishPreprocessor::process(QString input) {
+string TranslateToEnglishPreprocessor::process(QString input) {
     if (translateKeepOriginal)
         return SINGLETON_PREPROCESSOR_TRAD.process(input);
-    return std::string(input.toLocal8Bit().data());
+    return string(input.toLocal8Bit().data());
 }
 
 Translator* translatorProvider;
