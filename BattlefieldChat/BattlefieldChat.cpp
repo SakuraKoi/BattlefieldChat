@@ -25,6 +25,9 @@ BattlefieldChat::BattlefieldChat(QWidget *parent)
     countLoaderTask = new CountLoaderTask();
     taskExecuteThread = new TaskExecuteThread();
     network = new QNetworkAccessManager(this);
+
+    connect(inputWindow, &InputDialog::fastSwitchedMode, this, &BattlefieldChat::handleFastSwitchedMode);
+
     connect(workerThread, &WorkerThread::updateGameFoundState, this, &BattlefieldChat::updateGameFoundState);
     connect(updateCheckerTask, &UpdateCheckerTask::newVersionFound, this, &BattlefieldChat::handleNewVersionFound);
     connect(countLoaderTask, &CountLoaderTask::countLoaded, this, &BattlefieldChat::handleCountLoaded);
@@ -94,6 +97,25 @@ void BattlefieldChat::loadConfiguration() {
     ui.editTranslateBaiduAppid->setText(baiduAppid = settings->value(SETTING_KEY_translatorBaiduAppid, "").toString());
     ui.editTranslateBaiduKey->setText(baiduKey = settings->value(SETTING_KEY_translatorBaiduKey, "").toString());
 
+}
+
+void BattlefieldChat::handleFastSwitchedMode(int mode) {
+    switch (mode) {
+    default:
+    case 1:
+        preprocessor = &SINGLETON_PREPROCESSOR_TRAD;
+        ui.radioModeTrad->setChecked(true);
+        break;
+    case 2:
+        preprocessor = &SINGLETON_PREPROCESSOR_PINYIN;
+        ui.radioModePinyin->setChecked(true);
+        break;
+    case 3:
+        preprocessor = &SINGLETON_PREPROCESSOR_ENGLISH;
+        ui.radioModeEnglish->setChecked(true);
+        break;
+    }
+    settings->setValue(SETTING_KEY_preprocessorMode, mode);
 }
 
 void BattlefieldChat::showEvent(QShowEvent* ev) {

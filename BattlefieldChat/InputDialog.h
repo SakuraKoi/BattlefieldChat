@@ -27,6 +27,7 @@ public:
 signals:
     void callInitializeWindow(Qt::WindowFlags windowType, QSize size, QSize editSize, QPoint pos);
     void enterProcessed();
+    void fastSwitchedMode(int mode);
 
 public slots:
     void escPressed();

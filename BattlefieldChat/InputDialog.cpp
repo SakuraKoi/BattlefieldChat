@@ -180,17 +180,14 @@ void InputDialog::textTyped(const QString& text) {
 
 void InputDialog::switchClicked() {
     if (preprocessor == &SINGLETON_PREPROCESSOR_PINYIN) {
-        preprocessor = &SINGLETON_PREPROCESSOR_TRAD;
-        settings->setValue(SETTING_KEY_preprocessorMode, 1);
         ui.btnSwitch->setText(QString::fromUtf8(u8"繁"));
+        emit fastSwitchedMode(1);
     } else if (preprocessor == &SINGLETON_PREPROCESSOR_TRAD) {
-        preprocessor = &SINGLETON_PREPROCESSOR_ENGLISH;
-        settings->setValue(SETTING_KEY_preprocessorMode, 3);
         ui.btnSwitch->setText(QString::fromUtf8(u8"英"));
+        emit fastSwitchedMode(3);
     } else {
-        preprocessor = &SINGLETON_PREPROCESSOR_PINYIN;
-        settings->setValue(SETTING_KEY_preprocessorMode, 2);
         ui.btnSwitch->setText(QString::fromUtf8(u8"拼"));
+        emit fastSwitchedMode(2);
     }
 
     ui.editContent->setFocus();

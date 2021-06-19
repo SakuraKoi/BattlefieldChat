@@ -33,6 +33,7 @@ public slots:
     void handleSettingTranslateTimeout();
 
     void handleCountLoaded(QByteArray data);
+    void handleFastSwitchedMode(int mode);
 private:
     void closeEvent(QCloseEvent* event);
     void showEvent(QShowEvent* event);
