@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>729</width>
-    <height>433</height>
+    <width>669</width>
+    <height>417</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -40,8 +40,8 @@
     <property name="geometry">
      <rect>
       <x>8</x>
-      <y>216</y>
-      <width>713</width>
+      <y>200</y>
+      <width>649</width>
       <height>16</height>
      </rect>
     </property>
@@ -55,16 +55,16 @@
     </property>
     <property name="geometry">
      <rect>
-      <x>8</x>
+      <x>4</x>
       <y>16</y>
-      <width>713</width>
-      <height>201</height>
+      <width>657</width>
+      <height>185</height>
      </rect>
     </property>
     <widget class="QCheckBox" name="chkAllowBypassLimit">
      <property name="geometry">
       <rect>
-       <x>192</x>
+       <x>196</x>
        <y>32</y>
        <width>145</width>
        <height>16</height>
@@ -80,7 +80,7 @@
      </property>
      <property name="geometry">
       <rect>
-       <x>344</x>
+       <x>348</x>
        <y>32</y>
        <width>185</width>
        <height>16</height>
@@ -93,165 +93,152 @@
     <widget class="QTabWidget" name="tabWidget">
      <property name="geometry">
       <rect>
-       <x>0</x>
+       <x>4</x>
        <y>32</y>
-       <width>712</width>
-       <height>164</height>
+       <width>649</width>
+       <height>149</height>
       </rect>
      </property>
      <property name="tabShape">
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
        <string>预处理模式</string>
       </attribute>
-      <widget class="QGroupBox" name="groupPreprocessMode">
+      <widget class="QLabel" name="label_6">
        <property name="geometry">
         <rect>
-         <x>8</x>
-         <y>8</y>
-         <width>688</width>
-         <height>121</height>
+         <x>100</x>
+         <y>96</y>
+         <width>529</width>
+         <height>16</height>
         </rect>
        </property>
-       <property name="title">
-        <string>预处理模式</string>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(162, 162, 162);</string>
        </property>
-       <widget class="QRadioButton" name="radioModeNop">
-        <property name="geometry">
-         <rect>
-          <x>16</x>
-          <y>24</y>
-          <width>81</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>不处理</string>
-        </property>
-       </widget>
-       <widget class="QRadioButton" name="radioModeTrad">
-        <property name="geometry">
-         <rect>
-          <x>16</x>
-          <y>48</y>
-          <width>81</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>转换为繁体</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-       <widget class="QRadioButton" name="radioModeEnglish">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>16</x>
-          <y>96</y>
-          <width>81</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>翻译为英文</string>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_3">
-        <property name="geometry">
-         <rect>
-          <x>104</x>
-          <y>24</y>
-          <width>537</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">color: rgb(162, 162, 162);</string>
-        </property>
-        <property name="text">
-         <string>不执行任何预处理 (不推荐: 简体中文无法在游戏中显示)</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_4">
-        <property name="geometry">
-         <rect>
-          <x>104</x>
-          <y>48</y>
-          <width>537</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">color: rgb(162, 162, 162);</string>
-        </property>
-        <property name="text">
-         <string>将简体中文转换为繁体中文 (默认)</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_6">
-        <property name="geometry">
-         <rect>
-          <x>104</x>
-          <y>96</y>
-          <width>537</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">color: rgb(162, 162, 162);</string>
-        </property>
-        <property name="text">
-         <string>使用在线服务翻译为英文 (发送前需要额外等待翻译完成)</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_9">
-        <property name="geometry">
-         <rect>
-          <x>104</x>
-          <y>72</y>
-          <width>537</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">color: rgb(162, 162, 162);</string>
-        </property>
-        <property name="text">
-         <string>将简体中文转换为拼音 (用于严格禁止第三方工具的服务器)</string>
-        </property>
-       </widget>
-       <widget class="QRadioButton" name="radioModePinyin">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>16</x>
-          <y>72</y>
-          <width>81</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>转换为拼音</string>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-       </widget>
+       <property name="text">
+        <string>使用在线服务翻译为英文 (发送前需要额外等待翻译完成)</string>
+       </property>
+      </widget>
+      <widget class="QRadioButton" name="radioModeTrad">
+       <property name="geometry">
+        <rect>
+         <x>12</x>
+         <y>40</y>
+         <width>81</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>转换为繁体</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QRadioButton" name="radioModeEnglish">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>12</x>
+         <y>96</y>
+         <width>81</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>翻译为英文</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_3">
+       <property name="geometry">
+        <rect>
+         <x>100</x>
+         <y>12</y>
+         <width>529</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(162, 162, 162);</string>
+       </property>
+       <property name="text">
+        <string>不执行任何预处理 (不推荐: 简体中文无法在游戏中显示)</string>
+       </property>
+      </widget>
+      <widget class="QRadioButton" name="radioModePinyin">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>12</x>
+         <y>68</y>
+         <width>81</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>转换为拼音</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QRadioButton" name="radioModeNop">
+       <property name="geometry">
+        <rect>
+         <x>12</x>
+         <y>12</y>
+         <width>81</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>不处理</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_4">
+       <property name="geometry">
+        <rect>
+         <x>100</x>
+         <y>40</y>
+         <width>529</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(162, 162, 162);</string>
+       </property>
+       <property name="text">
+        <string>将简体中文转换为繁体中文 (默认)</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_9">
+       <property name="geometry">
+        <rect>
+         <x>100</x>
+         <y>68</y>
+         <width>529</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(162, 162, 162);</string>
+       </property>
+       <property name="text">
+        <string>将简体中文转换为拼音 (用于严格禁止第三方工具的服务器)</string>
+       </property>
       </widget>
      </widget>
      <widget class="QWidget" name="tab_2">
@@ -261,10 +248,10 @@
       <widget class="QGroupBox" name="groupBox">
        <property name="geometry">
         <rect>
-         <x>8</x>
+         <x>4</x>
          <y>8</y>
          <width>257</width>
-         <height>129</height>
+         <height>113</height>
         </rect>
        </property>
        <property name="title">
@@ -283,7 +270,7 @@
          </rect>
         </property>
         <property name="text">
-         <string>DeepL (翻译质量最好 国内连接速度慢)</string>
+         <string>DeepL (翻译质量好 国内速度慢)</string>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -305,125 +292,156 @@
          <bool>true</bool>
         </property>
        </widget>
-       <widget class="QLabel" name="label_2">
-        <property name="geometry">
-         <rect>
-          <x>160</x>
-          <y>96</y>
-          <width>17</width>
-          <height>25</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>ms</string>
-        </property>
-       </widget>
-       <widget class="QSpinBox" name="editTranslateTimeout">
-        <property name="geometry">
-         <rect>
-          <x>72</x>
-          <y>100</y>
-          <width>85</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="minimum">
-         <number>500</number>
-        </property>
-        <property name="maximum">
-         <number>30000</number>
-        </property>
-        <property name="singleStep">
-         <number>500</number>
-        </property>
-        <property name="value">
-         <number>5000</number>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_5">
-        <property name="geometry">
-         <rect>
-          <x>16</x>
-          <y>100</y>
-          <width>54</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>翻译超时</string>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="chkTranslateKeepOriginal">
-        <property name="geometry">
-         <rect>
-          <x>16</x>
-          <y>76</y>
-          <width>201</width>
-          <height>24</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>翻译后保留中文原文</string>
-        </property>
-       </widget>
       </widget>
-      <widget class="QGroupBox" name="groupBox_2">
+      <widget class="QTabWidget" name="tabWidget_2">
        <property name="geometry">
         <rect>
-         <x>412</x>
-         <y>28</y>
-         <width>185</width>
-         <height>80</height>
+         <x>272</x>
+         <y>3</y>
+         <width>372</width>
+         <height>118</height>
         </rect>
        </property>
-       <property name="title">
-        <string>百度翻译API密钥</string>
+       <property name="currentIndex">
+        <number>0</number>
        </property>
-       <widget class="QLineEdit" name="editTranslateBaiduKey">
-        <property name="geometry">
-         <rect>
-          <x>56</x>
-          <y>48</y>
-          <width>113</width>
-          <height>20</height>
-         </rect>
-        </property>
+       <widget class="QWidget" name="tab_5">
+        <attribute name="title">
+         <string>全局设置</string>
+        </attribute>
+        <widget class="QCheckBox" name="chkTranslateKeepOriginal">
+         <property name="geometry">
+          <rect>
+           <x>12</x>
+           <y>12</y>
+           <width>201</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>翻译后保留中文原文</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_2">
+         <property name="geometry">
+          <rect>
+           <x>156</x>
+           <y>40</y>
+           <width>17</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>ms</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_5">
+         <property name="geometry">
+          <rect>
+           <x>12</x>
+           <y>40</y>
+           <width>54</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>翻译超时</string>
+         </property>
+        </widget>
+        <widget class="QSpinBox" name="editTranslateTimeout">
+         <property name="geometry">
+          <rect>
+           <x>68</x>
+           <y>40</y>
+           <width>85</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="minimum">
+          <number>500</number>
+         </property>
+         <property name="maximum">
+          <number>30000</number>
+         </property>
+         <property name="singleStep">
+          <number>500</number>
+         </property>
+         <property name="value">
+          <number>5000</number>
+         </property>
+        </widget>
        </widget>
-       <widget class="QLabel" name="label_7">
-        <property name="geometry">
-         <rect>
-          <x>16</x>
-          <y>20</y>
-          <width>33</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>APPID</string>
-        </property>
+       <widget class="QWidget" name="tab_3">
+        <attribute name="title">
+         <string>百度翻译</string>
+        </attribute>
+        <widget class="QLabel" name="label_7">
+         <property name="geometry">
+          <rect>
+           <x>12</x>
+           <y>12</y>
+           <width>33</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>APPID</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="editTranslateBaiduAppid">
+         <property name="geometry">
+          <rect>
+           <x>48</x>
+           <y>12</y>
+           <width>308</width>
+           <height>20</height>
+          </rect>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_8">
+         <property name="geometry">
+          <rect>
+           <x>12</x>
+           <y>40</y>
+           <width>33</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>密钥</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="editTranslateBaiduKey">
+         <property name="geometry">
+          <rect>
+           <x>48</x>
+           <y>40</y>
+           <width>308</width>
+           <height>20</height>
+          </rect>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_10">
+         <property name="geometry">
+          <rect>
+           <x>12</x>
+           <y>72</y>
+           <width>145</width>
+           <height>16</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/SakuraKoi/BattlefieldChat/wiki/%E5%A6%82%E4%BD%95%E7%94%B3%E8%AF%B7%E7%99%BE%E5%BA%A6%E7%BF%BB%E8%AF%91API&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;如何申请百度翻译API密钥&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="openExternalLinks">
+          <bool>true</bool>
+         </property>
+        </widget>
        </widget>
-       <widget class="QLineEdit" name="editTranslateBaiduAppid">
-        <property name="geometry">
-         <rect>
-          <x>56</x>
-          <y>20</y>
-          <width>113</width>
-          <height>20</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_8">
-        <property name="geometry">
-         <rect>
-          <x>16</x>
-          <y>48</y>
-          <width>33</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>密钥</string>
-        </property>
+       <widget class="QWidget" name="tab_4">
+        <attribute name="title">
+         <string>DeepL</string>
+        </attribute>
        </widget>
       </widget>
      </widget>
@@ -436,8 +454,8 @@
     <property name="geometry">
      <rect>
       <x>8</x>
-      <y>232</y>
-      <width>712</width>
+      <y>216</y>
+      <width>653</width>
       <height>192</height>
      </rect>
     </property>
@@ -471,31 +489,6 @@ font: 9pt &quot;Consolas&quot;;</string>
      <enum>QAbstractItemView::NoSelection</enum>
     </property>
    </widget>
-   <widget class="QGraphicsView" name="counterView">
-    <property name="geometry">
-     <rect>
-      <x>352</x>
-      <y>8</y>
-      <width>369</width>
-      <height>25</height>
-     </rect>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::NoFrame</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Plain</enum>
-    </property>
-    <property name="verticalScrollBarPolicy">
-     <enum>Qt::ScrollBarAlwaysOff</enum>
-    </property>
-    <property name="horizontalScrollBarPolicy">
-     <enum>Qt::ScrollBarAlwaysOff</enum>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-    </property>
-   </widget>
    <widget class="QLabel" name="lblCurrentStatus">
     <property name="geometry">
      <rect>
@@ -517,6 +510,31 @@ font: 12pt &quot;微软雅黑&quot;;</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+    </property>
+   </widget>
+   <widget class="QGraphicsView" name="counterView">
+    <property name="geometry">
+     <rect>
+      <x>288</x>
+      <y>8</y>
+      <width>369</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::NoFrame</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Plain</enum>
+    </property>
+    <property name="verticalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="horizontalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
     </property>
    </widget>
   </widget>
