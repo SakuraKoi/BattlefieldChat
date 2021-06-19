@@ -41,7 +41,7 @@ public slots:
 private:
     Ui::InputDialog ui;
 
-    void keyPressEvent(QKeyEvent* e);
+    void keyPressEvent(QKeyEvent* e) override;
 
     QMutex mutex;
     QWaitCondition waitCondition;

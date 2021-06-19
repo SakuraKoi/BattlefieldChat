@@ -46,7 +46,6 @@ string PinyinPreprocessor::process(QString input) {
 
     string out = "";
     for (const auto& e : pinyin_list_list) {
-        const bool ok = e.first;
         auto pinyin_list = e.second;
 
         string pinyin;

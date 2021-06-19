@@ -169,7 +169,7 @@ void BattlefieldChat::handleNewVersionFound(QString version, QString link) {
     msgBox.setText(u8"新版本 BattlefieldChat v" + version + u8" 已发布!                                                        ");
     msgBox.setInformativeText(link);
     QPushButton* accept = msgBox.addButton(u8"立即更新", QMessageBox::AcceptRole);
-    QPushButton* cancel = msgBox.addButton(u8"咕咕咕", QMessageBox::RejectRole);
+    msgBox.addButton(u8"咕咕咕", QMessageBox::RejectRole);
     msgBox.exec();
 
     if (msgBox.clickedButton() == accept) {

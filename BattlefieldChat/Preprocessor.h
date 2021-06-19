@@ -1,4 +1,5 @@
 ﻿#pragma once
+
 #include <string>
 #include <QString>
 #include "Translator.h"
