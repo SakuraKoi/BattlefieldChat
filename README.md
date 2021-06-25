@@ -34,7 +34,7 @@ External Chinese chat input tool for battlefield 1
 - You have been warned
 
 ## How to use
-1. Open the game, and start the input tool with administrator permission.
+1. Open the game, and start the input tool with administrator privileges.
 2. Make sure the game's graphics settings are set to windowed/borderless (fullscreen is not supported now)
 3. When you use J/K/L to open chat, the input tool will automatically display the input window
 4. Type the message as you would normally type, press enter to send, ESC to cancel
