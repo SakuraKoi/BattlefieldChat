@@ -36,7 +36,12 @@ string TraditionalChinesePreprocessor::process(QString input) {
     wstring inputStr = input.toStdWString();
     wstring replaced = replaceNonDisplayableCharacters(inputStr);
     wstring trad = CHS2CHT(replaced);
-    return WStrToStr(trad);
+    string result = WStrToStr(trad);
+
+    if (translateKeepOriginal)
+        result = result + " / " + SINGLETON_PREPROCESSOR_PINYIN.process(input);
+
+    return result;
 }
 
 Hanz2Piny hanz2piny;

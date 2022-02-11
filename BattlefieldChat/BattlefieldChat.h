@@ -18,7 +18,7 @@ public slots:
     void handleNewVersionFound(QString version, QString link);
     void handleSettingBypassLimit(int checked);
     void handleSettingFullscreenSupport(int checked);
-    void handleSettingTranslateKeepOriginal(int checked);
+    void handleSettingTranslateKeepOriginal(int checked); 
 
     void handleSettingModeNop();
     void handleSettingModeTraditional();

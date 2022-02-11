@@ -61,35 +61,6 @@
       <height>185</height>
      </rect>
     </property>
-    <widget class="QCheckBox" name="chkAllowBypassLimit">
-     <property name="geometry">
-      <rect>
-       <x>196</x>
-       <y>32</y>
-       <width>145</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>绕过游戏聊天长度限制</string>
-     </property>
-    </widget>
-    <widget class="QCheckBox" name="chkSupportFullscreen">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>348</x>
-       <y>32</y>
-       <width>185</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>实验性全屏支持 (按Home呼出)</string>
-     </property>
-    </widget>
     <widget class="QTabWidget" name="tabWidget">
      <property name="geometry">
       <rect>
@@ -241,6 +212,11 @@
        </property>
       </widget>
      </widget>
+     <widget class="QWidget" name="tab_6">
+      <attribute name="title">
+       <string>自动公告</string>
+      </attribute>
+     </widget>
      <widget class="QWidget" name="tab_2">
       <attribute name="title">
        <string>在线翻译设置</string>
@@ -314,12 +290,12 @@
           <rect>
            <x>12</x>
            <y>12</y>
-           <width>201</width>
+           <width>345</width>
            <height>20</height>
           </rect>
          </property>
          <property name="text">
-          <string>翻译后保留中文原文</string>
+          <string>翻译后保留中文原文 / 繁体模式同时带拼音</string>
          </property>
         </widget>
         <widget class="QLabel" name="label_2">
@@ -445,10 +421,41 @@
        </widget>
       </widget>
      </widget>
+     <widget class="QWidget" name="tab_7">
+      <attribute name="title">
+       <string>工具设置</string>
+      </attribute>
+      <widget class="QCheckBox" name="chkAllowBypassLimit">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>301</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>绕过游戏聊天长度限制</string>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="chkSupportFullscreen">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>40</y>
+         <width>301</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>未开放 - 实验性全屏支持 (按Home呼出)</string>
+       </property>
+      </widget>
+     </widget>
     </widget>
-    <zorder>tabWidget</zorder>
-    <zorder>chkAllowBypassLimit</zorder>
-    <zorder>chkSupportFullscreen</zorder>
    </widget>
    <widget class="QListWidget" name="listLogs">
     <property name="geometry">
