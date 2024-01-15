@@ -47,7 +47,8 @@ string TraditionalChinesePreprocessor::process(QString input) {
 Hanz2Piny hanz2piny;
 
 string PinyinPreprocessor::process(QString input) {
-    vector<pair<bool, vector<string>>> pinyin_list_list = hanz2piny.toPinyinFromUtf8(string(input.toUtf8().constData()), false, false, "?");
+    vector<pair<bool, vector<string>>> pinyin_list_list = hanz2piny.toPinyinFromUtf8(
+        string(input.toUtf8().constData()), false, false, "?");
 
     string out = "";
     for (const auto& e : pinyin_list_list) {
@@ -63,7 +64,7 @@ string PinyinPreprocessor::process(QString input) {
         out = out + " " + pinyin;
     }
 
-    return out.substr(1, out.length()-1);
+    return out.length() == 0 ? "" : out.substr(1, out.length() - 1);
 }
 
 string TranslateToEnglishPreprocessor::process(QString input) {
