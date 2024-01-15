@@ -8,12 +8,9 @@ int getSystemTitleHeight() {
 }
 
 bool isFullscreenWindow(HWND window) {
-    return false;
-    /* This fucking not work, detect borderless as fullscreen
     QUERY_USER_NOTIFICATION_STATE state;
     SHQueryUserNotificationState(&state);
-    return state == QUNS_BUSY || state == QUNS_RUNNING_D3D_FULL_SCREEN;
-    */
+    return state == QUNS_RUNNING_D3D_FULL_SCREEN;
 }
 
 bool isBorderlessWindow(HWND window) {

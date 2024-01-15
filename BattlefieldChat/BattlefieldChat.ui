@@ -212,11 +212,6 @@
        </property>
       </widget>
      </widget>
-     <widget class="QWidget" name="tab_6">
-      <attribute name="title">
-       <string>自动公告</string>
-      </attribute>
-     </widget>
      <widget class="QWidget" name="tab_2">
       <attribute name="title">
        <string>在线翻译设置</string>
@@ -440,18 +435,18 @@
       </widget>
       <widget class="QCheckBox" name="chkSupportFullscreen">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="geometry">
         <rect>
          <x>10</x>
          <y>40</y>
-         <width>301</width>
+         <width>365</width>
          <height>16</height>
         </rect>
        </property>
        <property name="text">
-        <string>未开放 - 实验性全屏支持 (按Home呼出)</string>
+        <string>实验性全屏支持 (存在BUG且看不见输入窗口)</string>
        </property>
       </widget>
      </widget>

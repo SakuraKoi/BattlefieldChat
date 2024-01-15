@@ -7,9 +7,9 @@
 #include "ui_InputDialog.h"
 
 enum class InputDisplayMode {
-    DIALOG_FOR_FULLSCREEN,
-    OVERLAY_FOR_BORDERLESS,
-    OVERLAY_FOR_WINDOWED
+    D3D_FULLSCREEN,
+    BORDERLESS,
+    WINDOWED
 };
 
 class InputDialog : public QWidget
@@ -25,7 +25,7 @@ public:
     QString showAndWaitForResult(HWND window, InputDisplayMode mode);
 
 signals:
-    void callInitializeWindow(Qt::WindowFlags windowType, QSize size, QSize editSize, QPoint pos);
+    void callInitializeWindow(HWND gameWindow, Qt::WindowFlags windowType, QSize size, QSize editSize, QPoint pos, InputDisplayMode mode);
     void enterProcessed();
     void fastSwitchedMode(int mode);
 
@@ -36,7 +36,7 @@ public slots:
     void switchClicked();
     void textTyped(const QString& text);
 
-    void handleInitializeWindow(Qt::WindowFlags windowType, QSize size, QSize editSize, QPoint pos);
+    void handleInitializeWindow(HWND gameWindow, Qt::WindowFlags windowType, QSize size, QSize editSize, QPoint pos, InputDisplayMode mode);
 
 private:
     Ui::InputDialog ui;

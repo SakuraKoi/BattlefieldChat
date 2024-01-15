@@ -69,12 +69,12 @@ void WorkerThread::chatLoop() {
         if (chatOpenPtr.refreshPointer()) {
             bool state = chatOpenPtr.readBoolean();
             bool isFullscreen = isFullscreenWindow(gameWindow);
-            if (state && ( // chat is open
-                (fullscreenSupport && isFullscreen && (GetAsyncKeyState(VK_HOME) & 0x8000) != 0) // fullscreen mode -> trigger by home key
-                || (!lastState) // normal mode -> trigger by open chat
-                )) {
 
-                doInput(messageCavePtr, chatMessagePtr, isFullscreen);
+            if (state) {
+                if (!lastState) {
+                    if (!isFullscreen || fullscreenSupport)
+                        doInput(messageCavePtr, chatMessagePtr, isFullscreen);
+                }
             }
             lastState = state;
         }
@@ -84,9 +84,8 @@ void WorkerThread::chatLoop() {
 
 void WorkerThread::doInput(Pointer messageCavePtr, ChatMessagePointer chatMessagePtr, bool isFullscreen) {
     Log() << u8" [+] 呼出聊天框, 等待输入...";
-    QString str = inputWindow->showAndWaitForResult(gameWindow,
-        isFullscreen ? InputDisplayMode::DIALOG_FOR_FULLSCREEN :
-        isBorderlessWindow(gameWindow) ? InputDisplayMode::OVERLAY_FOR_BORDERLESS : InputDisplayMode::OVERLAY_FOR_WINDOWED);
+    QString str = inputWindow->showAndWaitForResult(gameWindow, isFullscreen ? InputDisplayMode::D3D_FULLSCREEN :
+        isBorderlessWindow(gameWindow) ? InputDisplayMode::BORDERLESS : InputDisplayMode::WINDOWED);
 
     SetForegroundWindow(gameWindow);
     if (str == Q_NULLPTR || str.length() == 0) {

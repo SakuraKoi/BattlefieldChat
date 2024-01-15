@@ -252,8 +252,9 @@ void BattlefieldChat::handleCountLoaded(QByteArray data) {
     image->fill(0xffffffff);
 
     QPainter painter(image);
-    QFont font("Microsoft YaHei");
+    QFont font("Consolas");
     font.setPointSize(painter.font().pointSize());
+    painter.setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform, true);
     painter.setFont(font);
     renderer.render(&painter);
 
