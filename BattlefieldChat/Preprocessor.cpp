@@ -8,7 +8,7 @@
 using namespace std;
 
 string Preprocessor::process(QString input) {
-    return string(input.toLocal8Bit().data());
+    return WStrToStr(input.toStdWString());
 }
 
 void Preprocessor::initialize() {
