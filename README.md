@@ -2,6 +2,22 @@
 外置中文聊天输入工具 For Battlefield 1\
 External Chinese chat input tool for battlefield 1
 
+## Discontinued 停止更新
+Battlefield1 已接入 EA Anti Cheat\
+所有应用层程序在尝试访问游戏内存时均会遭到EAAC拦截\
+因此, 此工具已失效
+
+偏移量没什么大变化, 如果你具有内核级的内存读写技术, 应该可以很容易地复活这个工具\
+但出于显而易见的原因, **不再公开发布任何更新**
+
+This tool is nolonger working in the latest version of Battlefield 1\
+EA Anti Cheat has been integrated into Battlefield 1, All usermode memory access will got blocked.
+
+The offset did not changed so much, if you have kernel memory R/W (and a little bit reverse engineering skill), it should be easy to fix it\
+however, for obvious reasons, **no further updates will be released publicly**
+
+## 信息
+
 [下载最新版本 / Download latest version](https://github.com/SakuraKoi/BattlefieldChat/releases/latest/download/BattlefieldChat.exe)
 
 ![](https://img.shields.io/github/license/SakuraKoi/BattlefieldChat?style=for-the-badge) ![](https://img.shields.io/github/languages/top/SakuraKoi/BattlefieldChat?style=for-the-badge) ![](https://img.shields.io/github/downloads/SakuraKoi/BattlefieldChat/total?style=for-the-badge) ![](https://img.shields.io/github/v/release/SakuraKoi/BattlefieldChat?style=for-the-badge)
